@@ -16,24 +16,24 @@ import javax.persistence.Table;
 public class News extends AbstractEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/** ID de Noticias */
-	private String idNews;
-	
+	private Long idNews;
+
 	/** Título de Noticias */
 	private String titleNews;
-	
+
 	/** Imagen de Noticias */
 	private String imageNews;
-	
+
 	/** Contenido Noticias */
 	private String contentNews;
 
-	public String getIdNews() {
+	public Long getIdNews() {
 		return idNews;
 	}
 
-	public void setIdNews(String idNews) {
+	public void setIdNews(Long idNews) {
 		this.idNews = idNews;
 	}
 
@@ -60,7 +60,5 @@ public class News extends AbstractEntity implements Serializable {
 	public void setContentNews(String contentNews) {
 		this.contentNews = contentNews;
 	}
-	
-	
 
 }

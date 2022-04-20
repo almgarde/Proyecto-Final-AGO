@@ -17,29 +17,27 @@ import javax.persistence.Table;
 public class ProfessionalCategories extends AbstractEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	/** ID de Categorías Profesionales */
-	private String idProCat;
 
-	/** Fecha del registro */
-	private Date nameProCat;
+	/** ID de Categoría Profesional */
+	private Long idProCat;
 
-	public String getIdProCat() {
+	/** Nombre */
+	private String nameProCat;
+
+	public Long getIdProCat() {
 		return idProCat;
 	}
 
-	public void setIdProCat(String idProCat) {
+	public void setIdProCat(Long idProCat) {
 		this.idProCat = idProCat;
 	}
 
-	public Date getNameProCat() {
+	public String getNameProCat() {
 		return nameProCat;
 	}
 
-	public void setNameProCat(Date nameProCat) {
+	public void setNameProCat(String nameProCat) {
 		this.nameProCat = nameProCat;
 	}
-	
-	
 
 }
