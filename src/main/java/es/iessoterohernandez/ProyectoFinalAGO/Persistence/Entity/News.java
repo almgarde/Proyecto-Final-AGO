@@ -35,6 +35,8 @@ public class News extends AbstractEntity implements Serializable {
 
 	/** Contenido */
 	private String contentNews;
+	
+
 
 	@Id
 	@GeneratedValue(generator = "genSeqNews")

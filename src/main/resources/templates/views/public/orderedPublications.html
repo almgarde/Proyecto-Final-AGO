@@ -1,0 +1,30 @@
+<div class="accordion" id="accordionExample">
+			<div class="accordion-item"
+				th:each="publicationsYearsDto:${listaPublicationsYearsDto}">
+				<h2 class="accordion-header"
+					th:id="'heading'+ ${publicationsYearsDto.yearPublication}">
+					<button th:text="${publicationsYearsDto.yearPublication}"
+						class="accordion-button" type="button" data-bs-toggle="collapse"
+						th:data-bs-target="'#collapse'+${publicationsYearsDto.yearPublication}"
+						aria-expanded="true"
+						th:aria-controls="'collapse'+${publicationsYearsDto.yearPublication}"></button>
+				</h2>
+				<div
+					th:each="publicationsDto:${publicationsYearsDto.listaPublicationsDto}"
+					th:id="'collapse'+${publicationsYearsDto.yearPublication}"
+					class="accordion-collapse collapse show"
+					th:aria-labelledby="'heading'+${publicationsYearsDto.yearPublication}">
+					<div class="accordion-body">
+						<strong th:text="${publicationsDto.titlePublication}"></strong>
+						<div>
+							<a class="authors"
+								th:each="author:${publicationsDto.authorsPublication}"
+								th:text="${author.nameAuthor} + ',   '"
+								data-is-member="${author.isMember}"
+								data-id-member="${author.idMember}"> </a> <label
+								th:text="${publicationsDto.yearPublication}"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

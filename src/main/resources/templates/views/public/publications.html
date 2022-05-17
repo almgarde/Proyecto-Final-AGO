@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head th:replace="views/common/head :: head"></head>
+<body>
+	<header th:replace="views/common/header :: header"></header>
+
+	<form th:object="${publicationsOrderFormDto}" method="POST">
+		<div class="form-group">
+			<!-- DNI -->
+			<label for="ascendente">Ordenar</label> <select
+				th:field="*{ascendente}">
+				<option value="true">Ascendente</option>
+				<option value="false">Descendente</option>
+
+			</select></br>
+
+		</div>
+		</br>
+		<button id="filtrarBtn" type="button" class="btn btn-success">Filtrar</button>
+	</form>
+
+	<div class="container" id="listPublicationsContainer">
+		<div class="accordion" id="accordionExample">
+			<div class="accordion-item"
+				th:each="publicationsYearsDto:${listaPublicationsYearsDto}">
+				<h2 class="accordion-header"
+					th:id="'heading'+ ${publicationsYearsDto.yearPublication}">
+					<button th:text="${publicationsYearsDto.yearPublication}"
+						class="accordion-button" type="button" data-bs-toggle="collapse"
+						th:data-bs-target="'#collapse'+${publicationsYearsDto.yearPublication}"
+						aria-expanded="true"
+						th:aria-controls="'collapse'+${publicationsYearsDto.yearPublication}"></button>
+				</h2>
+				<div
+					th:each="publicationsDto:${publicationsYearsDto.listaPublicationsDto}"
+					th:id="'collapse'+${publicationsYearsDto.yearPublication}"
+					class="accordion-collapse collapse show"
+					th:aria-labelledby="'heading'+${publicationsYearsDto.yearPublication}">
+					<div class="accordion-body">
+						<strong th:text="${publicationsDto.titlePublication}"></strong>
+						<div>
+							<a class="authors"
+								th:each="author:${publicationsDto.authorsPublication}"
+								th:text="${author.nameAuthor} + ',   '"
+								th:data-is-member="${author.isMember}"
+								th:data-id-member="${author.idMember}"> </a> <label
+								th:text="${publicationsDto.yearPublication}"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<footer th:replace="views/common/footer :: footer"></footer>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+
+	<script src="/js/publications.js"></script>
+
+</body>
+</html>

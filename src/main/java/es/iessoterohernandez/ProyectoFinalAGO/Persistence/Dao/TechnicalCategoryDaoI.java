@@ -1,5 +1,7 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,23 @@ import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.TechnicalCatego
  *
  */
 @Repository
-public interface TechnicalCategoryDaoI extends JpaRepository<TechnicalCategory, Long>{
+public interface TechnicalCategoryDaoI extends JpaRepository<TechnicalCategory, Long> {
+
+	/**
+	 * Recupera todas las categorías técnicas s/n activas
+	 * 
+	 * @param activo
+	 * @return List<TechnicalCategory>
+	 */
+	public List<TechnicalCategory> findByActive(Boolean activo);
+
+	/**
+	 * Recupera una categoría técnica s/n activa por su Id
+	 * 
+	 * @param id
+	 * @param activo
+	 * @return TechnicalCategory
+	 */
+	public TechnicalCategory findByIdTechCatAndActive(Long id, Boolean activo);
 
 }

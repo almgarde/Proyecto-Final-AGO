@@ -17,17 +17,17 @@ import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 public interface NewsDaoI extends JpaRepository<News, Long> {
 
 	/**
-	 * Lista de las cuatro noticias más recientes ordenadas por fecha
+	 * Recupera las cuatro noticias s/n activas más recientes ordenadas por fecha descendente
 	 * 
 	 * @return List<News>
 	 */
 	public List<News> findTop4ByActiveOrderByUpdateDateDesc(Boolean activo);
-	
+
 	/**
-	 * Encuentra una noticia por su Id
+	 * Recupera una noticia s/n activa por su Id
 	 * 
 	 * @param id
 	 * @return News
 	 */
-	public News findByIdNews (Long id);
+	public News findByIdNewsAndActive(Long id, Boolean activo);
 }

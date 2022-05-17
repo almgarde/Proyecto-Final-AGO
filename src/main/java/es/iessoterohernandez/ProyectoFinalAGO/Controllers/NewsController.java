@@ -1,9 +1,5 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,22 +23,20 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.NewsDto;
 public class NewsController {
 
 	/** Logger */
-	final static Logger LOGGER = LoggerFactory.getLogger(InicioController.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
 	NewsServiceI newsService;
 
 	@GetMapping("/newsComplete/{idNews}")
-	public String getNews(@PathVariable Long idNews, HttpServletRequest request, Model model) {
+	public String getNews(@PathVariable String idNews, Model model) throws Exception {
 		LOGGER.info("NewsController getNews .- Inicio");
 
 		String viewResult = "/views/common/Errors";
 
 		try {
 
-			//Long idNews = (Long) request.getAttribute("idNewsComplete");
-
-			final NewsDto newsDto = newsService.getNewsById(idNews);
+			final NewsDto newsDto = newsService.getNewsByIdActive(Long.parseLong(idNews));
 
 			if (newsDto != null) {
 				model.addAttribute("news", newsDto);

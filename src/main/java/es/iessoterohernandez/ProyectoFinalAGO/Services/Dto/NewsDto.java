@@ -10,7 +10,7 @@ import java.sql.Clob;
  */
 public class NewsDto {
 
-	private Long idNews;
+	private String idNews;
 
 	private String titleNews;
 
@@ -20,11 +20,11 @@ public class NewsDto {
 
 	private String contentNews;
 
-	public Long getIdNews() {
+	public String getIdNews() {
 		return idNews;
 	}
 
-	public void setIdNews(Long idNews) {
+	public void setIdNews(String idNews) {
 		this.idNews = idNews;
 	}
 

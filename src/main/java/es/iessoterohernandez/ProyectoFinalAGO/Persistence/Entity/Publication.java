@@ -1,6 +1,7 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -12,6 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Entidad: Publicaciones. Tabla: PUBLICATIONS
@@ -40,6 +45,9 @@ public class Publication extends AbstractEntity implements Serializable {
 	/** DOI */
 	private String doiPublication;
 
+	/** Año de publicación */
+	private Integer yearPublication;
+
 	@Id
 	@GeneratedValue(generator = "genSeqPublications")
 	@SequenceGenerator(name = "genSeqPublications", sequenceName = "SEQ_PUBLICATIONS", allocationSize = 1)
@@ -61,7 +69,7 @@ public class Publication extends AbstractEntity implements Serializable {
 	}
 
 	@ElementCollection
-    @CollectionTable(name = "AUTHORS_PUBLICATIONS", joinColumns = @JoinColumn(name = "idPublication"))
+	@CollectionTable(name = "AUTHORS_PUBLICATIONS", joinColumns = @JoinColumn(name = "idPublication"))
 	@Column(name = "AUTHOR_PUBLICATION", nullable = false)
 	public List<String> getAuthorsPublication() {
 		return authorsPublication;
@@ -88,5 +96,16 @@ public class Publication extends AbstractEntity implements Serializable {
 	public void setDoiPublication(String doiPublication) {
 		this.doiPublication = doiPublication;
 	}
+
+	@Column(name = "YEAR_PUBLICATION", nullable = false, length = 4)
+	public Integer getYearPublication() {
+		return yearPublication;
+	}
+
+	public void setYearPublication(Integer yearPublication) {
+		this.yearPublication = yearPublication;
+	}
+
+
 
 }

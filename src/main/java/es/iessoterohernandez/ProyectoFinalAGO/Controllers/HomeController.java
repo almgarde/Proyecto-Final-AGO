@@ -8,38 +8,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Services.NewsServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.NewsDto;
 
 /**
- * Controlador Inicio
+ * Controlador. Inicio
  * 
  * @author agadelao
  *
  */
 @Controller
-public class InicioController {
+@RequestMapping("/home")
+public class HomeController {
 
 	/** Logger */
-	final static Logger LOGGER = LoggerFactory.getLogger(InicioController.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
 	NewsServiceI newsService;
 
-	@GetMapping("/inicio")
-	public String inicio(Model model) {
+	@GetMapping
+	public String inicio(Model model) throws Exception {
 
 		LOGGER.info("InicioController inicio .- Inicio");
 
 		String viewResult = "/views/common/Errors";
 
 		try {
-			final List<NewsDto> listaNewsDto = newsService.getFourMostRecentNews();
+			final List<NewsDto> listaNewsDto = newsService.getFourMostRecentNewsActive();
 
 			if (listaNewsDto != null && !listaNewsDto.isEmpty()) {
 				model.addAttribute("listaNews", listaNewsDto);
-				viewResult = "/views/public/inicio";
+				viewResult = "/views/public/home";
 			} else {
 				LOGGER.error("InicioController inicio .- Error: Parámetros nulos");
 			}
