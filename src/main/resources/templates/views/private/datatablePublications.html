@@ -1,0 +1,354 @@
+<div th:fragment="publications">
+
+	<div>
+		<button type="button" id="formAddPublicationsBtn"
+			class="btn btn-secondary">
+			<a href="javascript: mostrarModalAddPublications();">Añadir nueva
+				publicación</a>
+		</button>
+		<button type="button" class="btn btn-warning">Generar Excel</button>
+	</div>
+
+
+
+
+	<!-- DATATABLE -->
+
+	<table id="publicationsDatatable" class="table datatableAdmin"
+		style="text-align: center;">
+		<thead>
+			<tr>
+				<th class="atri" scope="col">ID</th>
+				<th class="atri" scope="col">Título</th>
+				<th class="atri" scope="col">Autores</th>
+				<th class="atri" scope="col">Revista</th>
+				<th class="atri" scope="col">DOI</th>
+				<th class="atri" scope="col">Año publicación</th>
+				<th class="atri" scope="col">Admin</th>
+				<th class="atri" scope="col">Fecha</th>
+				<th class="atri selectActive" style="width: 500px;" scope="col">Activo</th>
+				<th style="width: 100px;" scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="atri" scope="col">ID</th>
+				<th class="atri" scope="col">Título</th>
+				<th class="atri" scope="col">Autores</th>
+				<th class="atri" scope="col">Revista</th>
+				<th class="atri" scope="col">DOI</th>
+				<th class="atri" scope="col">Año publicación</th>
+				<th class="atri" scope="col">Admin</th>
+				<th class="atri" scope="col">Fecha</th>
+				<th class="atri selectActive" style="width: 500px;" scope="col">Activo</th>
+				<th style="width: 150px;" scope="col"></th>
+			</tr>
+		</tfoot>
+
+	</table>
+	<input class="selectedCat" type="hidden" value="7">
+
+
+	<!-- MODAL - AUTORES -->
+
+	<div class="modal" tabindex="-1" id="modalAuthorsPublication">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="headerAuthorsPublication" class="modal-title"></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="modalBodyAuthorsPublication">
+
+					<div class="col-sm-12">
+						<label>Autores: </label>
+					</div>
+					<div id="listaAutores"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Close</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- MODAL - AÑADIR PUBLICACIÓN -->
+
+	<div class="modal" tabindex="-1" id="modalAddPublications">
+		<div class="modal-dialog">
+			<div class="modal-content"
+				style="width: 1000px; margin-left: -200px;">
+				<div class="modal-header">
+					<h5 id="headerModalAddPublications" class="modal-title">Añadir
+						nueva publicación</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+
+					<form id="formAddPublication"
+						th:action="@{/management/addPublicationsData}"
+						th:object="${publicationsFormDto}" method="POST">
+
+						<!-- TÍTULO -->
+
+						<div class="form-group">
+							<label for="titlePublication">Título</label> <input type="text"
+								class="form-control" id="titlePublication"
+								th:field="*{titlePublication}"> </br>
+						</div>
+
+						<!-- AUTORES -->
+
+						<div class="form-group">
+							<label for="authorSelect">Autores</label>
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dynamic_field">
+									<tr id="selectNuevoAutor">
+										<td colspan="2"><select class="form-select"
+											id="authorSelect" aria-label="Floating label select example">
+												<option id="headerSelectAuthors" value="">Escoja un
+													miembro o añada un nuevo autor</option>
+												<option th:each="memberDto : ${listaMembersDto}"
+													th:text="${memberDto.nameMember} + ', ' + ${memberDto.shortNameMember}"
+													th:value="${memberDto.idMember}"
+													th:data-name-member="${memberDto.nameMember}"
+													th:data-short-name-member="${memberDto.shortNameMember}">
+												</option>
+										</select></td>
+										<td rowspan="2" colspan="2"><button type="button"
+												name="add" id="add" class="btn btn-success">Añadir</button></td>
+									</tr>
+									<tr id="btnNuevoAutor">
+										<td colspan="2"><button type="button" name="newAuthor"
+												id="newAuthor" class="btn btn-success">Nuevo Autor</button>
+										<td>
+									</tr>
+									<tr id="inputNuevoAutor">
+										<td>Nombre: <input id="inputNameAutor" type="text"
+											name="autores[].nameAuthor" class="form-control name_list" /></td>
+										<td>Nombre abreviado : <input type="text"
+											id="inputShortNameAutor" name="autores[].shortNameAuthor"
+											class="form-control name_list" /></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+
+						<!-- REVISTA -->
+
+						<div class="form-group">
+							<label for="journalPublication">Revista</label> <input
+								type="text" class="form-control" id="journalPublication"
+								th:field="*{journalPublication}"> </br>
+						</div>
+
+						<!-- DOI -->
+
+						<div class="form-group">
+							<label for="doiPublication">Título</label> <input type="text"
+								class="form-control" id="doiPublication"
+								th:field="*{doiPublication}"> </br>
+						</div>
+
+						<!-- AÑO DE PUBLICACIÓN -->
+
+						<div class="form-group">
+							<label for="yearPublication">Año de publicación</label> <select
+								th:field="*{yearPublication}">
+								<option value="">Seleccione un año</option>
+								<option
+									th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()), #dates.year(#dates.createNow()) - 50)}"
+									th:value="${year}" th:text="${year}"></option>
+							</select> </br>
+						</div>
+
+						<!-- ACTIVO -->
+
+						<div class="form-group">
+							<label for="active">Activo</label> <select th:field="*{active}"
+								class="form-select" id="active"
+								aria-label="Floating label select example">
+								<option value="1">Si</option>
+								<option value="0">No</option>
+							</select></br>
+						</div>
+
+
+						</br>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnAceptarAddPublication">Aceptar</button>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnCancelarAddPublication">Cancelar</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- MODAL - EDITAR PUBLICACIÓN -->
+
+	<div class="modal" tabindex="-1" id="modalEditPublications">
+		<div class="modal-dialog">
+			<div class="modal-content"
+				style="width: 1000px; margin-left: -200px;">
+				<div class="modal-header">
+					<h5 id="headerModalEditPublications" class="modal-title">Editar
+						publicación</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+
+					<form id="formUpdatePublication"
+						th:action="@{/management/updatePublicationsData}"
+						th:object="${publicationsFormDto}" method="POST">
+
+						<!-- TÍTULO -->
+
+						<div class="form-group">
+							<label for="titlePublicationEdit">Título</label> <input
+								type="text" class="form-control" id="titlePublicationEdit"
+								th:field="*{titlePublication}"> </br>
+						</div>
+
+						<!-- AUTORES -->
+
+						<div class="form-group">
+							<label for="authorSelectEdit">Autores</label>
+
+
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dynamic_fieldEdit">
+									<tr id="selectNuevoAutorEdit">
+										<td colspan="2"><select class="form-select"
+											id="authorSelectEdit"
+											aria-label="Floating label select example">
+												<option id="headerSelectAuthorsEdit" value="">Escoja
+													un miembro o añada un nuevo autor</option>
+												<option th:each="memberDto : ${listaMembersDto}"
+													th:text="${memberDto.nameMember} + ', ' + ${memberDto.shortNameMember}"
+													th:value="${memberDto.idMember}"
+													th:data-name-member="${memberDto.nameMember}"
+													th:data-short-name-member="${memberDto.shortNameMember}">
+													<input id="inputNameMember" type="hidden"
+														th:value="${memberDto.nameMember}"><input
+														id="inputShorNameMember" type="hidden"
+														th:value="${memberDto.shortNameMember}">
+												</option>
+										</select></td>
+										<td rowspan="2" colspan="2"><button type="button"
+												name="add" id="addEdit" class="btn btn-success">Añadir</button></td>
+									</tr>
+									<tr id="btnNuevoAutorEdit">
+										<td colspan="2"><button type="button" name="newAuthor"
+												id="newAuthorEdit" class="btn btn-success">Nuevo
+												Autor</button>
+										<td>
+									</tr>
+									<tr id="inputNuevoAutorEdit">
+										<td>Nombre: <input id="inputNameAutorEdit" type="text"
+											name="autores[].nameAuthor" class="form-control name_list" /></td>
+										<td>Nombre abreviado : <input type="text"
+											id="inputShortNameAutorEdit" name="autores[].shortNameAuthor"
+											class="form-control name_list" /></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+
+						<!-- REVISTA -->
+
+						<div class="form-group">
+							<label for="journalPublicationEdit">Revista</label> <input
+								type="text" class="form-control" id="journalPublicationEdit"
+								th:field="*{journalPublication}"> </br>
+						</div>
+
+						<!-- DOI -->
+
+						<div class="form-group">
+							<label for="doiPublicationEdit">Título</label> <input type="text"
+								class="form-control" id="doiPublicationEdit"
+								th:field="*{doiPublication}"> </br>
+						</div>
+
+						<!-- AÑO DE PUBLICACIÓN -->
+
+						<div class="form-group">
+							<label for="yearPublicationEdit">Año de publicación</label> <select
+								id="yearPublicationEdit" th:field="*{yearPublication}">
+								<option value="">Seleccione un año</option>
+								<option
+									th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()), #dates.year(#dates.createNow()) - 50)}"
+									th:value="${year}" th:text="${year}"></option>
+							</select> </br>
+						</div>
+
+						<!-- ACTIVO -->
+
+						<div class="form-group">
+							<label for="activeEdit">Activo</label> <select
+								th:field="*{active}" class="form-select" id="activeEdit"
+								aria-label="Floating label select example">
+								<option value="1">Si</option>
+								<option value="0">No</option>
+							</select></br>
+						</div>
+
+						<input th:field="*{idPublication}" type="hidden"
+							id="idPublicationEdit"> </br>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnAceptarUpdatePublication">Aceptar</button>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnCancelarUpdatePublication">Cancelar</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- MODAL - ELIMINAR PUBLICACIÓN -->
+
+<div class="modal" tabindex="-1" id="modalDeletePublication">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalDeletePublication" class="modal-title">Eliminar
+					publicación</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label>¿Estás seguro de querer eliminar esta publicación?</label> <input
+					type="hidden" id="idPublicationDelete"> </br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarDeletePublication">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarDeletePublication">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>

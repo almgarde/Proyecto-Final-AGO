@@ -1,6 +1,8 @@
 <div>
-<button type="button" id="formAddNewsBtn" class="btn btn-secondary"><a href="javascript: mostrarModalAddNews();">Añadir nueva noticia</a></button>
-<button type="button" class="btn btn-warning">Generar Excel</button>
+	<button type="button" id="formAddNewsBtn" class="btn btn-secondary">
+		<a href="javascript: mostrarModalAddNews();">Añadir nueva noticia</a>
+	</button>
+	<button type="button" class="btn btn-warning">Generar Excel</button>
 </div>
 
 
@@ -8,18 +10,18 @@
 
 <!-- DATATABLE -->
 
-<table id="newsDatatable" class="table" style="text-align: center;">
+<table id="newsDatatable" class="table datatableAdmin" style="text-align: center;">
 	<thead>
 		<tr>
-			<th scope="col">ID</th>
-			<th scope="col" style="max-width: 300px;">Titulo</th>
-			<th scope="col">Imagen</th>
-			<th scope="col">Abstract</th>
-			<th scope="col">Contenido</th>
-			<th scope="col">Admin</th>
-			<th scope="col">Fecha</th>
-			<th scope="col">Activo</th>
-			<th scope="col">Acciones</th>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col" style="max-width: 300px;">Titulo</th>
+			<th class="atri" scope="col">Imagen</th>
+			<th class="atri" scope="col">Abstract</th>
+			<th class="atri" scope="col">Contenido</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri"scope="col">Fecha</th>
+			<th class="atri selectActive" scope="col">Activo</th>
+			<th scope="col"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -27,15 +29,15 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Titulo</th>
-			<th scope="col">Imagen</th>
-			<th scope="col">Abstract</th>
-			<th scope="col">Contenido</th>
-			<th scope="col">Admin</th>
-			<th scope="col">Fecha</th>
-			<th scope="col">Activo</th>
-			<th scope="col">Acciones</th>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col" style="max-width: 300px;">Titulo</th>
+			<th class="atri" scope="col">Imagen</th>
+			<th class="atri" scope="col">Abstract</th>
+			<th class="atri" scope="col">Contenido</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri"scope="col">Fecha</th>
+			<th class="atri selectActive" scope="col">Activo</th>
+			<th scope="col"></th>
 		</tr>
 	</tfoot>
 
@@ -48,11 +50,6 @@
 <div class="modal" tabindex="-1" id="modalNewsImage">
 	<div class="modal-dialog">
 		<div class="modal-content">
-<!-- 			<div class="modal-header"> -->
-<!-- 				<h5 id="headerModalAbstract" class="modal-title"></h5> -->
-<!-- 				<button type="button" class="btn-close" data-bs-dismiss="modal" -->
-<!-- 					aria-label="Close"></button> -->
-<!-- 			</div> -->
 			<div class="modal-body">
 				<img id="bodyModalImageNews"></img>
 			</div>
@@ -116,63 +113,64 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 id="headerModalAddNews" class="modal-title">Añadir nueva noticia</h5>
+				<h5 id="headerModalAddNews" class="modal-title">Añadir nueva
+					noticia</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form id="addNewsForm" th:action="@{/management/addNewsData}" th:object="${addNewsFormDto}"
-					method="POST" enctype="multipart/form-data">
-					<div class="form-group">
-					
-						<!-- TÍTULO -->
-						
-						<div class="form-group">
-						<label for="titleNews">Título</label> 
-							<textarea th:field ="*{titleNews}" class="form-control" 
-								id="titleNews" style="height: 100px"></textarea> </br>
-						</div>						
-
-						<!-- ABSTRACT -->
-						
-						<div class="form-groupt">
-						<label for="abstractNews">Abstract</label>
-							<textarea th:field ="*{abstractNews}" class="form-control" 
-								id="abstractNews" style="height: 100px"></textarea> </br>
-						</div>
-
-						
-						<div class="form-group">
-						<label for="contentNews">Contenido</label>
-							<textarea th:field ="*{contentNews}" class="form-control" 
-								id="contentNews" style="height: 100px"></textarea></br>
-						</div>
-
-						
-						<div class="form-group">
-						<label for="active">Activo</label>
-							<select th:field ="*{active}" class="form-select" id="active"
-								aria-label="Floating label select example">
-								<option value="1">Si</option>
-								<option value="0">No</option>
-							</select></br>
-						</div>
-						
-						<div class="form-group">
-						<label for="imageNews">Imagen</label>
-							<input type="file" name="file" class= "form-control form-control-sm" id="imageNews">
-							</br>
-						</div>
 
 
-					</div>
+				<!-- TÍTULO -->
+
+				<div class="form-group">
+					<label for="titleNews">Título</label>
+					<textarea class="form-control" id="titleNews" style="height: 100px"></textarea>
 					</br>
-				</form>
+				</div>
+
+				<!-- ABSTRACT -->
+
+				<div class="form-group">
+					<label for="abstractNews">Abstract</label>
+					<textarea class="form-control" id="abstractNews"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- CONTENIDO -->
+
+				<div class="form-group">
+					<label for="contentNews">Contenido</label>
+					<textarea class="form-control" id="contentNews"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+
+				<div class="form-group">
+					<label for="active">Activo</label> <select class="form-select"
+						id="active" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+
+				<!-- IMAGEN -->
+
+				<div class="form-group">
+					<label for="imageNews">Imagen</label> <input type="file"
+						name="file" class="form-control form-control-sm" id="imageNews">
+					</br>
+				</div>
+
+				</br>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
 					data-bs-dismiss="modal" id="btnAceptarAddNews">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
+				<button type="button" class="btn btn-secondary"
 					data-bs-dismiss="modal" id="btnCancelarAddNews">Cancelar</button>
 
 			</div>
@@ -180,3 +178,131 @@
 	</div>
 </div>
 
+<!-- MODAL - EDITAR NOTICIA -->
+
+<div class="modal" tabindex="-1" id="modalUpdateNews">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdateNews" class="modal-title">Editar
+					noticia</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<!-- TÍTULO -->
+
+				<div class="form-group">
+					<label for="titleNewsEdit">Título</label>
+					<textarea class="form-control" id="titleNewsEdit" style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ABSTRACT -->
+
+				<div class="form-group">
+					<label for="abstractNewsEdit">Abstract</label>
+					<textarea class="form-control" id="abstractNewsEdit"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- CONTENIDO -->
+
+				<div class="form-group">
+					<label for="contentNewsEdit">Contenido</label>
+					<textarea class="form-control" id="contentNewsEdit"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+
+				<div class="form-group">
+					<label for="activeEdit">Activo</label> <select class="form-select"
+						id="activeEdit" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+
+				
+<input
+						type="hidden" id="idNewsUpdate"> </br>
+				</br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdateNews">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdateNews">Cancelar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - EDITAR FOTO NOTICIA -->
+
+<div class="modal" tabindex="-1" id="modalUpdatePhotoNews">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdatePhotoNews" class="modal-title">Editar
+					noticia</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<!-- IMAGEN -->
+
+				<div class="form-group">
+					<label for="imageNewsEdit">Imagen</label> <input type="file"
+						name="file" class="form-control form-control-sm" id="imageNewsEdit">
+					</br>
+				</div>
+<input
+						type="hidden" id="idNewsUpdatePhoto"> </br>
+				</br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdatePhotoNews">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdatePhotoNews">Cancelar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	<!-- MODAL - ELIMINAR NOTICIA -->
+
+	<div class="modal" tabindex="-1" id="modalDeleteNews">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="headerModalDeleteNews" class="modal-title">Eliminar
+						Noticia</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<label>¿Estás seguro de querer eliminar esta noticia?</label> <input
+						type="hidden" id="idNewsDelete"> </br>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnAceptarDeleteNews">Aceptar</button>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnCancelarDeleteNews">Cancelar</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>

@@ -17,11 +17,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Link;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Project;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Publication;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Thesis;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.FacilitiesServiceI;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.LinksServiceI;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.MembersServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.NewsServiceI;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.NewsDataTableDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.AddNewsFormDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.ProCatServiceI;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.ProjectsServiceI;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.PublicationsServiceI;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.TechCatServiceI;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.ThesisServiceI;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.MembersDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.TechCatDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.FacilitiesDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.LinksDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.MembersDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.NewsDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ProCatDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ProjectsDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.PublicationsDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.TechCatDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ThesisDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsFormDto;
 
 @Controller
 @RequestMapping("/management")
@@ -33,6 +59,30 @@ public class AdminController {
 	@Autowired
 	NewsServiceI newsService;
 
+	@Autowired
+	ProCatServiceI proCatService;
+
+	@Autowired
+	TechCatServiceI techCatService;
+
+	@Autowired
+	MembersServiceI membersService;
+
+	@Autowired
+	LinksServiceI linksService;
+
+	@Autowired
+	ProjectsServiceI projectsService;
+
+	@Autowired
+	ThesisServiceI thesisService;
+
+	@Autowired
+	FacilitiesServiceI facilitiesService;
+
+	@Autowired
+	PublicationsServiceI publicationsService;
+
 	@GetMapping
 	public String getManagementPanel(Model model) throws Exception {
 
@@ -42,9 +92,12 @@ public class AdminController {
 
 	}
 
-	@PostMapping("/getDataTableCategory")
-	public String getDataTableCategory(Model model, String numCat) throws Exception {
+	@PostMapping("/getDatatableCategory/")
+	public String getDatatableCategory(Model model, String numCat) throws Exception {
 
+		if (numCat == null) {
+			numCat = (String) model.getAttribute("catPublication");
+		}
 		String viewResult = "/views/common/Errors";
 
 		try {
@@ -55,7 +108,6 @@ public class AdminController {
 					break;
 
 				case "1":
-					model.addAttribute("addNewsFormDto", new AddNewsFormDto());
 					viewResult = "/views/private/datatableNews";
 					break;
 
@@ -64,6 +116,14 @@ public class AdminController {
 					break;
 
 				case "3":
+					List<ProCatDto> listaProCatDto = proCatService.getAllProCat();
+					List<ProCatDto> listaProCatDtoActivas = proCatService.getAllProCatActive();
+
+					if (listaProCatDto != null && !listaProCatDto.isEmpty() && listaProCatDtoActivas != null
+							&& !listaProCatDtoActivas.isEmpty()) {
+						model.addAttribute("listaProCatDto", listaProCatDto);
+						model.addAttribute("listaProCatDtoActivas", listaProCatDtoActivas);
+					}
 					viewResult = "/views/private/datatableMembers";
 					break;
 
@@ -76,14 +136,34 @@ public class AdminController {
 					break;
 
 				case "6":
-					viewResult = "/views/private/datatableDacilities";
+					final List<TechCatDto> listaTechCatDto = techCatService.getAllTechCat();
+					final List<TechCatDto> listaTechCatDtoActivas = techCatService.getAllTechCatActive();
+
+					if (listaTechCatDto != null && !listaTechCatDto.isEmpty() && listaTechCatDtoActivas != null
+							&& !listaTechCatDtoActivas.isEmpty()) {
+						model.addAttribute("listaTechCatDto", listaTechCatDto);
+						model.addAttribute("listaTechCatDtoActivas", listaTechCatDtoActivas);
+					}
+
+					viewResult = "/views/private/datatableFacilities";
 					break;
 
 				case "7":
-					viewResult = "/views/private/datatableThesis";
+					List<MembersDto> listaMembersDto = membersService.getMembersByActive();
+
+					if (listaMembersDto != null && !listaMembersDto.isEmpty()) {
+						model.addAttribute("listaMembersDto", listaMembersDto);
+						model.addAttribute("publicationsFormDto", new PublicationsFormDto());
+					}
+
+					viewResult = "/views/private/datatablePublications";
 					break;
 
 				case "8":
+					viewResult = "/views/private/datatableThesis";
+					break;
+
+				case "9":
 					viewResult = "/views/private/datatableLinks";
 					break;
 
@@ -103,13 +183,15 @@ public class AdminController {
 
 	}
 
+	// NOTICIAS
+
 	@GetMapping("/getNewsData")
 	@ResponseBody
-	public List<NewsDataTableDto> getNewsData(Model model) throws Exception {
+	public List<NewsDatatableDto> getNewsData(Model model) throws Exception {
 
 		LOGGER.info("AdminController getNewsData .- Inicio");
 
-		List<NewsDataTableDto> listaNewsDataTableDto = null;
+		List<NewsDatatableDto> listaNewsDataTableDto = null;
 
 		try {
 
@@ -128,24 +210,17 @@ public class AdminController {
 
 	@PostMapping("/addNewsData")
 	@ResponseBody
-	public String addNewsData(Model model, @RequestParam Map<String, String> params, @RequestParam("file") MultipartFile imageNews)
-			throws Exception {
+	public void addNewsData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile imageNews) throws Exception {
 
 		LOGGER.info("AdminController addNewsData .- Inicio");
 
 		try {
 
-			if (imageNews != null && !imageNews.isEmpty()) {				
+			if (imageNews != null && !imageNews.isEmpty() && params != null && !params.isEmpty()) {
 
-				AddNewsFormDto addNewsFormDto = new AddNewsFormDto();
-				addNewsFormDto.setTitleNews(params.get("titleNews"));
-				addNewsFormDto.setAbstractNews(params.get("abstractNews"));
-				addNewsFormDto.setContentNews(params.get("contentNews"));
-				addNewsFormDto.setActive(params.get("active"));
-					
-								
-				News n = newsService.addNews(addNewsFormDto, imageNews.getOriginalFilename());
-				
+				News n = newsService.addNews(params, imageNews.getOriginalFilename());
+
 				Path dirImages = Paths.get("src//main//resources//static//images");
 				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
 
@@ -165,8 +240,1116 @@ public class AdminController {
 
 		LOGGER.info("AdminController addNewsData .- Fin");
 
-		return "redirect:/management";
+	}
 
+	@PostMapping("/updateNewsData")
+	@ResponseBody
+	public void updateNewsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				newsService.updateNews(params);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/updateImageNewsData")
+	@ResponseBody
+	public void updateImageNewsData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile imageNews) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (imageNews != null && !imageNews.isEmpty() && params != null && !params.isEmpty()) {
+
+				News n = newsService.updateImageNews(params, imageNews.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = imageNews.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + n.getImageNews());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/deleteNewsData")
+	@ResponseBody
+	public void deleteNewsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController deleteMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				newsService.deleteNews(params);
+
+			} else {
+				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController deleteMembersData .- Fin");
+	}
+
+	// CATEGORÍAS PROFESIONALES
+
+	@GetMapping("/getProCatData")
+	@ResponseBody
+	public List<ProCatDatatableDto> getProCatData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getProCatData .- Inicio");
+
+		List<ProCatDatatableDto> listaProCatDataTableDto = null;
+
+		try {
+
+			listaProCatDataTableDto = proCatService.getAllProCatData();
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController getProCatData .- Error no controlado al recuperar los datos de las categorías profesionales");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getProCatData .- Fin");
+
+		return listaProCatDataTableDto;
+
+	}
+
+	@PostMapping("/addProCatData")
+	@ResponseBody
+	public void addProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addProCatData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				proCatService.addProCat(params);
+
+			} else {
+				LOGGER.error("AdminController addProCatData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController addProCatData .- Error no controlado al dar de alta la categoría profesional");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addProCatData .- Fin");
+
+	}
+
+	@PostMapping("/updateProCatData")
+	@ResponseBody
+	public void updateProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				proCatService.updateProCat(params);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/deleteProCatData")
+	@ResponseBody
+	public void deleteProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController deleteMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				proCatService.deleteProCat(params);
+
+			} else {
+				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController deleteMembersData .- Fin");
+	}
+
+	// CATEGORÍAS TÉCNICAS
+
+	@GetMapping("/getTechCatData")
+	@ResponseBody
+	public List<TechCatDatatableDto> getTechCatData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getTechCatData .- Inicio");
+
+		List<TechCatDatatableDto> listaTechCatDataTableDto = null;
+
+		try {
+
+			listaTechCatDataTableDto = techCatService.getAllTechCatData();
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController getTechCatData .- Error no controlado al recuperar los datos de las categorías técnicas");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getTechCatData .- Fin");
+
+		return listaTechCatDataTableDto;
+
+	}
+
+	@PostMapping("/addTechCatData")
+	@ResponseBody
+	public void addTechCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addTechCatData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				techCatService.addTechCat(params);
+
+			} else {
+				LOGGER.error("AdminController addTechCatData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addTechCatData .- Error no controlado al dar de alta la categoría técnica");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addTechCatData .- Fin");
+
+	}
+
+	@PostMapping("/updateTechCatData")
+	@ResponseBody
+	public void updateTchCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				techCatService.updateTechCat(params);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/deleteTechCatData")
+	@ResponseBody
+	public void deleteTechCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController deleteMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				techCatService.deleteTechCat(params);
+
+			} else {
+				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController deleteMembersData .- Fin");
+	}
+
+	// MIEMBROS
+
+	@GetMapping("/getMembersData")
+	@ResponseBody
+	public List<MembersDatatableDto> getMembersData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getMembersData .- Inicio");
+
+		List<MembersDatatableDto> listaMembersDataTableDto = null;
+
+		try {
+
+			listaMembersDataTableDto = membersService.getAllMembersData();
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController getMembersData .- Error no controlado al recuperar los datos de los miembros");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getMembersData .- Fin");
+
+		return listaMembersDataTableDto;
+
+	}
+
+	@PostMapping("/addMembersData")
+	@ResponseBody
+	public void addMembersData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile photoMember) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (photoMember != null && !photoMember.isEmpty() && params != null && !params.isEmpty()) {
+
+				Member m = membersService.addMembers(params, photoMember.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = photoMember.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + m.getPhotoMember());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el miembro");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+
+	}
+
+	@PostMapping("/updateMembersData")
+	@ResponseBody
+	public void updateMembersData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				Member m = membersService.updateMembers(params);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/updatePhotoMembersData")
+	@ResponseBody
+	public void updatePhotoMembersData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile photoFacility) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (photoFacility != null && !photoFacility.isEmpty() && params != null && !params.isEmpty()) {
+
+				Member m = membersService.updatePhotoMembers(params, photoFacility.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = photoFacility.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + m.getPhotoMember());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/deleteMembersData")
+	@ResponseBody
+	public void deleteMembersData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController deleteMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				membersService.deleteMembers(params);
+
+			} else {
+				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController deleteMembersData .- Fin");
+	}
+
+	// EQUIPOS DE INVESTIGACIÓN
+
+	@GetMapping("/getFacilitiesData")
+	@ResponseBody
+	public List<FacilitiesDatatableDto> getFacilitiesData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getFacilitiesData .- Inicio");
+
+		List<FacilitiesDatatableDto> listaFacilitiesDataTableDto = null;
+
+		try {
+
+			listaFacilitiesDataTableDto = facilitiesService.getAllFacilitiesData();
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController getFacilitiesData .- Error no controlado al recuperar los datos de los equipos");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getFacilitiesData .- Fin");
+
+		return listaFacilitiesDataTableDto;
+
+	}
+
+	@PostMapping("/addFacilitiesData")
+	@ResponseBody
+	public void addFacilitiesData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile photoFacility) throws Exception {
+
+		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+
+		try {
+
+			if (photoFacility != null && !photoFacility.isEmpty() && params != null && !params.isEmpty()) {
+
+				Facility f = facilitiesService.addFacilities(params, photoFacility.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = photoFacility.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + f.getPhotoFacility());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addFacilitiesData .- Fin");
+
+	}
+
+	@PostMapping("/updateFacilitiesData")
+	@ResponseBody
+	public void updateFacilitiesData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				Facility f = facilitiesService.updateFacilities(params);
+
+			} else {
+				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addFacilitiesData .- Fin");
+	}
+
+	@PostMapping("/updatePhotoFacilitiesData")
+	@ResponseBody
+	public void updatePhotoFacilitiesData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile photoFacility) throws Exception {
+
+		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+
+		try {
+
+			if (photoFacility != null && !photoFacility.isEmpty() && params != null && !params.isEmpty()) {
+
+				Facility f = facilitiesService.updatePhotoFacilities(params, photoFacility.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = photoFacility.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + f.getPhotoFacility());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addFacilitiesData .- Fin");
+	}
+
+	@PostMapping("/deleteFacilitiesData")
+	@ResponseBody
+	public void deleteFacilitiesData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				facilitiesService.deleteFacilities(params);
+
+			} else {
+				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addFacilitiesData .- Fin");
+	}
+
+	// PUBLICACIONES
+
+	@GetMapping("/getPublicationsData")
+	@ResponseBody
+	public List<PublicationsDatatableDto> getPublicationsData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getPublicationsData .- Inicio");
+
+		List<PublicationsDatatableDto> listaPublicationsDatatableDto = null;
+
+		try {
+
+			listaPublicationsDatatableDto = publicationsService.getAllPublicationsData();
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController getPublicationsData .- Error no controlado al recuperar los datos de las publicaciones");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getPublicationsData .- Fin");
+
+		return listaPublicationsDatatableDto;
+
+	}
+
+	@PostMapping("/addPublicationsData")
+	public String addPublicationsData(Model model, PublicationsFormDto publicationsFormDto,
+			RedirectAttributes redirectAttributes) throws Exception {
+
+		LOGGER.info("AdminController addPublicationsData .- Inicio");
+
+		try {
+
+			if (publicationsFormDto != null) {
+
+				Publication p = publicationsService.addPublications(publicationsFormDto);
+
+				redirectAttributes.addFlashAttribute("catPublication", true);
+
+			} else {
+				LOGGER.error("AdminController addPublicationsData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addPublicationsData .- Error no controlado al dar de alta la publicación");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addPublicationsData .- Fin");
+
+		return "redirect:/management";
+	}
+
+	@PostMapping("/updatePublicationsData")
+	public String updatePublicationsData(Model model, PublicationsFormDto publicationsFormDto,
+			RedirectAttributes redirectAttributes) throws Exception {
+
+		LOGGER.info("AdminController updatePublicationsData .- Inicio");
+
+		try {
+
+			if (publicationsFormDto != null) {
+
+				Publication p = publicationsService.updatePublications(publicationsFormDto);
+
+				redirectAttributes.addFlashAttribute("catPublication", true);
+			} else {
+				LOGGER.error("AdminController updatePublicationsData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController updatePublicationsData .- Error no controlado al actualizar la publicación");
+			throw e;
+		}
+
+		LOGGER.info("AdminController updatePublicationsData .- Fin");
+
+		return "redirect:/management";
+	}
+
+	@PostMapping("/deletePublicationsData")
+	@ResponseBody
+	public void deletePublicationsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				publicationsService.deletePublications(params);
+
+			} else {
+				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addFacilitiesData .- Fin");
+
+	}
+
+	// PROYECTOS
+
+	@GetMapping("/getProjectsData")
+	@ResponseBody
+	public List<ProjectsDatatableDto> getProjectsData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getProjectsData .- Inicio");
+
+		List<ProjectsDatatableDto> listaProjectsDataTableDto = null;
+
+		try {
+
+			listaProjectsDataTableDto = projectsService.getAllProjectsData();
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController getProjectsData .- Error no controlado al recuperar los datos de los proyectos");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getProjectsData .- Fin");
+
+		return listaProjectsDataTableDto;
+
+	}
+
+	@PostMapping("/addProjectsData")
+	@ResponseBody
+	public void addProjectsData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile imageProjects) throws Exception {
+
+		LOGGER.info("AdminController addProjectsData .- Inicio");
+
+		try {
+
+			if (imageProjects != null && !imageProjects.isEmpty() && params != null && !params.isEmpty()) {
+
+				Project p = projectsService.addProjects(params, imageProjects.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = imageProjects.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + p.getImageProject());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addProjectsData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addProjectsData .- Error no controlado al dar de alta el proyecto");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addProjectsData .- Fin");
+
+	}
+
+	@PostMapping("/updateProjectsData")
+	@ResponseBody
+	public void updateProjectsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				projectsService.updateProjects(params);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/updateImageProjectsData")
+	@ResponseBody
+	public void updateImageProjectsData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile imageProjects) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (imageProjects != null && !imageProjects.isEmpty() && params != null && !params.isEmpty()) {
+
+				Project p = projectsService.updateImageProjects(params, imageProjects.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = imageProjects.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + p.getImageProject());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/deleteProjectsData")
+	@ResponseBody
+	public void deleteProjectsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController deleteMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				projectsService.deleteProjects(params);
+
+			} else {
+				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController deleteMembersData .- Fin");
+	}
+
+	// TESIS
+
+	@GetMapping("/getThesisData")
+	@ResponseBody
+	public List<ThesisDatatableDto> getThesisData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getThesisData .- Inicio");
+
+		List<ThesisDatatableDto> listaThesisDataTableDto = null;
+
+		try {
+
+			listaThesisDataTableDto = thesisService.getAllThesisData();
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getThesisData .- Error no controlado al recuperar los datos de las tesis");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getThesisData .- Fin");
+
+		return listaThesisDataTableDto;
+
+	}
+
+	@PostMapping("/addThesisData")
+	@ResponseBody
+	public void addThesisData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile coverPageThesis) throws Exception {
+
+		LOGGER.info("AdminController addThesisData .- Inicio");
+
+		try {
+
+			if (coverPageThesis != null && !coverPageThesis.isEmpty() && params != null && !params.isEmpty()) {
+
+				Thesis t = thesisService.addThesis(params, coverPageThesis.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = coverPageThesis.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + t.getCoverPageThesis());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addThesisData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addThesisData .- Error no controlado al dar de alta la tesis");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addThesisData .- Fin");
+
+	}
+
+	@PostMapping("/updateThesisData")
+	@ResponseBody
+	public void updateThesisData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				thesisService.updateThesis(params);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/updateCoverPageThesisData")
+	@ResponseBody
+	public void updateCoverPageThesisData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile coverPageThesis) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (coverPageThesis != null && !coverPageThesis.isEmpty() && params != null && !params.isEmpty()) {
+
+				Thesis t = thesisService.updateCoverPageThesis(params, coverPageThesis.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = coverPageThesis.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + t.getCoverPageThesis());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/deleteThesisData")
+	@ResponseBody
+	public void deleteThesisData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController deleteMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				thesisService.deleteThesis(params);
+
+			} else {
+				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController deleteMembersData .- Fin");
+	}
+
+	// LINKS
+
+	@GetMapping("/getLinksData")
+	@ResponseBody
+	public List<LinksDatatableDto> getLinksData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getLinksData .- Inicio");
+
+		List<LinksDatatableDto> listaLinksDataTableDto = null;
+
+		try {
+
+			listaLinksDataTableDto = linksService.getAllLinksData();
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getLinksData .- Error no controlado al recuperar los datos de los links");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getLinksData .- Fin");
+
+		return listaLinksDataTableDto;
+
+	}
+
+	@PostMapping("/addLinksData")
+	@ResponseBody
+	public void addLinksData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile imageLinks) throws Exception {
+
+		LOGGER.info("AdminController addLinksData .- Inicio");
+
+		try {
+
+			if (imageLinks != null && !imageLinks.isEmpty() && params != null && !params.isEmpty()) {
+
+				Link l = linksService.addLinks(params, imageLinks.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = imageLinks.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + l.getImageLink());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addLinksData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addLinksData .- Error no controlado al dar de alta el link");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addLinksData .- Fin");
+
+	}
+
+	@PostMapping("/updateLinksData")
+	@ResponseBody
+	public void updateLinksData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				linksService.updateLinks(params);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/updateImageLinksData")
+	@ResponseBody
+	public void updateImageLinksData(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile imageLinks) throws Exception {
+
+		LOGGER.info("AdminController addMembersData .- Inicio");
+
+		try {
+
+			if (imageLinks != null && !imageLinks.isEmpty() && params != null && !params.isEmpty()) {
+
+				Link l = linksService.updateImageLinks(params, imageLinks.getOriginalFilename());
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = imageLinks.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + l.getImageLink());
+				Files.write(rutaCompleta, bytesImg);
+
+			} else {
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addMembersData .- Fin");
+	}
+
+	@PostMapping("/deleteLinksData")
+	@ResponseBody
+	public void deleteLinksData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController deleteMembersData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+
+				linksService.deleteLinks(params);
+
+			} else {
+				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			throw e;
+		}
+
+		LOGGER.info("AdminController deleteMembersData .- Fin");
 	}
 
 }

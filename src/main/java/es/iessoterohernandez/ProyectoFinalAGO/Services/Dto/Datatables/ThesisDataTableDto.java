@@ -2,7 +2,7 @@ package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables;
 
 import java.util.Date;
 
-public class ThesisDataTableDto {
+public class ThesisDatatableDto {
 
 	private String idThesis;
 
@@ -19,6 +19,12 @@ public class ThesisDataTableDto {
 	private String coDirectorThesis;
 
 	private String urlThesis;
+	
+	private String active;
+
+	private String admin;
+
+	private String date;
 
 	public String getIdThesis() {
 		return idThesis;
@@ -83,5 +89,31 @@ public class ThesisDataTableDto {
 	public void setUrlThesis(String urlThesis) {
 		this.urlThesis = urlThesis;
 	}
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
+	}
+
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
+	
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Link;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
@@ -25,5 +26,14 @@ public interface LinkDaoI extends JpaRepository<Link, Long> {
 	 * @return List<Link>
 	 */
 	public List<Link> findByActive(Boolean activo);
+	
+	/**
+	 * Recupera los links por su Id
+	 * 
+	 * @param techCat
+	 * @param activo
+	 * @return List<Facility>
+	 */
+	public Link findByIdLink(Long Id);
 
 }

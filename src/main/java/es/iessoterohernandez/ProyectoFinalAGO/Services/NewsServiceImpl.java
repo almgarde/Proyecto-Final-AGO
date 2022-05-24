@@ -3,6 +3,7 @@ package es.iessoterohernandez.ProyectoFinalAGO.Services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,8 +14,7 @@ import org.springframework.stereotype.Service;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.NewsDaoI;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.NewsDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.NewsDataTableDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.AddNewsFormDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.NewsDatatableDto;
 
 /**
  * Servicios. Entidad: Noticias
@@ -114,11 +114,11 @@ public class NewsServiceImpl implements NewsServiceI {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<NewsDataTableDto> getAllNewsData() throws Exception {
+	public List<NewsDatatableDto> getAllNewsData() throws Exception {
 
 		LOGGER.info("NewsServiceImpl getAllNewsData .- Inicio");
 
-		List<NewsDataTableDto> listaNewsDataTableDto = new ArrayList<NewsDataTableDto>();
+		List<NewsDatatableDto> listaNewsDatatableDto = new ArrayList<NewsDatatableDto>();
 
 		try {
 			List<News> listNews = newsDao.findAll();
@@ -126,21 +126,21 @@ public class NewsServiceImpl implements NewsServiceI {
 			if (listNews != null && !listNews.isEmpty()) {
 
 				for (News n : listNews) {
-					NewsDataTableDto newsDataTableDto = new NewsDataTableDto();
-					newsDataTableDto.setIdNews(String.valueOf(n.getIdNews()));
-					newsDataTableDto.setTitleNews(n.getTitleNews());
-					newsDataTableDto.setAbstractNews(n.getAbstractNews());
-					newsDataTableDto.setContentNews(n.getContentNews());
-					newsDataTableDto.setImageNews(n.getImageNews());
+					NewsDatatableDto newsDatatableDto = new NewsDatatableDto();
+					newsDatatableDto.setIdNews(String.valueOf(n.getIdNews()));
+					newsDatatableDto.setTitleNews(n.getTitleNews());
+					newsDatatableDto.setAbstractNews(n.getAbstractNews());
+					newsDatatableDto.setContentNews(n.getContentNews());
+					newsDatatableDto.setImageNews(n.getImageNews());
 					if (n.getActive()) {
-						newsDataTableDto.setActive("true");
+						newsDatatableDto.setActive("true");
 					} else {
-						newsDataTableDto.setActive("false");
+						newsDatatableDto.setActive("false");
 					}
 
-					newsDataTableDto.setAdmin(n.getUpdateAdmin());
-					newsDataTableDto.setDate(String.format("%1$td-%1$tm-%1$tY", n.getUpdateDate()));
-					listaNewsDataTableDto.add(newsDataTableDto);
+					newsDatatableDto.setAdmin(n.getUpdateAdmin());
+					newsDatatableDto.setDate(String.format("%1$td/%1$tm/%1$tY", n.getUpdateDate()));
+					listaNewsDatatableDto.add(newsDatatableDto);
 				}
 
 			} else {
@@ -153,7 +153,7 @@ public class NewsServiceImpl implements NewsServiceI {
 
 		LOGGER.info("NewsServiceImpl getAllNewsData .- Fin");
 
-		return listaNewsDataTableDto;
+		return listaNewsDatatableDto;
 
 	}
 
@@ -165,21 +165,21 @@ public class NewsServiceImpl implements NewsServiceI {
 	 */
 	@Override
 
-	public News addNews(AddNewsFormDto addNewsFormDto, String imageNews) throws Exception {
+	public News addNews(Map<String, String> newsData , String imageNews) throws Exception {
 
 		LOGGER.info("NewsServiceImpl addNews .- Inicio");
 		
-		News newsUpdated = null;
+		News newsSaved2 = null;
 
 		try {
-			if (addNewsFormDto != null && !StringUtils.isEmpty(imageNews)) {
+			if (newsData != null && !newsData.isEmpty() && !StringUtils.isEmpty(imageNews)) {
 
 				News n = new News();
 
-				n.setTitleNews(addNewsFormDto.getTitleNews());
-				n.setAbstractNews(addNewsFormDto.getAbstractNews());
-				n.setContentNews(addNewsFormDto.getContentNews());
-				if (addNewsFormDto.getActive() == "1") {
+				n.setTitleNews(newsData.get("titleNews"));
+				n.setAbstractNews(newsData.get("abstractNews"));
+				n.setContentNews(newsData.get("contentNews"));
+				if (Integer.parseInt(newsData.get("active")) == 1) {
 					n.setActive(true);
 				} else {
 					n.setActive(false);
@@ -190,8 +190,8 @@ public class NewsServiceImpl implements NewsServiceI {
 				n.setUpdateDate(new Date());
 				
 				News newsSaved = newsDao.save(n);
-				newsSaved.setImageNews(newsSaved.getIdNews() + imageNews);
-				newsUpdated = newsDao.save(n);
+				n.setImageNews(newsSaved.getIdNews() + imageNews);
+				newsSaved2 = newsDao.save(n);
 
 				
 				LOGGER.info("NewsServiceImpl addNews .- Noticia almacenada correctamente");
@@ -206,9 +206,137 @@ public class NewsServiceImpl implements NewsServiceI {
 
 		LOGGER.info("NewsServiceImpl addNews .- Fin");
 		
+		return newsSaved2;
+
+	}
+	
+	/**
+	 * Almacena una noticia en BDD
+	 * 
+	 * @param addNewsFormDto
+	 * @param imageNews
+	 */
+	@Override
+	public News updateNews(Map<String, String> newsData) throws Exception {
+
+		LOGGER.info("NewsServiceImpl updateNews .- Inicio");
+
+		News newsUpdated = null;
+
+		try {
+			if (newsData != null && !newsData.isEmpty() ) {
+
+				News n = newsDao
+						.findByIdNews(Long.parseLong(newsData.get("idNews")));
+
+				if (n != null) {
+					
+					n.setTitleNews(newsData.get("titleNews"));
+					n.setAbstractNews(newsData.get("abstractNews"));
+					n.setContentNews(newsData.get("contentNews"));
+					if (Integer.parseInt(newsData.get("active")) == 1) {
+						n.setActive(true);
+					} else {
+						n.setActive(false);
+					}
+
+					n.setUpdateAdmin("agadelao");
+					n.setUpdateDate(new Date());
+
+					newsUpdated = newsDao.save(n);
+				} else {
+					LOGGER.error("NewsServiceImpl updateNews .- Equipo no encontrado");
+				}
+				LOGGER.info("NewsServiceImpl updateNews .- Equipo actualizado correctamente");
+
+			} else {
+				LOGGER.error("NewsServiceImpl updateNews .- Error: Parámetros nulos");
+			}
+		} catch (Exception e) {
+			LOGGER.error("NewsServiceImpl updateNews .- Error no controlado al actualizar la publicación");
+			throw e;
+		}
+
+		LOGGER.info("NewsServiceImpl updateNews .- Fin");
+
 		return newsUpdated;
 
 	}
+	
+	/**
+	 * Almacena una noticia en BDD
+	 * 
+	 * @param addNewsFormDto
+	 * @param imageNews
+	 */
+	@Override
+	public News updateImageNews(Map<String, String> newsData, String imageNews) throws Exception {
+
+		LOGGER.info("NewsServiceImpl updateNews .- Inicio");
+
+		News newsImageUpdated = null;
+
+		try {
+			if (newsData != null && !newsData.isEmpty() && imageNews != null) {
+
+				News n = newsDao
+						.findByIdNews(Long.parseLong(newsData.get("idNews")));
+
+				if (n != null) {
+
+					n.setImageNews(n.getIdNews() + imageNews);
+					newsImageUpdated = newsDao.save(n);
+				} else {
+					LOGGER.error("NewsServiceImpl updateNews .- Equipo no encontrado");
+				}
+				LOGGER.info("NewsServiceImpl updateNews .- Equipo actualizado correctamente");
+
+			} else {
+				LOGGER.error("NewsServiceImpl updateNews .- Error: Parámetros nulos");
+			}
+		} catch (Exception e) {
+			LOGGER.error("NewsServiceImpl updateNews .- Error no controlado al actualizar la publicación");
+			throw e;
+		}
+
+		LOGGER.info("NewsServiceImpl updateNews .- Fin");
+
+		return newsImageUpdated;
+
+	}
+	
+	@Override
+	public void deleteNews(Map<String, String> newsData) throws Exception {
+
+		LOGGER.info("PublicationsServiceImpl deletePublications .- Inicio");
+
+
+		try {
+			if (newsData != null && !newsData.isEmpty()) {
+
+				News n = newsDao
+						.findByIdNews(Long.parseLong(newsData.get("idNews")));
+
+				if (n != null) {
+
+					newsDao.delete(n);
+
+				}
+				LOGGER.info("PublicationsServiceImpl deletePublications .- Publicación eliminada correctamente");
+
+			} else {
+				LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros nulos");
+			}
+		} catch (Exception e) {
+			LOGGER.error("PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
+			throw e;
+		}
+
+		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
+
+
+	}
+
 
 	
 

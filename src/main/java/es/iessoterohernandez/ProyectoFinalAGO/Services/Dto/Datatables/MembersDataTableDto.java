@@ -1,8 +1,8 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatDto;
 
-public class MembersDataTableDto {
+public class MembersDatatableDto {
 
 	private String idMember;
 
@@ -16,7 +16,11 @@ public class MembersDataTableDto {
 
 	private int phoneMember;
 
+	private String activeProCat;
+
 	private String nameProCat;
+
+	private String idProCat;
 
 	private String photoMember;
 
@@ -27,6 +31,12 @@ public class MembersDataTableDto {
 	private String orcIdMember;
 
 	private String trajectoryMember;
+
+	private String active;
+
+	private String admin;
+
+	private String date;
 
 	public String getIdMember() {
 		return idMember;
@@ -76,12 +86,28 @@ public class MembersDataTableDto {
 		this.phoneMember = phoneMember;
 	}
 
+	public String getActiveProCat() {
+		return activeProCat;
+	}
+
+	public void setActiveProCat(String activeProCat) {
+		this.activeProCat = activeProCat;
+	}
+
 	public String getNameProCat() {
 		return nameProCat;
 	}
 
 	public void setNameProCat(String nameProCat) {
 		this.nameProCat = nameProCat;
+	}
+
+	public String getIdProCat() {
+		return idProCat;
+	}
+
+	public void setIdProCat(String idProCat) {
+		this.idProCat = idProCat;
 	}
 
 	public String getPhotoMember() {
@@ -122,6 +148,30 @@ public class MembersDataTableDto {
 
 	public void setTrajectoryMember(String trajectoryMember) {
 		this.trajectoryMember = trajectoryMember;
+	}
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
+	}
+
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

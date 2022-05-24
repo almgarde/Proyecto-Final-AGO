@@ -1,13 +1,22 @@
-<table id="proCatDatatable" class="table">
+<div>
+	<button type="button" id="formAddProCatBtn" class="btn btn-secondary">
+		<a href="javascript: mostrarModalAddProCat();">Añadir nueva
+			categoría profesional</a>
+	</button>
+	<button type="button" class="btn btn-warning">Generar Excel</button>
+</div>
+
+<!-- DATATABLE -->
+
+<table id="proCatDatatable" class="table datatableAdmin" style="text-align: center;">
 	<thead>
 		<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Titulo</th>
-			<th scope="col">Imagen</th>
-			<th scope="col">Abstract</th>
-			<th scope="col">Contenido</th>
-			<th scope="col">Activo</th>
-			<th scope="col">Acciones</th>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col" style="max-width: 300px;">Categoría profesional</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri" scope="col">Fecha</th>
+			<th class="atri selectActive" scope="col">Activo</th>
+			<th scope="col"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -15,14 +24,144 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Titulo</th>
-			<th scope="col">Imagen</th>
-			<th scope="col">Abstract</th>
-			<th scope="col">Contenido</th>
-			<th scope="col">Activo</th>
-			<th scope="col">Acciones</th>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col" style="max-width: 300px;">Categoría profesional</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri" scope="col">Fecha</th>
+			<th class="atri selectActive" scope="col">Activo</th>
+			<th scope="col"></th>
 		</tr>
 	</tfoot>
 
 </table>
+<input class="selectedCat" type="hidden" value="2">
+
+
+<!-- MODAL - AÑADIR CATEGORÍA PROFESIONAL -->
+
+<div class="modal" tabindex="-1" id="modalAddProCat">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalAddProCat" class="modal-title">Añadir nueva
+					categoría profesional</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			
+			<div class="modal-body">
+
+				<form id="formAddProCat" class="row g-3 needs-validation">
+
+					<!-- NOMBRE -->
+
+					<div class="form-group has-validation">
+						<label for="nameProCat" class="form-label">Categoría
+							profesional</label> <input autocomplete="off" type="text"
+							class="form-control" id="nameProCat" name="nameProCat" required>
+						<div class="invalid-feedback">Please choose a username.</div>
+					</div>
+
+					<!-- ACTIVO -->
+					<div class="form-group">
+						<label for="active" class="form-label">Activo</label> <select
+							class="form-select" id="active"
+							aria-label="Floating label select example" required>
+							<option value="1">Si</option>
+							<option value="0">No</option>
+						</select>
+					</div>
+			</form>
+
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarAddProCat">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarAddProCat">Cancelar</button>
+
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - EDITAR CATEGORÍA PROFESIONAL -->
+
+<div class="modal" tabindex="-1" id="modalUpdateProCat">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdateProCat" class="modal-title">Editar
+					categoría profesional</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			
+			<div class="modal-body">
+<form id="formUpdateProCat" class="row g-3 needs-validation" >
+
+				<!-- NOMBRE -->
+
+				<div class="form-group has-validation">
+					<label for="nameProCatEdit">Categoría profesional</label>
+					<input autocomplete="off" type="text"
+							 class="form-control" id="nameProCatEdit"
+							name="nameProCat"><div class="invalid-feedback" required>Please choose a username.</div>
+					
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+				<div class="form-group">
+					<label for="activeEdit">Activo</label> <select class="form-select"
+						id="activeEdit" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+				<input
+						type="hidden" id="idProCatUpdate"> </br>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdateProCat">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdateProCat">Cancelar</button>
+
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- MODAL - ELIMINAR PROCAT -->
+
+	<div class="modal" tabindex="-1" id="modalDeleteProCat">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="headerModalDeleteProCat" class="modal-title">Eliminar
+						Categoría profesional</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<label>¿Estás seguro de querer eliminar esta categoría profesional?</label> <input
+						type="hidden" id="idProCatDelete"> </br>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnAceptarDeleteProCat">Aceptar</button>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnCancelarDeleteProCat">Cancelar</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>

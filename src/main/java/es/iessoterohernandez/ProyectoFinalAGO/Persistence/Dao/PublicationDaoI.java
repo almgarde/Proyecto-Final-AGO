@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Publication;
 
 /**
@@ -42,6 +43,15 @@ public interface PublicationDaoI extends JpaRepository<Publication, Long>, Custo
 	 * @return List<Publication>
 	 */
 	public List<Publication> findByYearPublicationAndActive(int year, Boolean activo);
+	
+	/**
+	 * Recupera una publicación por su Id
+	 * 
+	 * @param techCat
+	 * @param activo
+	 * @return List<Facility>
+	 */
+	public Publication findByIdPublication(Long Id);
 	
 
 	

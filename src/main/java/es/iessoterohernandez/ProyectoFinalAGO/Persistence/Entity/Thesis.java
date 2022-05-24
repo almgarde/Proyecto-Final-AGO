@@ -87,7 +87,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 	}
 	@Column(name = "DATE_DEFENSE_THESIS", nullable = false)
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 
 	public Date getDateDefenseThesis() {
 		return dateDefenseThesis;

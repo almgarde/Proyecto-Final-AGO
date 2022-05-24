@@ -1,0 +1,261 @@
+<div>
+	<button type="button" id="formAddProjectsBtn" class="btn btn-secondary">
+		<a href="javascript: mostrarModalAddProjects();">Añadir nuevo proyecto</a>
+	</button>
+	<button type="button" class="btn btn-warning">Generar Excel</button>
+</div>
+
+<!-- DATATABLE -->
+
+<table id="projectsDatatable" class="table datatableAdmin" style="text-align: center;">
+	<thead>
+		<tr>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
+			<th class="atri" scope="col">Imagen</th>
+			<th class="atri" scope="col">Descripción</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri" scope="col">Fecha</th>
+			<th class="atri selectActive" scope="col">Activo</th>
+			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+
+	</tbody>
+	<tfoot>
+		<tr>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
+			<th class="atri" scope="col">Imagen</th>
+			<th class="atri" scope="col">Descripción</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri" scope="col">Fecha</th>
+			<th class="atri selectActive" scope="col">Activo</th>
+			<th scope="col"></th>
+		</tr>
+	</tfoot>
+
+</table>
+<input class="selectedCat" type="hidden" value="4">
+
+
+<!-- MODAL - IMAGEN -->
+
+<div class="modal" tabindex="-1" id="modalImageProject">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<img id="bodyModalImageProject"></img>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - DESCRIPCIÓN -->
+
+<div class="modal" tabindex="-1" id="modalDescriptionProject">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalDescriptionProject" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p id="bodyModalDescriptionProject"></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - AÑADIR PROYECTO -->
+
+<div class="modal" tabindex="-1" id="modalAddProjects">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalAddProjects" class="modal-title">Añadir nuevo proyecto</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<!-- TÍTULO -->
+
+				<div class="form-group">
+					<label for="titleProjects">Título</label>
+					<textarea class="form-control" id="titleProjects" style="height: 100px"></textarea>
+					</br>
+				</div>
+				
+				
+				<!-- IMAGEN -->
+
+				<div class="form-group">
+					<label for="imageProjects">Imagen</label> <input type="file"
+						name="file" class="form-control form-control-sm" id="imageProjects">
+					</br>
+				</div>
+				
+				
+				<!-- CONTENIDO -->
+
+				<div class="form-group">
+					<label for="descProjects">Descripción</label>
+					<textarea class="form-control" id="descProjects"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+				<div class="form-group">
+					<label for="active">Activo</label> <select class="form-select"
+						id="active" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+				
+				</br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarAddProjects">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarAddProjects">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - EDITAR PROYECTO -->
+
+<div class="modal" tabindex="-1" id="modalUpdateProjects">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdateProjects" class="modal-title">Editar proyecto</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<!-- TÍTULO -->
+
+				<div class="form-group">
+					<label for="titleProjectsEdit">Título</label>
+					<textarea class="form-control" id="titleProjectsEdit" style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- CONTENIDO -->
+
+				<div class="form-group">
+					<label for="descProjectsEdit">Descripción</label>
+					<textarea class="form-control" id="descProjectsEdit"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+				<div class="form-group">
+					<label for="activeEdit">Activo</label> <select class="form-select"
+						id="activeEdit" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+				<input
+						type="hidden" id="idProjectUpdate"> </br>
+				</br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdateProjects">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdateProjects">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - EDITAR FOTO PROYECTO -->
+
+<div class="modal" tabindex="-1" id="modalUpdatePhotoProjects">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdatePhotoProjects" class="modal-title">Editar
+					foto de proyecto</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+
+				<!-- IMAGEN -->
+
+				<div class="form-group">
+					<label for="imageProjectsEdit">Imagen</label> <input type="file"
+						name="file" class="form-control form-control-sm"
+						id="imageProjectsEdit"> </br>
+				</div>
+
+
+
+				<input type="hidden" id="idProjectUpdatePhoto"> </br> </br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdatePhotoProjects">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdatePhotoProjects">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- MODAL - ELIMINAR PROYECTO -->
+
+	<div class="modal" tabindex="-1" id="modalDeleteProjects">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="headerModalDeleteProjects" class="modal-title">Eliminar
+						proyecto</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<label>¿Estás seguro de querer eliminar este proyecto?</label> <input
+						type="hidden" id="idProjectsDelete"> </br>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnAceptarDeleteProjects">Aceptar</button>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnCancelarDeleteProjects">Cancelar</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>

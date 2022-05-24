@@ -3,6 +3,7 @@ package es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Thesis;
 
 /**
@@ -13,5 +14,14 @@ import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Thesis;
  */
 @Repository
 public interface ThesisDaoI extends JpaRepository<Thesis, Long> {
+	
+	/**
+	 * Recupera las tesis por su Id
+	 * 
+	 * @param techCat
+	 * @param activo
+	 * @return List<Facility>
+	 */
+	public Thesis findByIdThesis(Long Id);
 
 }

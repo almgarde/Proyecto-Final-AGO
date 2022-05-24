@@ -12,7 +12,7 @@ public class FacilitiesDto {
 
 	private String idTechCat;
 
-	private String imageFacilitie;
+	private String photoFacilitie;
 
 	private String featuresFacilitie;
 
@@ -32,12 +32,12 @@ public class FacilitiesDto {
 		this.idTechCat = idTechCat;
 	}
 
-	public String getImageFacilitie() {
-		return imageFacilitie;
+	public String getPhotoFacilitie() {
+		return photoFacilitie;
 	}
 
-	public void setImageFacilitie(String imageFacilitie) {
-		this.imageFacilitie = imageFacilitie;
+	public void setPhotoFacilitie(String photoFacilitie) {
+		this.photoFacilitie = photoFacilitie;
 	}
 
 	public String getFeaturesFacilitie() {

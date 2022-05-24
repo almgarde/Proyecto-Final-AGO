@@ -1,0 +1,242 @@
+<div>
+	<button type="button" id="formAddLinksBtn" class="btn btn-secondary">
+		<a href="javascript: mostrarModalAddLinks();">Añadir nuevo link</a>
+	</button>
+	<button type="button" class="btn btn-warning">Generar Excel</button>
+</div>
+
+<!-- DATATABLE -->
+
+<table id="linksDatatable" class="table datatableAdmin" style="text-align: center;">
+	<thead>
+		<tr>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
+			<th class="atri" scope="col">Imagen</th>
+			<th class="atri" scope="col">URL</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri" scope="col">Fecha</th>
+			<th class="atri selectActive" scope="col">Activo</th>
+			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+
+	</tbody>
+	<tfoot>
+		<tr>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
+			<th class="atri" scope="col">Imagen</th>
+			<th class="atri" scope="col">URL</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri" scope="col">Fecha</th>
+			<th class="atri selectActive" scope="col">Activo</th>
+			<th scope="col"></th>
+		</tr>
+	</tfoot>
+
+</table>
+<input class="selectedCat" type="hidden" value="9">
+
+
+<!-- MODAL - IMAGEN -->
+
+<div class="modal" tabindex="-1" id="modalImageLinks">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<img id="bodyModalImageLinks"></img>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- MODAL - AÑADIR LINK -->
+
+<div class="modal" tabindex="-1" id="modalAddLinks">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalAddLinks" class="modal-title">Añadir nuevo link</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<!-- TÍTULO -->
+
+				<div class="form-group">
+					<label for="titleLinks">Título</label>
+					<textarea class="form-control" id="titleLinks" style="height: 100px"></textarea>
+					</br>
+				</div>
+				
+				
+				<!-- IMAGEN -->
+
+				<div class="form-group">
+					<label for="imageLinks">Imagen</label> <input type="file"
+						name="file" class="form-control form-control-sm" id="imageLinks">
+					</br>
+				</div>
+				
+				
+				<!-- URL -->
+
+				<div class="form-group">
+					<label for="urlLinks">URL</label>
+					<textarea class="form-control" id="urlLinks"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+				<div class="form-group">
+					<label for="active">Activo</label> <select class="form-select"
+						id="active" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+				
+				</br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarAddLinks">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarAddLinks">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - EDITAR LINK -->
+
+<div class="modal" tabindex="-1" id="modalUpdateLinks">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdateLinks" class="modal-title">Editar link</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<!-- TÍTULO -->
+
+				<div class="form-group">
+					<label for="titleLinksEdit">Título</label>
+					<textarea class="form-control" id="titleLinksEdit" style="height: 100px"></textarea>
+					</br>
+				</div>
+				
+				
+				<!-- URL -->
+
+				<div class="form-group">
+					<label for="urlLinksEdit">URL</label>
+					<textarea class="form-control" id="urlLinksEdit"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+				<div class="form-group">
+					<label for="activeEdit">Activo</label> <select class="form-select"
+						id="activeEdit" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+				<input
+						type="hidden" id="idLinksUpdate"> </br>
+				</br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdateLinks">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdateLinks">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - EDITAR FOTO LINK -->
+
+<div class="modal" tabindex="-1" id="modalUpdatePhotoLinks">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdatePhotoLinks" class="modal-title">Editar link</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				
+				
+				<!-- IMAGEN -->
+
+				<div class="form-group">
+					<label for="imageLinksEdit">Imagen</label> <input type="file"
+						name="file" class="form-control form-control-sm" id="imageLinksEdit">
+					</br>
+				</div>
+				
+
+				<input
+						type="hidden" id="idLinksUpdatePhoto"> </br>
+				</br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdatePhotoLinks">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdatePhotoLinks">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- MODAL - ELIMINAR LINKS -->
+
+	<div class="modal" tabindex="-1" id="modalDeleteLinks">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="headerModalDeleteLinks" class="modal-title">Eliminar
+						link</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<label>¿Estás seguro de querer eliminar este link?</label> <input
+						type="hidden" id="idLinksDelete"> </br>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnAceptarDeleteLinks">Aceptar</button>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnCancelarDeleteLinks">Cancelar</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>

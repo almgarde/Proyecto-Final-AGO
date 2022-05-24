@@ -1,22 +1,16 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Entidad: Publicaciones. Tabla: PUBLICATIONS
@@ -37,7 +31,7 @@ public class Publication extends AbstractEntity implements Serializable {
 	private String titlePublication;
 
 	/** Autores */
-	private List<String> authorsPublication;
+	private List<AuthorsPublication> authorsPublication;
 
 	/** Revista */
 	private String journalPublication;
@@ -68,17 +62,16 @@ public class Publication extends AbstractEntity implements Serializable {
 		this.titlePublication = titlePublication;
 	}
 
-	@ElementCollection
-	@CollectionTable(name = "AUTHORS_PUBLICATIONS", joinColumns = @JoinColumn(name = "idPublication"))
-	@Column(name = "AUTHOR_PUBLICATION", nullable = false)
-	public List<String> getAuthorsPublication() {
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idPublication")
+	public List<AuthorsPublication> getAuthorsPublication() {
 		return authorsPublication;
 	}
 
-	public void setAuthorsPublication(List<String> authorsPublication) {
+	public void setAuthorsPublication(List<AuthorsPublication> authorsPublication) {
 		this.authorsPublication = authorsPublication;
 	}
 
+	
 	@Column(name = "JOURNAL_PUBLICATION", nullable = false)
 	public String getJournalPublication() {
 		return journalPublication;

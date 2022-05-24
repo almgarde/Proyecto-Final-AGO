@@ -2,24 +2,27 @@ package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables;
 
 import java.util.List;
 
-public class PublicationsDataTableDto {
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.AuthorDto;
+
+public class PublicationsDatatableDto {
 
 	private String idPublication;
 
-	/** Título */
 	private String titlePublication;
 
-	/** Autores */
-	private List<String> authorsPublication;
+	private List<AuthorDto> authorsPublication;
 
-	/** Revista */
 	private String journalPublication;
 
-	/** DOI */
 	private String doiPublication;
 
-	/** Año de publicación */
 	private String yearPublication;
+
+	private String active;
+
+	private String admin;
+
+	private String date;
 
 	public String getIdPublication() {
 		return idPublication;
@@ -37,11 +40,11 @@ public class PublicationsDataTableDto {
 		this.titlePublication = titlePublication;
 	}
 
-	public List<String> getAuthorsPublication() {
+	public List<AuthorDto> getAuthorsPublication() {
 		return authorsPublication;
 	}
 
-	public void setAuthorsPublication(List<String> authorsPublication) {
+	public void setAuthorsPublication(List<AuthorDto> authorsPublication) {
 		this.authorsPublication = authorsPublication;
 	}
 
@@ -67,6 +70,30 @@ public class PublicationsDataTableDto {
 
 	public void setYearPublication(String yearPublication) {
 		this.yearPublication = yearPublication;
+	}
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
+	}
+
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

@@ -1,11 +1,12 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services;
 
 import java.util.List;
+import java.util.Map;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.NewsDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.NewsDataTableDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.AddNewsFormDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.NewsDatatableDto;
 
 /**
  * Interfaz de Servicios. Entidad: Noticias
@@ -35,7 +36,7 @@ public interface NewsServiceI {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<NewsDataTableDto> getAllNewsData() throws Exception;
+	public List<NewsDatatableDto> getAllNewsData() throws Exception;
 	
 	/**
 	 * Almacena una noticia en BDD
@@ -43,6 +44,12 @@ public interface NewsServiceI {
 	 * @param addNewsFormDto
 	 * @param imageNews
 	 */
-	public News addNews(AddNewsFormDto addNewsFormDto, String imageNews) throws Exception;
+	public News addNews(Map<String, String> newsData, String imageNews) throws Exception;
+	
+	public News updateNews(Map<String, String> newsData) throws Exception;
+
+	public News updateImageNews(Map<String, String> newsData, String photoNews) throws Exception;
+	
+	public void deleteNews(Map<String, String> newsData) throws Exception;
 
 }

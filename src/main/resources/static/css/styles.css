@@ -3,3 +3,9 @@ body {
 	background-color: LightGray;
 }
 
+
+table.DataTable.datatableAdmin {
+  width: auto;
+}
+
+

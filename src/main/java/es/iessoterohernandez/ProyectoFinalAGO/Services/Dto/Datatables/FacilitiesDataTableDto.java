@@ -1,57 +1,105 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.TechnicalCategory;
+public class FacilitiesDatatableDto {
 
-public class FacilitiesDataTableDto {
+	private String idFacility;
 
-	private String idFacilitie;
+	private String nameFacility;
 
-	private String nameFacilitie;
+	private String idTechCat;
 
-	private TechnicalCategory idTechCat;
+	private String nameTechCat;
 
-	private String imageFacilitie;
+	private String activeTechCat;
 
-	private String featuresFacilitie;
+	private String photoFacility;
 
-	public String getIdFacilitie() {
-		return idFacilitie;
+	private String featuresFacility;
+
+	private String active;
+
+	private String admin;
+
+	private String date;
+
+	public String getIdFacility() {
+		return idFacility;
 	}
 
-	public void setIdFacilitie(String idFacilitie) {
-		this.idFacilitie = idFacilitie;
+	public void setIdFacility(String idFacility) {
+		this.idFacility = idFacility;
 	}
 
-	public String getNameFacilitie() {
-		return nameFacilitie;
+	public String getNameFacility() {
+		return nameFacility;
 	}
 
-	public void setNameFacilitie(String nameFacilitie) {
-		this.nameFacilitie = nameFacilitie;
+	public void setNameFacility(String nameFacility) {
+		this.nameFacility = nameFacility;
 	}
 
-	public TechnicalCategory getIdTechCat() {
+	public String getIdTechCat() {
 		return idTechCat;
 	}
 
-	public void setIdTechCat(TechnicalCategory idTechCat) {
+	public void setIdTechCat(String idTechCat) {
 		this.idTechCat = idTechCat;
 	}
 
-	public String getImageFacilitie() {
-		return imageFacilitie;
+	public String getNameTechCat() {
+		return nameTechCat;
 	}
 
-	public void setImageFacilitie(String imageFacilitie) {
-		this.imageFacilitie = imageFacilitie;
+	public void setNameTechCat(String nameTechCat) {
+		this.nameTechCat = nameTechCat;
 	}
 
-	public String getFeaturesFacilitie() {
-		return featuresFacilitie;
+	public String getActiveTechCat() {
+		return activeTechCat;
 	}
 
-	public void setFeaturesFacilitie(String featuresFacilitie) {
-		this.featuresFacilitie = featuresFacilitie;
+	public void setActiveTechCat(String activeTechCat) {
+		this.activeTechCat = activeTechCat;
+	}
+
+	public String getPhotoFacility() {
+		return photoFacility;
+	}
+
+	public void setPhotoFacility(String photoFacility) {
+		this.photoFacility = photoFacility;
+	}
+
+	public String getFeaturesFacility() {
+		return featuresFacility;
+	}
+
+	public void setFeaturesFacility(String featuresFacility) {
+		this.featuresFacility = featuresFacility;
+	}
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
+	}
+
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

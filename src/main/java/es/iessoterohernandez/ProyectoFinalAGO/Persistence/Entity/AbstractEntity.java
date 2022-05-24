@@ -42,7 +42,7 @@ public class AbstractEntity implements Serializable {
 
 	@Column(name = "UPDATE_DATE")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getUpdateDate() {
 		return updateDate;
 	}

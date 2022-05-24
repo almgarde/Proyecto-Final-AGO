@@ -1,6 +1,6 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables;
 
-public class NewsDataTableDto {
+public class NewsDatatableDto {
 
 	private String idNews;
 

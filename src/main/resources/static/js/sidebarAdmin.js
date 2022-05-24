@@ -10,7 +10,13 @@ $(document).ready(function() {
 	});
 
 
+	// Data Picker 
 
+	if($('#inputCatPublication').val()=="true") {
+		$('#sidebarPublication').click();
+		$('#publicationsDatatable').DataTable().ajax.reload();
+	}
+	
 
 
 });
@@ -18,7 +24,7 @@ $(document).ready(function() {
 function getDataTableCategory(numCat) {
 	$.ajax({
 		type: "post",
-		url: "/management/getDataTableCategory",
+		url: "/management/getDatatableCategory/",
 		data: {
 			numCat: numCat
 		},
@@ -31,8 +37,9 @@ function getDataTableCategory(numCat) {
 
 					break;
 				case "1":
+
 					getDatatableNews();
-					
+
 					break;
 
 				case "2":
@@ -80,98 +87,11 @@ function getDataTableCategory(numCat) {
 	return false;
 }
 
-//function getNewsData() {
-//
-//	$.ajax({
-//		type: "post",
-//		url: "/management/getNewsData",
-//		data: {
-//
-//		},
-//		success: function(html) {
-//			$("#containerDataTables").html(html);
-//			$('#scripDatatable').attr('src', "/js/facilities.js");
-//		},
-//		error: function(e) {
-//			console.log(e);
-//		},
-//	});
-//	return false;
-//}
+function activateDatePicker() {
+	$('.input-group.date').datepicker({
+		format: "dd/mm/yyyy",
+		language: "es"
+	});
+}
 
-
-// DATATABLES
-//
-//function getDatatableNews() {
-//	$('#newsDatatable').dataTable({
-//		"sAjaxSource": "/management/getNewsData",
-//		"sAjaxDataProp": "",
-//		"order": [[0, "asc"]],
-//		"aoColumns": [
-//			{
-//				"mData": "idNews",
-//				"mRender": function(data, type, row) {
-//					return data;
-//				},
-//				"bSortable": false
-//			},
-//			{
-//				"mData": "titleNews",
-//				"mRender": function(data, type, row) {
-//					return data;
-//				},
-//				"bSortable": false
-//			},
-//			{
-//				"mData": "imageNews",
-//				"mRender": function(data, type, row) {
-//					return data;
-//				},
-//				"bSortable": false
-//			},
-//			{
-//				"mData": null
-//			},
-//			{
-//				"mData": "contentNews",
-//				"mRender": function(data, type, row) {
-//					return data;
-//				},
-//				"bSortable": false
-//			},
-//			{
-//				"mData": "active",
-//				"mRender": function(data, type, row) {
-//					return data;
-//				},
-//				"bSortable": false
-//			},
-//
-//			{
-//				"mData": null
-//			}
-//		],
-//		"fnCreatedRow": function(row, data, index) {
-//
-//			var verAbstract = $('<a/>', {
-//				text: "Abstract",
-//				href: '',
-//				click: function() {
-//					event.preventDefault();
-//					mostrarModalNewsAbstract(data.idNews, data.abstractNews);
-//					
-//				}
-//			});
-//			$('td:eq(3)', row).html(verAbstract);
-//			}
-//		});
-//}
-//
-//function mostrarModalNewsAbstract(idNews, absctractNews) {
-//	$("#modalNewsAbstract").modal('toggle');
-//	$("#headerModalAbstract").text('Abstract Noticia ' + idNews);
-//	$("#bodyModalAbstract").text(absctractNews);
-//}
-//
-//
 

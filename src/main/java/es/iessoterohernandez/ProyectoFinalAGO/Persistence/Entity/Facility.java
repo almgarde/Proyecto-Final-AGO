@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * Entidad: Servicios de investigación. Tabla: FACILITIES
+ * Entidad: Servicios de investigación. Tabla: FACILITyS
  * 
  * @author agadelao
  *
@@ -24,38 +24,38 @@ public class Facility extends AbstractEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** ID de Servicio de investigación */
-	private Long idFacilitie;
+	private Long idFacility;
 
 	/** Nombre */
-	private String nameFacilitie;
+	private String nameFacility;
 
 	/** Categoría */
 	private TechnicalCategory idTechCat;
 
 	/** Imagen */
-	private String imageFacilitie;
+	private String photoFacility;
 
 	/** Características */
-	private String featuresFacilitie;
+	private String featuresFacility;
 
 	@Id
 	@GeneratedValue(generator = "genSeqFacilities")
 	@SequenceGenerator(name = "genSeqFacilities", sequenceName = "SEQ_FACILITIES", allocationSize = 1)
-	public Long getIdFacilitie() {
-		return idFacilitie;
+	public Long getIdFacility() {
+		return idFacility;
 	}
 
-	public void setIdFacilitie(Long idFacilitie) {
-		this.idFacilitie = idFacilitie;
+	public void setIdFacility(Long idFacility) {
+		this.idFacility = idFacility;
 	}
 
-	@Column(name = "NAME_FACILITIE", nullable = false)
-	public String getNameFacilitie() {
-		return nameFacilitie;
+	@Column(name = "NAME_FACILITY", nullable = false)
+	public String getNameFacility() {
+		return nameFacility;
 	}
 
-	public void setNameFacilitie(String nameFacilitie) {
-		this.nameFacilitie = nameFacilitie;
+	public void setNameFacility(String nameFacility) {
+		this.nameFacility = nameFacility;
 	}
 
 	@ManyToOne
@@ -68,22 +68,22 @@ public class Facility extends AbstractEntity implements Serializable {
 		this.idTechCat = idTechCat;
 	}
 
-	@Column(name = "IMAGE_FACILITIE", nullable = false)
-	public String getImageFacilitie() {
-		return imageFacilitie;
+	@Column(name = "IMAGE_FACILITY", nullable = false)
+	public String getPhotoFacility() {
+		return photoFacility;
 	}
 
-	public void setImageFacilitie(String imageFacilitie) {
-		this.imageFacilitie = imageFacilitie;
+	public void setPhotoFacility(String photoFacility) {
+		this.photoFacility = photoFacility;
 	}
 
-	@Column(name = "FEATURES_FACILITIE", nullable = true)
-	public String getFeaturesFacilitie() {
-		return featuresFacilitie;
+	@Column(name = "FEATURES_FACILITY", nullable = true)
+	public String getFeaturesFacility() {
+		return featuresFacility;
 	}
 
-	public void setFeaturesFacilitie(String featuresFacilitie) {
-		this.featuresFacilitie = featuresFacilitie;
+	public void setFeaturesFacility(String featuresFacility) {
+		this.featuresFacility = featuresFacility;
 	}
 
 }

@@ -1,0 +1,468 @@
+<div>
+	<button type="button" id="formAddMembersBtn" class="btn btn-secondary">
+		<a href="javascript: mostrarModalAddMembers();">Añadir nuevo
+			miembro</a>
+	</button>
+	<button type="button" class="btn btn-warning">Generar Excel</button>
+</div>
+
+
+
+
+<!-- DATATABLE -->
+
+<table id="membersDatatable" class="table datatableAdmin"
+	style="text-align: center;">
+	<thead>
+		<tr>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col">Nombre</th>
+			<th class="atri" scope="col">DNI</th>
+			<th class="atri" scope="col">Datos personales</th>
+			<th class="atri selectCat" scope="col">Categoría</th>
+			<th class="atri" scope="col">Foto</th>
+			<th class="atri" scope="col">Trayectoria</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri" scope="col">Fecha</th>
+			<th class="atri selectActive" style="width: 500px;" scope="col">Activo</th>
+			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+
+	</tbody>
+	<tfoot>
+		<tr>
+			<th class="atri" scope="col">ID</th>
+			<th class="atri" scope="col">Nombre</th>
+			<th class="atri" scope="col">DNI</th>
+			<th class="atri" scope="col">Datos personales</th>
+			<th class="atri selectCat" scope="col">Categoría</th>
+			<th class="atri" scope="col">Foto</th>
+			<th class="atri" scope="col">Trayectoria</th>
+			<th class="atri" scope="col">Admin</th>
+			<th class="atri" scope="col">Fecha</th>
+			<th class="atri selectActive" style="width: 500px;" scope="col">Activo</th>
+			<th scope="col"></th>
+		</tr>
+	</tfoot>
+
+</table>
+<input class="selectedCat" type="hidden" value="3">
+
+
+<!-- SELECT FILTRO CATEGORÍAS -->
+<select class="form-select" id="idProCatSelect"
+	aria-label="Floating label select example">
+	<option value="">Seleccione una categoría</option>
+	<option th:each="proCatDto : ${listaProCatDto}"
+		th:text="${proCatDto.nameProCat}" th:value="${proCatDto.idProCat}">
+</select>
+
+<!-- MODAL - DATOS PERSONALES -->
+
+<div class="modal" tabindex="-1" id="modalMembersData">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerMembersData" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="modalBodyMembersData">
+
+				<div class="col-sm-12">
+					<label>Nombre abreviado: </label>
+					<p id="modalShortNameMember"></p>
+				</div>
+				<div class="col-sm-12">
+					<label>Email: </label>
+					<p id="modalEmailMember"></p>
+				</div>
+				<div class="col-sm-12">
+					<label>Teléfono: </label>
+					<p id="modalPhoneMember"></p>
+				</div>
+				<div class="col-sm-12">
+					<label>ResearchID: </label>
+					<p id="modalReseachIdMember"></p>
+				</div>
+				<div class="col-sm-12">
+					<label>ScopusID: </label>
+					<p id="modalScopusIdMember"></p>
+				</div>
+				<div class="col-sm-12">
+					<label>OrcID: </label>
+					<p id="modalOrcIdMember"></p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - FOTO -->
+
+<div class="modal" tabindex="-1" id="modalMembersPhoto">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<img id="bodyModalMembersPhoto"></img>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - TRAYECTORIA -->
+
+<div class="modal" tabindex="-1" id="modalMembersTrajectory">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerMembersTrajectory" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p id="bodyMembersTrajectory"></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!-- MODAL - AÑADIR MIEMBRO -->
+
+<div class="modal" tabindex="-1" id="modalAddMembers">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalAddMembers" class="modal-title">Añadir nuevo
+					miembro</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<!-- NOMBRE -->
+
+				<div class="form-group">
+					<label for="nameMember">Nombre y Apellidos</label> <input
+						type="text" required="required" class="form-control"
+						id="nameMember" name="nameMember"> </br>
+				</div>
+
+				<!-- NOMBRE CORTO -->
+
+				<div class="form-group">
+					<label for="shortNameMember">Nombre abreviado</label> <input
+						type="text" required="required" class="form-control"
+						id="shortNameMember" name="shortNameMember"> </br>
+				</div>
+
+				<!-- DNI -->
+
+				<div class="form-group">
+					<label for="dniMember">DNI</label> <input type="text"
+						required="required" class="form-control" id="dniMember"
+						name="dniMember"> </br>
+				</div>
+
+				<!-- EMAIL -->
+
+				<div class="form-group">
+					<label for="emailMember">Email</label> <input type="text"
+						required="required" class="form-control" id="emailMember"
+						name="emailMember"> </br>
+				</div>
+
+				<!-- TELÉFONO -->
+
+				<div class="form-group">
+					<label for="phoneMember">Teléfono</label> <input type="text"
+						required="required" class="form-control" id="phoneMember"
+						name="phoneMember"> </br>
+				</div>
+
+				<!-- CATEGORÍA -->
+
+				<div class="form-group">
+					<label for="idProCatActiveSelect">Categoría</label> <select class="form-select"
+						id="idProCatActiveSelect" aria-label="Floating label select example">
+						<option value="">Seleccione una categoría</option>
+						<option th:each="proCatDto : ${listaProCatDtoActivas}"
+							th:text="${proCatDto.nameProCat}"
+							th:value="${proCatDto.idProCat}">
+					</select></br>
+					<div class="form-group"></div>
+				</div>
+
+				<!-- FOTO -->
+
+				<div class="form-group">
+					<label for="imageMembers">Foto</label> <input type="file"
+						name="file" class="form-control form-control-sm" id="imageMembers">
+					</br>
+				</div>
+
+				<!-- RESEARCHID -->
+
+				<div class="form-group">
+					<label for="reseachIdMember">ResearchID</label> <input type="text"
+						required="required" class="form-control" id="reseachIdMember"
+						name="reseachIdMember"> </br>
+				</div>
+
+				<!-- SCOPUSID -->
+
+				<div class="form-group">
+					<label for="scopusIdMember">ScopusID</label> <input type="text"
+						required="required" class="form-control" id="scopusIdMember"
+						name="scopusIdMember"> </br>
+				</div>
+
+				<!-- ORCID -->
+
+				<div class="form-group">
+					<label for="orcIdMember">OrcID</label> <input type="text"
+						required="required" class="form-control" id="orcIdMember"
+						name="orcIdMember"> </br>
+				</div>
+
+				<!-- TRAYECTORIA -->
+
+				<div class="form-group">
+					<label for="trajectoryMember">Trayectoria</label>
+					<textarea class="form-control" id="trajectoryMember"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+
+				<div class="form-group">
+					<label for="active">Activo</label> <select class="form-select"
+						id="active" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+
+
+				</br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarAddMembers">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarAddMembers">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - EDITAR MIEMBRO -->
+
+<div class="modal" tabindex="-1" id="modalUpdateMembers">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdateMembers" class="modal-title">Editar
+					miembro</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<!-- NOMBRE -->
+
+				<div class="form-group">
+					<label for="nameMemberEdit">Nombre y Apellidos</label> <input
+						type="text" required="required" class="form-control"
+						id="nameMemberEdit" name="nameMember"> </br>
+				</div>
+
+				<!-- NOMBRE CORTO -->
+
+				<div class="form-group">
+					<label for="shortNameMemberEdit">Nombre abreviado</label> <input
+						type="text" required="required" class="form-control"
+						id="shortNameMemberEdit" name="shortNameMember"> </br>
+				</div>
+
+				<!-- DNI -->
+
+				<div class="form-group">
+					<label for="dniMemberEdit">DNI</label> <input type="text"
+						required="required" class="form-control" id="dniMemberEdit"
+						name="dniMember"> </br>
+				</div>
+
+				<!-- EMAIL -->
+
+				<div class="form-group">
+					<label for="emailMemberEdit">Email</label> <input type="text"
+						required="required" class="form-control" id="emailMemberEdit"
+						name="emailMember"> </br>
+				</div>
+
+				<!-- TELÉFONO -->
+
+				<div class="form-group">
+					<label for="phoneMemberEdit">Teléfono</label> <input type="text"
+						required="required" class="form-control" id="phoneMemberEdit"
+						name="phoneMember"> </br>
+				</div>
+
+				<!-- CATEGORÍA -->
+
+				<div class="form-group">
+					<label for="idProCatActiveSelectEdit">Categoría</label> <select class="form-select"
+						id="idProCatActiveSelectEdit" aria-label="Floating label select example">
+						<option value="">Seleccione una categoría</option>
+						<option th:each="proCatDto : ${listaProCatDtoActivas}"
+							th:text="${proCatDto.nameProCat}"
+							th:value="${proCatDto.idProCat}">
+					</select></br>
+					<div class="form-group"></div>
+				</div>
+
+				
+				<!-- RESEARCHID -->
+
+				<div class="form-group">
+					<label for="reseachIdMemberEdit">ResearchID</label> <input type="text"
+						required="required" class="form-control" id="reseachIdMemberEdit"
+						name="reseachIdMember"> </br>
+				</div>
+
+				<!-- SCOPUSID -->
+
+				<div class="form-group">
+					<label for="scopusIdMemberEdit">ScopusID</label> <input type="text"
+						required="required" class="form-control" id="scopusIdMemberEdit"
+						name="scopusIdMember"> </br>
+				</div>
+
+				<!-- ORCID -->
+
+				<div class="form-group">
+					<label for="orcIdMemberEdit">OrcID</label> <input type="text"
+						required="required" class="form-control" id="orcIdMemberEdit"
+						name="orcIdMember"> </br>
+				</div>
+
+				<!-- TRAYECTORIA -->
+
+				<div class="form-group">
+					<label for="trajectoryMemberEdit">Trayectoria</label>
+					<textarea class="form-control" id="trajectoryMemberEdit"
+						style="height: 100px"></textarea>
+					</br>
+				</div>
+
+				<!-- ACTIVO -->
+
+				<div class="form-group">
+					<label for="activeEdit">Activo</label> <select class="form-select"
+						id="activeEdit" aria-label="Floating label select example">
+						<option value="1">Si</option>
+						<option value="0">No</option>
+					</select></br>
+				</div>
+
+
+				<input type="hidden" id="idMembersUpdate">  </br> </br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdateMembers">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdateMembers">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - EDITAR FOTO MIEMBRO -->
+
+<div class="modal" tabindex="-1" id="modalUpdatePhotoMembers">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalUpdatePhotoMembers" class="modal-title">Editar foto
+					miembro</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<!-- FOTO -->
+
+				<div class="form-group">
+					<label for="imageMembersEdit">Foto</label> <input type="file"
+						name="file" class="form-control form-control-sm" id="imageMembersEdit">
+					</br>
+				</div>
+
+				<input type="hidden" id="idMembersPhotoUpdate">  </br> </br>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarUpdatePhotoMembers">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarUpdatePhotoMembers">Cancelar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL - ELIMINAR MIEMBRO -->
+
+	<div class="modal" tabindex="-1" id="modalDeleteMembers">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 id="headerModalDeleteMembers" class="modal-title">Eliminar
+						miembro</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<label>¿Estás seguro de querer eliminar este miembro?</label> <input
+						type="hidden" id="idMembersDelete"> </br>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnAceptarDeleteMembers">Aceptar</button>
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal" id="btnCancelarDeleteMembers">Cancelar</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>

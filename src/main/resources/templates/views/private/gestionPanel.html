@@ -45,9 +45,10 @@
 							data-num-cat="6"> <svg class="bi me-2" width="16" height="16">
 								<use xlink:href="#grid"></use></svg> Servicios de investigacion
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
-							data-num-cat="7"> <svg class="bi me-2" width="16" height="16">
-								<use xlink:href="#people-circle"></use></svg> Publicaciones
+						<li><a id="sidebarPublication" href="#"
+							class="catSidebar nav-link text-white" data-num-cat="7"> <svg
+									class="bi me-2" width="16" height="16"> <use
+									xlink:href="#people-circle"></use></svg> Publicaciones
 						</a></li>
 						<li><a href="#" class="catSidebar nav-link text-white"
 							data-num-cat="8"> <svg class="bi me-2" width="16" height="16">
@@ -78,8 +79,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-9" id="containerDataTables" >
-				<table id="newsDatatable" class="table" style="margin-left:0;">
+			<div class="col-9" id="containerDataTables">
+				<table id="newsDatatable" class="table" style="margin-left: 0;">
 					<thead>
 						<tr>
 							<th scope="col">ID</th>
@@ -99,16 +100,31 @@
 			</div>
 		</div>
 	</div>
-
+	<input id="inputCatPublication" type="hidden"
+		th:value="${catPublication}">
 	<footer th:replace="views/common/footer :: footer"></footer>
 
+
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
 		crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
 
 	<script src="/js/sidebarAdmin.js"></script>
-	<script src="/js/datatables/newsDatatable.js"></script>
+	<script src="/js/datatables/datatableNews.js"></script>
+	<script src="/js/datatables/datatableProCat.js"></script>
+	<script src="/js/datatables/datatableTechCat.js"></script>
+	<script src="/js/datatables/datatableMembers.js"></script>
+	<script src="/js/datatables/datatableProjects.js"></script>
+	<script src="/js/datatables/datatableLinks.js"></script>
+	<script src="/js/datatables/datatableThesis.js"></script>
+	<script src="/js/datatables/datatableFacilities.js"></script>
+	<script src="/js/datatables/datatablePublications.js"></script>
+
+
 
 </body>
 </html>
