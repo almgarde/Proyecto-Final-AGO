@@ -2,8 +2,24 @@ function getDatatableThesis() {
 	let table = $('#thesisDatatable').DataTable({
 		"sAjaxSource": "/management/getThesisData",
 		"sAjaxDataProp": "",
+		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"language": {
+			"lengthMenu": "Mostrando _MENU_ entradas",
+			"emptyTable": "Sin datos en esta tabla",
+			"zeroRecords": "No se han encontrado coincidencias",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+			"infoFiltered": "(filtrado de _MAX_ entradas)",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Ultimo",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+		},
 		"order": [[0, "desc"]],
 		"aoColumns": [
 			{
@@ -154,7 +170,7 @@ function getDatatableThesis() {
 				click: function(e) {
 
 					e.preventDefault();
-					mostrarModalUpdatePhotoThesis(data.idThesis);
+					mostrarModalUpdateCoverPageThesis(data.idThesis);
 				}
 			});
 
@@ -236,20 +252,108 @@ function getDatatableThesis() {
 activateDatePicker();
 
 	$(document).on("click", "#btnAceptarAddThesis", function(e) {
-		e.preventDefault();
-		anyadirNuevaTesis();
+				$('#modalAddThesis').modal('show');
+		var form = $("#formAddThesis");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			anyadirNuevaTesis();
+			$('#modalAddThesis').modal('hide');
+
+		}
+		form.addClass('was-validated');
+		
+
+	});
+	
+							$(document).on("click", "#btnCancelarAddThesis", function() {
+$("#formAddThesis").removeClass('was-validated');
+		$("#doctorThesis").val('');
+		$("#titleThesis").val('');
+		$("#coverPageThesis").val('');
+		$("#dateDefenseThesis").val('');
+		$("#directorThesis").val('');
+		$("#coDirectorThesis").val('');
+		$("#urlThesis").val('');
+		$("#active").val('1');
+});
+
+		$(document).on("click", "#btnCloseAddThesis", function() {
+$("#formAddThesis").removeClass('was-validated');
+		$("#doctorThesis").val('');
+		$("#titleThesis").val('');
+		$("#coverPageThesis").val('');
+		$("#dateDefenseThesis").val('');
+		$("#directorThesis").val('');
+		$("#coDirectorThesis").val('');
+		$("#urlThesis").val('');
+		$("#active").val('1');
 
 	});
 	
 	$(document).on("click", "#btnAceptarUpdateThesis", function(e) {
-		e.preventDefault();
-		editarTesis();
+						$('#modalUpdateThesis').modal('show');
+		var form = $("#formUpdateThesis");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			editarTesis();
+			$('#modalUpdateThesis').modal('hide');
+
+		}
+		form.addClass('was-validated');
+		
 
 	});
 	
-	$(document).on("click", "#btnAceptarUpdatePhotoThesis", function(e) {
-		e.preventDefault();
-		editarPortadaTesis();
+	$(document).on("click", "#btnCancelarUpdateThesis", function(e) {
+$("#formUpdateThesis").removeClass('was-validated');
+
+	});
+	
+		$(document).on("click", "#btnCloseUpdateThesis", function(e) {
+$("#formUpdateThesis").removeClass('was-validated');
+
+	});
+
+	
+	$(document).on("click", "#btnAceptarUpdateCoverPageThesis", function(e) {
+						$('#modalUpdateCoverPageThesis').modal('show');
+		var form = $("#formUpdateCoverPageThesis");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			editarPortadaTesis();
+			$('#modalUpdateCoverPageThesis').modal('hide');
+
+		}
+		form.addClass('was-validated');
+		
+		
+
+	});
+	
+	$(document).on("click", "#btnCancelarUpdateCoverPageThesis", function(e) {
+$("#formUpdateCoverPageThesis").removeClass('was-validated');
+$("#coverPageThesisEdit").val('');
+
+	});
+	
+		$(document).on("click", "#btnCloseUpdateCoverPageThesis", function(e) {
+$("#formUpdateCoverPageThesis").removeClass('was-validated');
+$("#coverPageThesisEdit").val('');
 
 	});
 
@@ -290,9 +394,9 @@ $('#idThesisUpdate').val(idThesis);
 	$("#modalUpdateThesis").modal('toggle');
 }
 
-function mostrarModalUpdatePhotoThesis(idThesis) {
-	$('#idThesisUpdatePhoto').val(idThesis);
-	$("#modalUpdatePhotoThesis").modal('toggle');
+function mostrarModalUpdateCoverPageThesis(idThesis) {
+	$('#idThesisUpdateCoverPage').val(idThesis);
+	$("#modalUpdateCoverPageThesis").modal('toggle');
 }
 
 function mostrarModalDeleteThesis(idThesis) {
@@ -323,33 +427,23 @@ function anyadirNuevaTesis() {
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#thesisDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#thesisDatatable').DataTable().ajax.reload();
+		
+		$("#formAddThesis").removeClass('was-validated');
 		$("#doctorThesis").val('');
 		$("#titleThesis").val('');
 		$("#coverPageThesis").val('');
@@ -385,34 +479,23 @@ function editarTesis() {
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#thesisDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#thesisDatatable').DataTable().ajax.reload();
-
+		
+$("#formUpdateThesis").removeClass('was-validated');
 
 	});
 }
@@ -421,7 +504,7 @@ function editarPortadaTesis() {
 
 	let form = new FormData();
 
-	form.append("idThesis", $("#idThesisUpdate").val());
+	form.append("idThesis", $("#idThesisUpdateCoverPage").val());
 form.append("file", $('#coverPageThesisEdit')[0].files[0]);
 
 	$.ajax({
@@ -432,35 +515,24 @@ form.append("file", $('#coverPageThesisEdit')[0].files[0]);
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#thesisDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#thesisDatatable').DataTable().ajax.reload();
-
-
+		
+$("#formUpdateCoverPageThesis").removeClass('was-validated');
+$("#coverPageThesisEdit").val('');
 	});
 }
 
@@ -479,33 +551,22 @@ function eliminarTesis() {
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#thesisDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#thesisDatatable').DataTable().ajax.reload();
+		
 
 
 	});

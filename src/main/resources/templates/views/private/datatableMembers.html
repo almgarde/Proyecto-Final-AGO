@@ -1,9 +1,13 @@
+
+<div id="response"></div>
+
+
 <div>
 	<button type="button" id="formAddMembersBtn" class="btn btn-secondary">
 		<a href="javascript: mostrarModalAddMembers();">Añadir nuevo
 			miembro</a>
 	</button>
-	<button type="button" class="btn btn-warning">Generar Excel</button>
+	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/members}">Generar Excel</a></button>
 </div>
 
 
@@ -155,95 +159,101 @@
 			<div class="modal-header">
 				<h5 id="headerModalAddMembers" class="modal-title">Añadir nuevo
 					miembro</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseAddMembers" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-
+<form id="formAddMembers" class="row g-3 needs-validation">
 
 				<!-- NOMBRE -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="nameMember">Nombre y Apellidos</label> <input
-						type="text" required="required" class="form-control"
-						id="nameMember" name="nameMember"> </br>
-				</div>
+						autocomplete="off" type="text" class="form-control"
+						id="nameMember" name="nameMember" required><div class="invalid-feedback">Please choose a username.</div>
+				</div> 
+				
 
 				<!-- NOMBRE CORTO -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="shortNameMember">Nombre abreviado</label> <input
-						type="text" required="required" class="form-control"
-						id="shortNameMember" name="shortNameMember"> </br>
-				</div>
+						autocomplete="off" type="text" class="form-control"
+						id="shortNameMember" name="shortNameMember" required><div class="invalid-feedback">Please choose a username.</div>
+				</div> 
+				
 
 				<!-- DNI -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="dniMember">DNI</label> <input type="text"
-						required="required" class="form-control" id="dniMember"
-						name="dniMember"> </br>
-				</div>
+						autocomplete="off" class="form-control" id="dniMember"
+						name="dniMember" required><div class="invalid-feedback">Please choose a username.</div>
+				</div> 
+				
 
 				<!-- EMAIL -->
 
-				<div class="form-group">
-					<label for="emailMember">Email</label> <input type="text"
-						required="required" class="form-control" id="emailMember"
-						name="emailMember"> </br>
-				</div>
+				<div class="form-group has-validation">
+					<label for="emailMember">Email</label> <input type="email"
+						autocomplete="off" class="form-control" id="emailMember"
+						name="emailMember" required><div class="invalid-feedback">Please choose a username.</div>
+				</div> 
+				
 
 				<!-- TELÉFONO -->
 
 				<div class="form-group">
 					<label for="phoneMember">Teléfono</label> <input type="text"
-						required="required" class="form-control" id="phoneMember"
-						name="phoneMember"> </br>
+						autocomplete="off" class="form-control" id="phoneMember"
+						name="phoneMember"> 
 				</div>
 
 				<!-- CATEGORÍA -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="idProCatActiveSelect">Categoría</label> <select class="form-select"
-						id="idProCatActiveSelect" aria-label="Floating label select example">
+						id="idProCatActiveSelect" aria-label="Floating label select example" required>
 						<option value="">Seleccione una categoría</option>
 						<option th:each="proCatDto : ${listaProCatDtoActivas}"
 							th:text="${proCatDto.nameProCat}"
 							th:value="${proCatDto.idProCat}">
-					</select></br>
-					<div class="form-group"></div>
+					</select><div class="invalid-feedback">Please choose a username.</div>
 				</div>
+					
+				
 
 				<!-- FOTO -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="imageMembers">Foto</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageMembers">
-					</br>
+						name="file" class="form-control form-control-sm" id="imageMembers" required><div class="invalid-feedback">Please choose a username.</div>
 				</div>
+					
+		
 
 				<!-- RESEARCHID -->
 
 				<div class="form-group">
 					<label for="reseachIdMember">ResearchID</label> <input type="text"
-						required="required" class="form-control" id="reseachIdMember"
-						name="reseachIdMember"> </br>
+						autocomplete="off" class="form-control" id="reseachIdMember"
+						name="reseachIdMember"> 
 				</div>
 
 				<!-- SCOPUSID -->
 
 				<div class="form-group">
 					<label for="scopusIdMember">ScopusID</label> <input type="text"
-						required="required" class="form-control" id="scopusIdMember"
-						name="scopusIdMember"> </br>
+						autocomplete="off" class="form-control" id="scopusIdMember"
+						name="scopusIdMember"> 
 				</div>
 
 				<!-- ORCID -->
 
 				<div class="form-group">
 					<label for="orcIdMember">OrcID</label> <input type="text"
-						required="required" class="form-control" id="orcIdMember"
-						name="orcIdMember"> </br>
+						autocomplete="off" class="form-control" id="orcIdMember"
+						name="orcIdMember"> 
 				</div>
 
 				<!-- TRAYECTORIA -->
@@ -252,21 +262,21 @@
 					<label for="trajectoryMember">Trayectoria</label>
 					<textarea class="form-control" id="trajectoryMember"
 						style="height: 100px"></textarea>
-					</br>
+					
 				</div>
 
 				<!-- ACTIVO -->
 
 				<div class="form-group">
 					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example">
+						id="active" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 
 
-				</br>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -287,88 +297,92 @@
 			<div class="modal-header">
 				<h5 id="headerModalUpdateMembers" class="modal-title">Editar
 					miembro</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseUpdateMembers" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-
+<form id="formUpdateMember" class="row g-3 needs-validation">
 				<!-- NOMBRE -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="nameMemberEdit">Nombre y Apellidos</label> <input
-						type="text" required="required" class="form-control"
-						id="nameMemberEdit" name="nameMember"> </br>
+						autocomplete="off" type="text" class="form-control"
+						id="nameMemberEdit" name="nameMember" required><div class="invalid-feedback">Please choose a username.</div>
+				 
 				</div>
 
 				<!-- NOMBRE CORTO -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="shortNameMemberEdit">Nombre abreviado</label> <input
-						type="text" required="required" class="form-control"
-						id="shortNameMemberEdit" name="shortNameMember"> </br>
+						autocomplete="off" type="text" class="form-control"
+						id="shortNameMemberEdit" name="shortNameMember" required> <div class="invalid-feedback">Please choose a username.</div>
 				</div>
+				
 
 				<!-- DNI -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="dniMemberEdit">DNI</label> <input type="text"
-						required="required" class="form-control" id="dniMemberEdit"
-						name="dniMember"> </br>
-				</div>
+						autocomplete="off" class="form-control" id="dniMemberEdit"
+						name="dniMember" required><div class="invalid-feedback">Please choose a username.</div>
+				</div> 
+				
 
 				<!-- EMAIL -->
 
-				<div class="form-group">
-					<label for="emailMemberEdit">Email</label> <input type="text"
-						required="required" class="form-control" id="emailMemberEdit"
-						name="emailMember"> </br>
-				</div>
+				<div class="form-group has-validation">
+					<label for="emailMemberEdit">Email</label> <input type="email"
+						autocomplete="off"class="form-control" id="emailMemberEdit"
+						name="emailMember" required><div class="invalid-feedback">Please choose a username.</div>
+				</div> 
+				
 
 				<!-- TELÉFONO -->
 
-				<div class="form-group">
+				<div class="form-group ">
 					<label for="phoneMemberEdit">Teléfono</label> <input type="text"
-						required="required" class="form-control" id="phoneMemberEdit"
-						name="phoneMember"> </br>
+						autocomplete="off" class="form-control" id="phoneMemberEdit"
+						name="phoneMember"> 
 				</div>
 
 				<!-- CATEGORÍA -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="idProCatActiveSelectEdit">Categoría</label> <select class="form-select"
-						id="idProCatActiveSelectEdit" aria-label="Floating label select example">
+						id="idProCatActiveSelectEdit" aria-label="Floating label select example" required>
 						<option value="">Seleccione una categoría</option>
 						<option th:each="proCatDto : ${listaProCatDtoActivas}"
 							th:text="${proCatDto.nameProCat}"
 							th:value="${proCatDto.idProCat}">
-					</select></br>
-					<div class="form-group"></div>
+					</select><div class="invalid-feedback">Please choose a username.</div>
 				</div>
+				
 
 				
 				<!-- RESEARCHID -->
 
 				<div class="form-group">
 					<label for="reseachIdMemberEdit">ResearchID</label> <input type="text"
-						required="required" class="form-control" id="reseachIdMemberEdit"
-						name="reseachIdMember"> </br>
+						autocomplete="off" class="form-control" id="reseachIdMemberEdit"
+						name="reseachIdMember"> 
 				</div>
 
 				<!-- SCOPUSID -->
 
 				<div class="form-group">
 					<label for="scopusIdMemberEdit">ScopusID</label> <input type="text"
-						required="required" class="form-control" id="scopusIdMemberEdit"
-						name="scopusIdMember"> </br>
+						autocomplete="off" class="form-control" id="scopusIdMemberEdit"
+						name="scopusIdMember"> 
 				</div>
 
 				<!-- ORCID -->
 
 				<div class="form-group">
 					<label for="orcIdMemberEdit">OrcID</label> <input type="text"
-						required="required" class="form-control" id="orcIdMemberEdit"
-						name="orcIdMember"> </br>
+						autocomplete="off" class="form-control" id="orcIdMemberEdit"
+						name="orcIdMember"> 
 				</div>
 
 				<!-- TRAYECTORIA -->
@@ -377,21 +391,23 @@
 					<label for="trajectoryMemberEdit">Trayectoria</label>
 					<textarea class="form-control" id="trajectoryMemberEdit"
 						style="height: 100px"></textarea>
-					</br>
+					
 				</div>
 
 				<!-- ACTIVO -->
 
 				<div class="form-group">
 					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example">
+						id="activeEdit" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 
 
-				<input type="hidden" id="idMembersUpdate">  </br> </br>
+				<input type="hidden" id="idMembersUpdate"> 
+
+</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -412,20 +428,24 @@
 			<div class="modal-header">
 				<h5 id="headerModalUpdatePhotoMembers" class="modal-title">Editar foto
 					miembro</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseUpdatePhotoMembers" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+			
+			<form id="formUpdatePhotoMembers" class="row g-3 needs-validation">
 
 				<!-- FOTO -->
 
 				<div class="form-group">
 					<label for="imageMembersEdit">Foto</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageMembersEdit">
-					</br>
+						name="file" class="form-control form-control-sm" id="imageMembersEdit" required><div class="invalid-feedback">Please choose a username.</div>
 				</div>
+					
+		
 
-				<input type="hidden" id="idMembersPhotoUpdate">  </br> </br>
+				<input type="hidden" id="idMembersPhotoUpdate">
+				  </form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -451,7 +471,7 @@
 				</div>
 				<div class="modal-body">
 					<label>¿Estás seguro de querer eliminar este miembro?</label> <input
-						type="hidden" id="idMembersDelete"> </br>
+						type="hidden" id="idMembersDelete"> 
 				</div>
 				
 				<div class="modal-footer">

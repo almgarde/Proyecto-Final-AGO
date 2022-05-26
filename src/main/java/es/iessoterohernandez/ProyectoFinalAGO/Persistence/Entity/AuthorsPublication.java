@@ -33,6 +33,8 @@ public class AuthorsPublication implements Serializable {
 	private String shortNameAuthor;
 
 	private Publication idPublication;
+	
+	private Long idMember;
 
 	@Id
 	@GeneratedValue(generator = "genSeqAuthorsPublcation")
@@ -72,5 +74,16 @@ public class AuthorsPublication implements Serializable {
 	public void setIdPublication(Publication idPublication) {
 		this.idPublication = idPublication;
 	}
+
+	@Column(name = "ID_MEMBER", nullable = true)
+	public Long getIdMember() {
+		return idMember;
+	}
+
+	public void setIdMember(Long idMember) {
+		this.idMember = idMember;
+	}
+	
+	
 
 }

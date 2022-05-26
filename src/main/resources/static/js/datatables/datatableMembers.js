@@ -1,9 +1,28 @@
 function getDatatableMembers() {
+
+
+
 	let table = $('#membersDatatable').DataTable({
 		"sAjaxSource": "/management/getMembersData",
 		"sAjaxDataProp": "",
+		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"language": {
+			"lengthMenu": "Mostrando _MENU_ entradas",
+			"emptyTable": "Sin datos en esta tabla",
+			"zeroRecords": "No se han encontrado coincidencias",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+			"infoFiltered": "(filtrado de _MAX_ entradas)",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Ultimo",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+		},
 		"order": [[0, "desc"]],
 		"aoColumns": [
 			{
@@ -127,7 +146,7 @@ function getDatatableMembers() {
 			$('td:eq(6)', row).html(verTrayectoria);
 
 			// Activo 
-			if (data.active=='true') {
+			if (data.active == 'true') {
 				var activo = $('<a/>', {
 					text: "Si"
 				});
@@ -137,7 +156,7 @@ function getDatatableMembers() {
 				});
 			}
 			$('td:eq(9)', row).html(activo);
-			
+
 			// Acciones 
 			var liAccion1 = $('<li/>');
 
@@ -195,14 +214,14 @@ function getDatatableMembers() {
 			uPrincipal.append(liAccion3);
 
 			divAcciones.append(liPrincipal);
-			$('td:eq(10)', row).html(divAcciones);		
-			
+			$('td:eq(10)', row).html(divAcciones);
+
 		}
 	});
 
 
 	$('#membersDatatable thead tr').clone(true).addClass('filters').appendTo('#membersDatatable thead');
-	
+
 	$('#membersDatatable thead tr.filters th').each(function() {
 		$(this).off();
 		$(this).removeClass('sorting_desc');
@@ -255,21 +274,125 @@ function getDatatableMembers() {
 
 
 	$(document).on("click", "#btnAceptarAddMembers", function(e) {
-		e.preventDefault();
-		anyadirNuevoMiembro();
+
+		$('#modalAddMembers').modal('show');
+
+		var form = $("#formAddMembers");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			anyadirNuevoMiembro();
+			$('#modalAddMembers').modal('hide');
+
+		}
+		form.addClass('was-validated');
+
+
+	});
+
+	$(document).on("click", "#btnCancelarAddMembers", function() {
+		$("#formAddMembers").removeClass('was-validated');
+
+		$("#nameMember").val('');
+		$("#shortNameMember").val('');
+		$("#dniMember").val('');
+		$("#emailMember").val('');
+		$("#phoneMember").val('');
+		$("#idProCat").val('');
+		$("#reseachIdMember").val('');
+		$("#shortNameMember").val('');
+		$("#scopusIdMember").val('');
+		$("#orcIdMember").val('');
+		$("#trajectoryMember").val('');
+		$("#active").val('1');
+		$('#imageMembers').val('');
+	});
+
+	$(document).on("click", "#btnCloseAddMembers", function() {
+		$("#formAddMembers").removeClass('was-validated');
+
+		$("#nameMember").val('');
+		$("#shortNameMember").val('');
+		$("#dniMember").val('');
+		$("#emailMember").val('');
+		$("#phoneMember").val('');
+		$("#idProCat").val('');
+		$("#reseachIdMember").val('');
+		$("#imageMembers").val('');
+		$("#scopusIdMember").val('');
+		$("#orcIdMember").val('');
+		$("#trajectoryMember").val('');
+		$("#active").val('1');
+		$('#imageMembers').val('');
 
 	});
 
 
-$(document).on("click", "#btnAceptarUpdateMembers", function(e) {
-		e.preventDefault();
-		editarMiembro();
+	$(document).on("click", "#btnAceptarUpdateMembers", function(e) {
+
+		$('#modalUpdateMembers').modal('show');
+
+		var form = $("#formUpdateMember");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			editarMiembro();
+			$('#modalUpdateMembers').modal('hide');
+
+		}
+		form.addClass('was-validated');
+
 
 	});
-	
+
+	$(document).on("click", "#btnCancelarUpdateMembers", function() {
+		$("#formUpdateMembers").removeClass('was-validated');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdateMembers", function() {
+		$("#formUpdateMembers").removeClass('was-validated');
+
+	});
+
+
 	$(document).on("click", "#btnAceptarUpdatePhotoMembers", function(e) {
-		e.preventDefault();
-		editarFotoMiembro();
+		$('#modalUpdatePhotoMembers').modal('show');
+
+		var form = $("#formUpdatePhotoMembers");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			editarFotoMiembro();
+			$('#modalUpdatePhotoMembers').modal('hide');
+
+		}
+		form.addClass('was-validated');
+
+
+	});
+
+	$(document).on("click", "#btnCancelarUpdatePhotoMembers", function() {
+		$("#formUpdatePhotoMembers").removeClass('was-validated');
+		$("#imageMembersEdit").val('');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdatePhotoMembers", function() {
+		$("#formUpdatePhotoMembers").removeClass('was-validated');
+		$("#imageMembersEdit").val('');
 
 	});
 
@@ -311,7 +434,7 @@ function mostrarModalAddMembers() {
 	$("#modalAddMembers").modal('toggle');
 }
 
-function mostrarModalUpdateMembers(idMember, nameMember, shortNameMember, dniMember, idProCat, activeProCat,  emailMember, phoneMember, reseachIdMember, scopusIdMember, orcIdMember, trajectoryMember, active) {
+function mostrarModalUpdateMembers(idMember, nameMember, shortNameMember, dniMember, idProCat, activeProCat, emailMember, phoneMember, reseachIdMember, scopusIdMember, orcIdMember, trajectoryMember, active) {
 
 	$('#nameMemberEdit').val(nameMember);
 	$('#shortNameMemberEdit').val(shortNameMember);
@@ -348,7 +471,7 @@ function mostrarModalUpdatePhotoMembers(idMember) {
 }
 
 function mostrarModalDeleteMembers(idMember) {
-		$('#idMembersDelete').val(idMember);
+	$('#idMembersDelete').val(idMember);
 	$("#modalDeleteMembers").modal('toggle');
 }
 
@@ -376,27 +499,23 @@ function anyadirNuevoMiembro() {
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#facilitiesDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
 		$('#membersDatatable').DataTable().ajax.reload();
+		$("#formAddMembers").removeClass('was-validated');
 		$("#nameMember").val('');
 		$("#shortNameMember").val('');
 		$("#dniMember").val('');
@@ -438,28 +557,24 @@ function editarMiembro() {
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#membersDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#membersDatatable').DataTable().ajax.reload();
-$('#imageMembersEdit').val('');
+
+		$('#imageMembersEdit').val('');
+		$("#formUpdateMembers").removeClass('was-validated');
 	});
 }
 
@@ -468,7 +583,7 @@ function editarFotoMiembro() {
 	let form = new FormData();
 
 	form.append("file", $('#imageMembersEdit')[0].files[0]);
-form.append("idMembers", $("#idMembersPhotoUpdate").val());
+	form.append("idMembers", $("#idMembersPhotoUpdate").val());
 
 	$.ajax({
 		url: '/management/updatePhotoMembersData',
@@ -477,37 +592,35 @@ form.append("idMembers", $("#idMembersPhotoUpdate").val());
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#membersDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#membersDatatable').DataTable().ajax.reload();
 
+		$("#formUpdatePhotoMembers").removeClass('was-validated');
+		$("#imageMembersEdit").val('');
 	});
 }
+
+
 
 function eliminarMiembro() {
 
 	let form = new FormData();
 
 
-form.append("idMembers", $("#idMembersDelete").val());
+	form.append("idMembers", $("#idMembersDelete").val());
 
 	$.ajax({
 		url: '/management/deleteMembersData',
@@ -516,27 +629,22 @@ form.append("idMembers", $("#idMembersDelete").val());
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#membersDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#membersDatatable').DataTable().ajax.reload();
+
 
 	});
 }

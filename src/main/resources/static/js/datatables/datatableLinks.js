@@ -2,8 +2,24 @@ function getDatatableLinks() {
 	let table = $('#linksDatatable').DataTable({
 		"sAjaxSource": "/management/getLinksData",
 		"sAjaxDataProp": "",
+		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"language": {
+			"lengthMenu": "Mostrando _MENU_ entradas",
+			"emptyTable": "Sin datos en esta tabla",
+			"zeroRecords": "No se han encontrado coincidencias",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+			"infoFiltered": "(filtrado de _MAX_ entradas)",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Ultimo",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+		},
 		"order": [[0, "desc"]],
 		"aoColumns": [
 			{
@@ -81,7 +97,7 @@ function getDatatableLinks() {
 
 			var irEnlace = $('<a/>', {
 				text: 'Enlace',
-				href: 'http://' + data.urlLink,
+				href: data.urlLink,
 				click: function(e) {
 					e.preventDefault();
 					//					$(this).attr('href', data.urlThesis);
@@ -103,7 +119,7 @@ function getDatatableLinks() {
 				});
 			}
 			$('td:eq(6)', row).html(activo);
-			
+
 			// Acciones 	 	
 			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
@@ -201,20 +217,102 @@ function getDatatableLinks() {
 	});
 
 	$(document).on("click", "#btnAceptarAddLinks", function(e) {
-		e.preventDefault();
-		anyadirNuevoLinks();
+		$('#modalAddLinks').modal('show');
+
+		var form = $("#formAddLinks");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault()
+			e.stopPropagation()
+
+		} else {
+
+			anyadirNuevoLinks();
+			$('#modalAddLinks').modal('hide');
+
+		}
+		form.addClass('was-validated')
+
 
 	});
-	
-		$(document).on("click", "#btnAceptarUpdateLinks", function(e) {
-		e.preventDefault();
-		editarLinks();
+
+	$(document).on("click", "#btnCancelarAddLinks", function() {
+		$("#formAddLinks").removeClass('was-validated');
+		$("#titleLinks").val('');
+		$("#imageLinks").val('');
+		$("#urlLinks").val('');
+		$("#active").val('1');
+	});
+
+	$(document).on("click", "#btnCloseAddLinks", function() {
+		$("#formAddLinks").removeClass('was-validated');
+		$("#titleLinks").val('');
+		$("#imageLinks").val('');
+		$("#urlLinks").val('');
+		$("#active").val('1');
 
 	});
-	
-	$(document).on("click", "#btnAceptarUpdatePhotoLinks", function(e) {
-		e.preventDefault();
-		editarImagenLinks();
+
+	$(document).on("click", "#btnAceptarUpdateLinks", function(e) {
+		$('#modalUpdateLinks').modal('show');
+
+		var form = $("#formUpdateLinks");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault()
+			e.stopPropagation()
+
+		} else {
+
+			editarLinks();
+			$('#modalUpdateLinks').modal('hide');
+
+		}
+		form.addClass('was-validated')
+
+
+	});
+
+	$(document).on("click", "#btnCancelarUpdateLinks", function(e) {
+		$("#formUpdateLinks").removeClass('was-validated');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdateLinks", function(e) {
+		$("#formUpdateLinks").removeClass('was-validated');
+
+	});
+
+
+	$(document).on("click", "#btnAceptarUpdateImageLinks", function(e) {
+		$('#modalUpdateImageLinks').modal('show');
+
+		var form = $("#formUpdateImageLinks");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault()
+			e.stopPropagation()
+
+		} else {
+
+			editarImagenLinks();
+			$('#modalUpdateImageLinks').modal('hide');
+
+		}
+		form.addClass('was-validated')
+
+
+	});
+
+	$(document).on("click", "#btnCancelarUpdateImageLinks", function(e) {
+		$("#formUpdateImageLinks").removeClass('was-validated');
+		$("#imageLinksEdit").val('');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdateImageLinks", function(e) {
+		$("#formUpdateImageLinks").removeClass('was-validated');
+		$("#imageLinksEdit").val('');
 
 	});
 
@@ -247,19 +345,19 @@ function mostrarModalUpdateLinks(idLink, titleLink, urlLink, active) {
 		$('#activeEdit').val('1');
 	} else {
 		$('#activeEdit').val('0');
-		
+
 	}
-	
+
 	$("#modalUpdateLinks").modal('toggle');
 }
 
 function mostrarModalUpdatePhotoLinks(idLink) {
-	$('#idLinksUpdatePhoto').val(idLink);
-	$("#modalUpdatePhotoLinks").modal('toggle');
+	$('#idLinksUpdateImage').val(idLink);
+	$("#modalUpdateImageLinks").modal('toggle');
 }
 
 function mostrarModalDeleteLinks(idLink) {
-		$('#idLinksDelete').val(idLink);
+	$('#idLinksDelete').val(idLink);
 	$("#modalDeleteLinks").modal('toggle');
 }
 
@@ -279,163 +377,139 @@ function anyadirNuevoLinks() {
 		processData: false,
 		contentType: false,
 		data: form,
-
 		success: function(data) {
+			if (data == '') {
+				$('#linksDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#linksDatatable').DataTable().ajax.reload();
+
+		$("#formAddLinks").removeClass('was-validated');
 		$("#titleLinks").val('');
 		$("#imageLinks").val('');
 		$("#urlLinks").val('');
 		$("#active").val('1');
 
 	});
-	
+
 }
 
 function editarLinks() {
 
-		let form = new FormData();
-debugger;
-		form.append("titleLink", $("#titleLinksEdit").val());
-		form.append("urlLink", $("#urlLinksEdit").val());
-		form.append("idLink", $("#idLinksUpdate").val());
-		form.append("active", $("#activeEdit").val());
+	let form = new FormData();
 
-		$.ajax({
-			url: '/management/updateLinksData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
+	form.append("titleLink", $("#titleLinksEdit").val());
+	form.append("urlLink", $("#urlLinksEdit").val());
+	form.append("idLink", $("#idLinksUpdate").val());
+	form.append("active", $("#activeEdit").val());
 
-
-
-
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/updateLinksData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#linksDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#linksDatatable').DataTable().ajax.reload();
-			$("#titleLinksEdit").val('');
-			$("#idLinksUpdate").val('');
-			$("#activeEdit").val('1');
-		});
-	}
-	
-	function editarImagenLinks() {
 
-		let form = new FormData();
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
 
-		form.append("file", $('#imageLinksEdit')[0].files[0]);
-		form.append("idLink", $("#idLinksUpdatePhoto").val());
-	
+		$("#formUpdateLinks").removeClass('was-validated');
+		$("#titleLinksEdit").val('');
+		$("#idLinksUpdate").val('');
+		$("#activeEdit").val('1');
+	});
+}
 
-		$.ajax({
-			url: '/management/updateImageLinksData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
+function editarImagenLinks() {
+
+	let form = new FormData();
+
+	form.append("file", $('#imageLinksEdit')[0].files[0]);
+	form.append("idLink", $("#idLinksUpdateImage").val());
 
 
-
-
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/updateImageLinksData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#linksDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#linksDatatable').DataTable().ajax.reload();
 
-		});
-	}
-	
-		function eliminarLinks() {
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
 
-		let form = new FormData();
+		$("#formUpdateImageLinks").removeClass('was-validated');
+		$("#imageLinksEdit").val('');
+	});
+}
 
-		
-		form.append("idLink", $("#idLinksDelete").val());
-	
+function eliminarLinks() {
 
-		$.ajax({
-			url: '/management/deleteLinksData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
+	let form = new FormData();
 
 
+	form.append("idLink", $("#idLinksDelete").val());
 
 
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/deleteLinksData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#linksDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#linksDatatable').DataTable().ajax.reload();
 
-		});
-	}
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
+
+
+	});
+}

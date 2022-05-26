@@ -1,8 +1,10 @@
+<div id="response"></div>
+
 <div>
 	<button type="button" id="formAddThesisBtn" class="btn btn-secondary">
 		<a href="javascript: mostrarModalAddThesis();">Añadir nueva Tesis</a>
 	</button>
-	<button type="button" class="btn btn-warning">Generar Excel</button>
+	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/thesis}">Generar Excel</a></button>
 </div>
 
 <!-- DATATABLE -->
@@ -74,90 +76,97 @@
 			<div class="modal-header">
 				<h5 id="headerModalAddThesis" class="modal-title">Añadir nueva
 					Tesis</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+				<button id="btnCloseAddThesis" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
+				<form id="formAddThesis" class="row g-3 needs-validation">
+					<!-- DOCTOR -->
 
-				<!-- DOCTOR -->
-
-				<div class="form-group">
-					<label for="doctorThesis">Doctor</label> <input type="text"
-						required="required" class="form-control" id="doctorThesis"
-						name="doctorThesis"> </br>
-				</div>
-
-
-				<!-- TÍTULO -->
-
-				<div class="form-group">
-					<label for="titleThesis">Título</label>
-					<textarea class="form-control" id="titleThesis"
-						style="height: 100px"></textarea>
-					</br>
-				</div>
-
-
-				<!-- PORTADA -->
-
-				<div class="form-group">
-					<label for="coverPageThesis">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm"
-						id="coverPageThesis"> </br>
-				</div>
-
-				<!-- FECHA DEFENSA -->
-
-				<div class="form-group" inline="true">
-					<label for="date" class="col-form-label">Fecha de defensa</label>
-					<div class="input-group date" id="datepicker">
-						 <input id="dateDefenseThesis" name="dateDefenseThesis" type="text" class="form-control"> <span
-							class="input-group-text bg-white d-block"><span
-							class="input-group-append"> <i
-								class="bi bi-calendar3"></i></span>
-						
-						</span>
+					<div class="form-group has-validation">
+						<label for="doctorThesis">Doctor</label> <input type="text"
+							autocomplete="off" class="form-control" id="doctorThesis"
+							name="doctorThesis" required>
+						<div class="invalid-feedback">Please choose a username.</div>
 					</div>
 
-				</div>
-				</br>
 
-				<!-- DIRECTOR -->
+					<!-- TÍTULO -->
 
-				<div class="form-group">
-					<label for="directorThesis">Director</label> <input type="text"
-						required="required" class="form-control" id="directorThesis"
-						name="directorThesis"> </br>
-				</div>
+					<div class="form-group has-validation">
+						<label for="titleThesis">Título</label>
+						<textarea class="form-control" id="titleThesis"
+							style="height: 100px" required></textarea>
+						<div class="invalid-feedback">Please choose a username.</div>
 
-				<!-- CO-DIRECTOR -->
+					</div>
 
-				<div class="form-group">
-					<label for="coDirectorThesis">Co-director</label> <input
-						type="text" required="required" class="form-control"
-						id="coDirectorThesis" name="coDirectorThesis"> </br>
-				</div>
 
-				<!-- URL -->
+					<!-- PORTADA -->
 
-				<div class="form-group">
-					<label for="urlThesis">URL</label>
-					<textarea class="form-control" id="urlThesis" style="height: 100px"></textarea>
-					</br>
-				</div>
+					<div class="form-group has-validation">
+						<label for="coverPageThesis">Imagen</label> <input type="file"
+							name="file" class="form-control form-control-sm"
+							id="coverPageThesis" required>
+						<div class="invalid-feedback">Please choose a username.</div>
+					</div>
 
-				<!-- ACTIVO -->
+					<!-- FECHA DEFENSA -->
 
-				<div class="form-group">
-					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example">
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select></br>
-				</div>
+					<div class="form-group has-validation" inline="true">
+						<label for="date" class="col-form-label">Fecha de defensa</label>
+						<div class="input-group date" id="datepicker">
+							<input id="dateDefenseThesis" name="dateDefenseThesis"
+								type="text" class="form-control" required><div class="invalid-feedback">Please choose a username.</div>
+							
+							<span class="input-group-text bg-white d-block"><span
+								class="input-group-append"> <i class="bi bi-calendar3"></i></span>
 
-				</br>
+							</span>
+						</div>
+
+					</div>
+
+
+					<!-- DIRECTOR -->
+
+					<div class="form-group has-validation">
+						<label for="directorThesis">Director</label> <input type="text"
+							autocomplete="off" class="form-control" id="directorThesis"
+							name="directorThesis" required>
+						<div class="invalid-feedback">Please choose a username.</div>
+					</div>
+
+					<!-- CO-DIRECTOR -->
+
+					<div class="form-group">
+						<label for="coDirectorThesis">Co-director</label> <input
+							autocomplete="off" type="text" class="form-control"
+							id="coDirectorThesis" name="coDirectorThesis">
+					</div>
+
+					<!-- URL -->
+
+					<div class="form-group has-validation">
+						<label for="urlThesis">URL</label>
+						<input
+							type="url" class="form-control"
+							id="urlThesis" name="urlThesis">
+
+					</div>
+
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label for="active">Activo</label> <select class="form-select"
+							id="active" aria-label="Floating label select example" required>
+							<option value="1">Si</option>
+							<option value="0">No</option>
+						</select>
+					</div>
+
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -178,83 +187,90 @@
 			<div class="modal-header">
 				<h5 id="headerModalUpdateThesis" class="modal-title">Editar
 					Tesis</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+				<button id="btnCloseUpdateThesis" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+				<form id="formUpdateThesis" class="row g-3 needs-validation">
 
+					<!-- DOCTOR -->
 
-				<!-- DOCTOR -->
-
-				<div class="form-group">
-					<label for="doctorThesisEdit">Doctor</label> <input type="text"
-						required="required" class="form-control" id="doctorThesisEdit"
-						name="doctorThesis"> </br>
-				</div>
-
-
-				<!-- TÍTULO -->
-
-				<div class="form-group">
-					<label for="titleThesisEdit">Título</label>
-					<textarea class="form-control" id="titleThesisEdit"
-						style="height: 100px"></textarea>
-					</br>
-				</div>
-
-
-				<!-- FECHA DEFENSA -->
-
-				<div class="form-group" inline="true">
-					<label for="dateDefenseThesisEdit" class="col-form-label">Fecha de defensa</label>
-					<div class="input-group date" id="datepicker">
-						 <input id="dateDefenseThesisEdit" name="dateDefenseThesis" type="text" class="form-control"> <span
-							class="input-group-text bg-white d-block"><span
-							class="input-group-append"> <i
-								class="bi bi-calendar3"></i></span>
-						
-						</span>
+					<div class="form-group has-validation">
+						<label for="doctorThesisEdit">Doctor</label> <input type="text"
+							autocomplete="off" class="form-control" id="doctorThesisEdit"
+							name="doctorThesis" required>
+						<div class="invalid-feedback">Please choose a username.</div>
 					</div>
 
-				</div>
-				</br>
 
-				<!-- DIRECTOR -->
+					<!-- TÍTULO -->
 
-				<div class="form-group">
-					<label for="directorThesisEdit">Director</label> <input type="text"
-						required="required" class="form-control" id="directorThesisEdit"
-						name="directorThesis"> </br>
-				</div>
+					<div class="form-group has-validation">
+						<label for="titleThesisEdit">Título</label>
+						<textarea class="form-control" id="titleThesisEdit"
+							style="height: 100px" required></textarea>
+						<div class="invalid-feedback">Please choose a username.</div>
 
-				<!-- CO-DIRECTOR -->
+					</div>
 
-				<div class="form-group">
-					<label for="coDirectorThesisEdit">Co-director</label> <input
-						type="text" required="required" class="form-control"
-						id="coDirectorThesisEdit" name="coDirectorThesis"> </br>
-				</div>
 
-				<!-- URL -->
+					<!-- FECHA DEFENSA -->
 
-				<div class="form-group">
-					<label for="urlThesisEdit">URL</label>
-					<textarea class="form-control" id="urlThesisEdit" style="height: 100px"></textarea>
-					</br>
-				</div>
+					<div class="form-group has-validation">
+						<label for="dateDefenseThesisEdit" class="col-form-label">Fecha
+							de defensa</label>
+						<div class="input-group date" id="datepicker">
+							<input id="dateDefenseThesisEdit" name="dateDefenseThesis"
+								type="text" class="form-control" required>
+							<div class="invalid-feedback">Please choose a username.</div>
+							<span class="input-group-text bg-white d-block"><span
+								class="input-group-append"> <i class="bi bi-calendar3"></i></span>
 
-				<!-- ACTIVO -->
+							</span>
+						</div>
 
-				<div class="form-group">
-					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example">
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select></br>
-				</div>
-<input
-						type="hidden" id="idThesisUpdate"> </br>
-				</br>
+					</div>
+
+
+					<!-- DIRECTOR -->
+
+					<div class="form-group has-validation">
+						<label for="directorThesisEdit">Director</label> <input
+							type="text" autocomplete="off" class="form-control"
+							id="directorThesisEdit" name="directorThesis" required>
+						<div class="invalid-feedback">Please choose a username.</div>
+					</div>
+
+					<!-- CO-DIRECTOR -->
+
+					<div class="form-group">
+						<label for="coDirectorThesisEdit">Co-director</label> <input
+							autocomplete="off" type="text" class="form-control"
+							id="coDirectorThesisEdit" name="coDirectorThesis">
+					</div>
+
+					<!-- URL -->
+
+					<div class="form-group has-validation">
+						<label for="urlThesisEdit">URL</label>
+						<input
+							type="url" class="form-control"
+							id="urlThesisEdit" name="urlThesisEdit">
+						
+					</div>
+
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label for="activeEdit">Activo</label> <select class="form-select"
+							id="activeEdit" aria-label="Floating label select example"
+							required>
+							<option value="1">Si</option>
+							<option value="0">No</option>
+						</select>
+					</div>
+					<input type="hidden" id="idThesisUpdate">
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -269,66 +285,70 @@
 
 <!-- MODAL - EDITAR FOTO THESIS -->
 
-<div class="modal" tabindex="-1" id="modalUpdatePhotoThesis">
+<div class="modal" tabindex="-1" id="modalUpdateCoverPageThesis">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 id="headerModalUpdatePhotoThesis" class="modal-title">Editar foto
-					Tesis</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+				<h5 id="headerModalmodalUpdateCoverPageThesis" class="modal-title">Editar
+					foto Tesis</h5>
+				<button id="btnCloseUpdateCoverPageThesis" type="button"
+					class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
+				<form id="formUpdateCoverPageThesis"
+					class="row g-3 needs-validation">
 
+					<!-- PORTADA -->
 
-				<!-- PORTADA -->
+					<div class="form-group has-validation">
+						<label for="coverPageThesisEdit">Imagen</label> <input type="file"
+							name="file" class="form-control form-control-sm"
+							id="coverPageThesisEdit" required>
+						<div class="invalid-feedback">Please choose a username.</div>
+					</div>
 
-				<div class="form-group">
-					<label for="coverPageThesisEdit">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm"
-						id="coverPageThesisEdit"> </br>
-				</div>
-
-<input
-						type="hidden" id="idThesisUpdatePhoto"> </br>
-				</br>
+					<input type="hidden" id="idThesisUpdateCoverPage">
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdatePhotoThesis">Aceptar</button>
+					data-bs-dismiss="modal" id="btnAceptarUpdateCoverPageThesis">Aceptar</button>
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdatePhotoThesis">Cancelar</button>
+					data-bs-dismiss="modal" id="btnCancelarUpdateCoverPageThesis">Cancelar</button>
 
 			</div>
 		</div>
 	</div>
 </div>
 
-	<!-- MODAL - ELIMINAR TESIS -->
+<!-- MODAL - ELIMINAR TESIS -->
 
-	<div class="modal" tabindex="-1" id="modalDeleteThesis">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 id="headerModalDeleteThesis" class="modal-title">Eliminar
-						equipo</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<label>¿Estás seguro de querer eliminar este equipo?</label> <input
-						type="hidden" id="idThesisDelete"> </br>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarDeleteThesis">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarDeleteThesis">Cancelar</button>
+<div class="modal" tabindex="-1" id="modalDeleteThesis">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalDeleteThesis" class="modal-title">Eliminar
+					equipo</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label>¿Estás seguro de querer eliminar este equipo?</label> <input
+					type="hidden" id="idThesisDelete">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarDeleteThesis">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarDeleteThesis">Cancelar</button>
 
-				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+	integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+	crossorigin="anonymous"></script>

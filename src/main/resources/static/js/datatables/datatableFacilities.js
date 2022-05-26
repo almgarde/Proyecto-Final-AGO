@@ -3,8 +3,24 @@ function getDatatableFacilities() {
 	let table = $('#facilitiesDatatable').DataTable({
 		"sAjaxSource": "/management/getFacilitiesData",
 		"sAjaxDataProp": "",
+		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"language": {
+			"lengthMenu": "Mostrando _MENU_ entradas",
+			"emptyTable": "Sin datos en esta tabla",
+			"zeroRecords": "No se han encontrado coincidencias",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+			"infoFiltered": "(filtrado de _MAX_ entradas)",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Ultimo",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+		},
 		"order": [[0, "desc"]],
 		"aoColumns": [
 			{
@@ -89,7 +105,7 @@ function getDatatableFacilities() {
 				}
 			});
 			$('#photoFacilitiesActual').append(verFoto);
-			
+
 			$('td:eq(3)', row).html(verFoto);
 
 			// Características
@@ -117,7 +133,7 @@ function getDatatableFacilities() {
 			$('td:eq(7)', row).html(activo);
 
 			// Acciones 	
-			
+
 			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
 				text: 'Editar',
@@ -232,22 +248,105 @@ function getDatatableFacilities() {
 
 
 	$(document).on("click", "#btnAceptarAddFacilities", function(e) {
-		e.preventDefault();
-		anyadirNuevoEquipo();
+		$('#modalAddFacilities').modal('show');
 
+		var form = $("#formAddFacilities");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault()
+			e.stopPropagation()
+
+		} else {
+
+			anyadirNuevoEquipo();
+			$('#modalAddFacilities').modal('hide');
+
+		}
+		form.addClass('was-validated')
+
+
+	});
+
+	$(document).on("click", "#btnCancelarAddFacilities", function() {
+		$("#formAddFacilities").removeClass('was-validated');
+		$("#nameFacility").val('');
+		$("#photoFacility").val('');
+		$("#idTechCatActiveSelect").val('');
+		$("#featuresFacility").val('');
+		$("#active").val('1');
+	});
+
+	$(document).on("click", "#btnCloseAddFacilities", function() {
+		$("#formAddFacilities").removeClass('was-validated');
+		$("#nameFacility").val('');
+		$("#photoFacility").val('');
+		$("#idTechCatActiveSelect").val('');
+		$("#featuresFacility").val('');
+		$("#active").val('1');
 	});
 
 	$(document).on("click", "#btnAceptarUpdateFacilities", function(e) {
-		e.preventDefault();
-		editarEquipo();
+		$('#modalUpdateFacilities').modal('show');
+
+		var form = $("#formUpdateFacilities");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault()
+			e.stopPropagation()
+
+		} else {
+
+			editarEquipo();
+			$('#modalUpdateFacilities').modal('hide');
+
+		}
+		form.addClass('was-validated')
+
 
 	});
-	
+
+	$(document).on("click", "#btnCancelarUpdateFacilities", function(e) {
+		$("#formUpdateFacilities").removeClass('was-validated');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdateFacilities", function(e) {
+		$("#formUpdateFacilities").removeClass('was-validated');
+
+	});
+
 	$(document).on("click", "#btnAceptarUpdatePhotoFacilities", function(e) {
-		e.preventDefault();
-		editarFotoEquipo();
+		$('#modalUpdatePhotoFacilities').modal('show');
+
+		var form = $("#formUpdatePhotoFacilities");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault()
+			e.stopPropagation()
+
+		} else {
+
+			editarFotoEquipo();
+			$('#modalUpdatePhotoFacilities').modal('hide');
+
+		}
+		form.addClass('was-validated')
+
 
 	});
+
+	$(document).on("click", "#btnCancelarUpdatePhotoFacilities", function(e) {
+		$("#formUpdatePhotoFacilities").removeClass('was-validated');
+		$("#photoFacilityEdit").val('');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdatePhotoFacilities", function(e) {
+		$("#formUpdatePhotoFacilities").removeClass('was-validated');
+		$("#photoFacilityEdit").val('');
+
+	});
+
 
 	$(document).on("click", "#btnAceptarDeleteFacilities", function(e) {
 		e.preventDefault();
@@ -293,9 +392,9 @@ function mostrarModalUpdateFacilities(idFacility, nameFacility, idTechcat, activ
 		$('#activeEdit').val('1');
 	} else {
 		$('#activeEdit').val('0');
-		
+
 	}
-	
+
 	$("#modalUpdateFacilities").modal('toggle');
 }
 
@@ -305,7 +404,7 @@ function mostrarModalUpdatePhotoFacilities(idFacility) {
 }
 
 function mostrarModalDeleteFacilities(idFacility) {
-		$('#idFacilitiesDelete').val(idFacility);
+	$('#idFacilitiesDelete').val(idFacility);
 	$("#modalDeleteFacilities").modal('toggle');
 }
 
@@ -327,152 +426,134 @@ function anyadirNuevoEquipo() {
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#facilitiesDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#facilitiesDatatable').DataTable().ajax.reload();
+		$("#formAddFacilities").removeClass('was-validated');
 		$("#nameFacility").val('');
 		$("#photoFacility").val('');
-		$("#idTechCat").val('');
+		$("#idTechCatActiveSelect").val('');
 		$("#featuresFacility").val('');
 		$("#active").val('1');
 	});
 }
-	function editarEquipo() {
+function editarEquipo() {
 
-		let form = new FormData();
+	let form = new FormData();
 
-		form.append("nameFacility", $("#nameFacilityEdit").val());
-		form.append("idTechCat", $("#idTechCatActiveSelectEdit").val());
-		form.append("featuresFacility", $("#featuresFacilityEdit").val());
-		form.append("idFacility", $("#idFacilityUpdate").val());
-		form.append("active", $("#activeEdit").val());
+	form.append("nameFacility", $("#nameFacilityEdit").val());
+	form.append("idTechCat", $("#idTechCatActiveSelectEdit").val());
+	form.append("featuresFacility", $("#featuresFacilityEdit").val());
+	form.append("idFacility", $("#idFacilityUpdate").val());
+	form.append("active", $("#activeEdit").val());
 
-		$.ajax({
-			url: '/management/updateFacilitiesData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
-
-
-
-
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/updateFacilitiesData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#facilitiesDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#facilitiesDatatable').DataTable().ajax.reload();
-			$("#nameFacilityEdit").val('');
-			$("#idTechCatEdit").val('');
-			$("#featuresFacilityEdit").val('');
-			$("#idFacilityUpdate").val('');
-			$("#activeEdit").val('1');
-		});
-	}
-	
-	function editarFotoEquipo() {
 
-		let form = new FormData();
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
+		
+		$("#formUpdateFacilities").removeClass('was-validated');
+		$("#nameFacilityEdit").val('');
+		$("#idTechCatEdit").val('');
+		$("#featuresFacilityEdit").val('');
+		$("#idFacilityUpdate").val('');
+		$("#activeEdit").val('1');
+	});
+}
 
-		form.append("file", $('#photoFacilityEdit')[0].files[0]);
-		form.append("idFacility", $("#idFacilityPhotoUpdate").val());
+function editarFotoEquipo() {
 
-		$.ajax({
-			url: '/management/updatePhotoFacilitiesData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
+	let form = new FormData();
 
+	form.append("file", $('#photoFacilityEdit')[0].files[0]);
+	form.append("idFacility", $("#idFacilityPhotoUpdate").val());
 
-
-
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/updatePhotoFacilitiesData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#facilitiesDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#facilitiesDatatable').DataTable().ajax.reload();
-$('#photoFacilityEdit').val('');
-		});
-	}
+
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
+		
+		$('#photoFacilityEdit').val('');
+		$("#formUpdatePhotoFacilities").removeClass('was-validated');
+	});
+}
 
 function eliminarEquipo() {
 
-		let form = new FormData();
+	let form = new FormData();
 
-		form.append("idFacility", $("#idFacilitiesDelete").val());
+	form.append("idFacility", $("#idFacilitiesDelete").val());
 
-		$.ajax({
-			url: '/management/deleteFacilitiesData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
-
-
-
-
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/deleteFacilitiesData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#facilitiesDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#facilitiesDatatable').DataTable().ajax.reload();
-		});
-	}
+
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
+		
+	});
+}

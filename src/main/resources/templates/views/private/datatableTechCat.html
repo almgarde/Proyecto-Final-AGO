@@ -1,8 +1,10 @@
+<div id="response"></div>
+
 <div>
 	<button type="button" id="formAddTechCatBtn" class="btn btn-secondary">
 		<a href="javascript: mostrarModalAddTechCat();">Añadir nueva categoría técnica</a>
 	</button>
-	<button type="button" class="btn btn-warning">Generar Excel</button>
+	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/techCat}">Generar Excel</a></button>
 </div>
 
 <!-- DATATABLE -->
@@ -44,7 +46,7 @@
 			<div class="modal-header">
 				<h5 id="headerModalAddTechCat" class="modal-title">Añadir nueva
 					categoría técnica</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseAddTechCat" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -64,13 +66,13 @@
 				<!-- ACTIVO -->
 				<div class="form-group">
 					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example">
+						id="active" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 				</form>
-				</br>
+				
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -91,7 +93,7 @@
 			<div class="modal-header">
 				<h5 id="headerModalUpdateTechCat" class="modal-title">Editar
 					categoría técnica</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseUpdateTechCat" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -105,21 +107,21 @@
 							class="form-control" id="nameTechCatEdit" name="nameTechCat" required>
 						<div class="invalid-feedback">Please choose a username.</div>
 					
-					</br>
+					
 				</div>
 
 				<!-- ACTIVO -->
 				<div class="form-group">
 					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example">
+						id="activeEdit" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 				<input
-						type="hidden" id="idTechCatUpdate"> </br>
+						type="hidden" id="idTechCatUpdate"> 
 						</form>
-				</br>
+				
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -145,7 +147,7 @@
 				</div>
 				<div class="modal-body">
 					<label>¿Estás seguro de querer eliminar esta categoría técnica?</label> <input
-						type="hidden" id="idTechCatDelete"> </br>
+						type="hidden" id="idTechCatDelete"> 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"

@@ -1,8 +1,10 @@
+<div id="response"></div>
+
 <div>
 	<button type="button" id="formAddNewsBtn" class="btn btn-secondary">
 		<a href="javascript: mostrarModalAddNews();">Añadir nueva noticia</a>
 	</button>
-	<button type="button" class="btn btn-warning">Generar Excel</button>
+	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/news}">Generar Excel</a></button>
 </div>
 
 
@@ -10,7 +12,8 @@
 
 <!-- DATATABLE -->
 
-<table id="newsDatatable" class="table datatableAdmin" style="text-align: center;">
+<table id="newsDatatable" class="table datatableAdmin"
+	style="text-align: center;">
 	<thead>
 		<tr>
 			<th class="atri" scope="col">ID</th>
@@ -19,7 +22,7 @@
 			<th class="atri" scope="col">Abstract</th>
 			<th class="atri" scope="col">Contenido</th>
 			<th class="atri" scope="col">Admin</th>
-			<th class="atri"scope="col">Fecha</th>
+			<th class="atri" scope="col">Fecha</th>
 			<th class="atri selectActive" scope="col">Activo</th>
 			<th scope="col"></th>
 		</tr>
@@ -35,7 +38,7 @@
 			<th class="atri" scope="col">Abstract</th>
 			<th class="atri" scope="col">Contenido</th>
 			<th class="atri" scope="col">Admin</th>
-			<th class="atri"scope="col">Fecha</th>
+			<th class="atri" scope="col">Fecha</th>
 			<th class="atri selectActive" scope="col">Activo</th>
 			<th scope="col"></th>
 		</tr>
@@ -115,57 +118,62 @@
 			<div class="modal-header">
 				<h5 id="headerModalAddNews" class="modal-title">Añadir nueva
 					noticia</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+				<button id="btnCloseAddNews" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+				<form id="formAddNews" class="row g-3 needs-validation">
 
+					<!-- TÍTULO -->
 
-				<!-- TÍTULO -->
+					<div class="form-group has-validation">
+						<label for="titleNews">Título</label>
+						<textarea class="form-control" id="titleNews"
+							style="height: 100px" required></textarea>
+						<div class="invalid-feedback">Please choose a username.</div>
 
-				<div class="form-group">
-					<label for="titleNews">Título</label>
-					<textarea class="form-control" id="titleNews" style="height: 100px"></textarea>
-					</br>
-				</div>
+					</div>
 
-				<!-- ABSTRACT -->
+					<!-- ABSTRACT -->
 
-				<div class="form-group">
-					<label for="abstractNews">Abstract</label>
-					<textarea class="form-control" id="abstractNews"
-						style="height: 100px"></textarea>
-					</br>
-				</div>
+					<div class="form-group ">
+						<label for="abstractNews">Abstract</label>
+						<textarea class="form-control" id="abstractNews"
+							style="height: 100px"></textarea>
+						
 
-				<!-- CONTENIDO -->
+					</div>
 
-				<div class="form-group">
-					<label for="contentNews">Contenido</label>
-					<textarea class="form-control" id="contentNews"
-						style="height: 100px"></textarea>
-					</br>
-				</div>
+					<!-- CONTENIDO -->
 
-				<!-- ACTIVO -->
+					<div class="form-group has-validation">
+						<label for="contentNews">Contenido</label>
+						<textarea class="form-control" id="contentNews"
+							style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
 
-				<div class="form-group">
-					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example">
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select></br>
-				</div>
+					</div>
 
-				<!-- IMAGEN -->
+					<!-- ACTIVO -->
 
-				<div class="form-group">
-					<label for="imageNews">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageNews">
-					</br>
-				</div>
+					<div class="form-group">
+						<label for="active">Activo</label> <select class="form-select"
+							id="active" aria-label="Floating label select example" required>
+							<option value="1">Si</option>
+							<option value="0">No</option>
+						</select>
+					</div>
 
-				</br>
+					<!-- IMAGEN -->
+
+					<div class="form-group has-validation">
+						<label for="imageNews">Imagen</label> <input type="file"
+							name="file" class="form-control form-control-sm" id="imageNews"
+							required>
+						<div class="invalid-feedback">Please choose a username.</div>
+
+					</div>
+
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -186,52 +194,57 @@
 			<div class="modal-header">
 				<h5 id="headerModalUpdateNews" class="modal-title">Editar
 					noticia</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+				<button id="btnCloseUpdateNews" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+				<form id="formUpdateNews" class="row g-3 needs-validation">
+
+					<!-- TÍTULO -->
+
+					<div class="form-group has-validation">
+						<label for="titleNewsEdit">Título</label>
+						<textarea class="form-control" id="titleNewsEdit"
+							style="height: 100px" required></textarea>
+						<div class="invalid-feedback">Please choose a username.</div>
+					</div>
 
 
-				<!-- TÍTULO -->
 
-				<div class="form-group">
-					<label for="titleNewsEdit">Título</label>
-					<textarea class="form-control" id="titleNewsEdit" style="height: 100px"></textarea>
-					</br>
-				</div>
+					<!-- ABSTRACT -->
 
-				<!-- ABSTRACT -->
+					<div class="form-group ">
+						<label for="abstractNewsEdit">Abstract</label>
+						<textarea class="form-control" id="abstractNewsEdit"
+							style="height: 100px" ></textarea>
+						
+					</div>
 
-				<div class="form-group">
-					<label for="abstractNewsEdit">Abstract</label>
-					<textarea class="form-control" id="abstractNewsEdit"
-						style="height: 100px"></textarea>
-					</br>
-				</div>
 
-				<!-- CONTENIDO -->
 
-				<div class="form-group">
-					<label for="contentNewsEdit">Contenido</label>
-					<textarea class="form-control" id="contentNewsEdit"
-						style="height: 100px"></textarea>
-					</br>
-				</div>
+					<!-- CONTENIDO -->
 
-				<!-- ACTIVO -->
+					<div class="form-group has-validation">
+						<label for="contentNewsEdit">Contenido</label>
+						<textarea class="form-control" id="contentNewsEdit"
+							style="height: 100px"required></textarea><div class="invalid-feedback">Please choose a username.</div>
 
-				<div class="form-group">
-					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example">
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select></br>
-				</div>
+					</div>
 
-				
-<input
-						type="hidden" id="idNewsUpdate"> </br>
-				</br>
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label for="activeEdit">Activo</label> <select class="form-select"
+							id="activeEdit" aria-label="Floating label select example"
+							required>
+							<option value="1">Si</option>
+							<option value="0">No</option>
+						</select>
+					</div>
+
+
+					<input type="hidden" id="idNewsUpdate">
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -245,64 +258,69 @@
 
 <!-- MODAL - EDITAR FOTO NOTICIA -->
 
-<div class="modal" tabindex="-1" id="modalUpdatePhotoNews">
+<div class="modal" tabindex="-1" id="modalUpdateImageNews">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 id="headerModalUpdatePhotoNews" class="modal-title">Editar
+				<h5 id="headerModalUpdateImageNews" class="modal-title">Editar
 					noticia</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+				<button id="btnCloseUpdateImageNews" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+				<form id="formUpdateImageNews" class="row g-3 needs-validation">
+
+					<!-- IMAGEN -->
+
+					<div class="form-group has-validation">
+						<label for="imageNewsEdit">Imagen</label> <input type="file"
+							name="file" class="form-control form-control-sm"
+							id="imageNewsEdit" required>
+						<div class="invalid-feedback">Please choose a username.</div>
+					</div>
 
 
-				<!-- IMAGEN -->
-
-				<div class="form-group">
-					<label for="imageNewsEdit">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageNewsEdit">
-					</br>
-				</div>
-<input
-						type="hidden" id="idNewsUpdatePhoto"> </br>
-				</br>
+					<input type="hidden" id="idNewsUpdateImage">
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdatePhotoNews">Aceptar</button>
+					data-bs-dismiss="modal" id="btnAceptarUpdateImageNews">Aceptar</button>
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdatePhotoNews">Cancelar</button>
+					data-bs-dismiss="modal" id="btnCancelarUpdateImageNews">Cancelar</button>
 			</div>
 		</div>
 	</div>
 </div>
 
 
-	<!-- MODAL - ELIMINAR NOTICIA -->
+<!-- MODAL - ELIMINAR NOTICIA -->
 
-	<div class="modal" tabindex="-1" id="modalDeleteNews">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 id="headerModalDeleteNews" class="modal-title">Eliminar
-						Noticia</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<label>¿Estás seguro de querer eliminar esta noticia?</label> <input
-						type="hidden" id="idNewsDelete"> </br>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarDeleteNews">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarDeleteNews">Cancelar</button>
+<div class="modal" tabindex="-1" id="modalDeleteNews">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 id="headerModalDeleteNews" class="modal-title">Eliminar
+					Noticia</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label>¿Estás seguro de querer eliminar esta noticia?</label> <input
+					type="hidden" id="idNewsDelete">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnAceptarDeleteNews">Aceptar</button>
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal" id="btnCancelarDeleteNews">Cancelar</button>
 
-				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+	integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+	crossorigin="anonymous"></script>

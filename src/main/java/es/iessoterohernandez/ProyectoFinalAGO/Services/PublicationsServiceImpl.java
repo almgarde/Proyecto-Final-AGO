@@ -235,15 +235,21 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 				p.setUpdateAdmin("agadelao");
 				p.setUpdateDate(new Date());
 
-				Publication pSaved = publicationDao.save(p);
-
 				List<AuthorDto> listaAuthorsDto = publicationsFormDto.getAuthorsPublication();
-				for (AuthorDto authorDto : listaAuthorsDto) {
-					AuthorsPublication authorsPublication = new AuthorsPublication();
-					authorsPublication.setIdPublication(pSaved);
-					authorsPublication.setNameAuthor(authorDto.getNameAuthor());
-					authorsPublication.setShortNameAuthor(authorDto.getShortNameAuthor());
-					authorsPublicationDao.save(authorsPublication);
+				if (listaAuthorsDto != null && !listaAuthorsDto.isEmpty()) {
+
+					publicationSaved = publicationDao.save(p);
+					for (AuthorDto authorDto : listaAuthorsDto) {
+						AuthorsPublication authorsPublication = new AuthorsPublication();
+						authorsPublication.setIdPublication(publicationSaved);
+						if (authorDto.getIdMember() != null) {
+							authorsPublication.setIdMember(Long.parseLong(authorDto.getIdMember()));
+						}
+						authorsPublication.setNameAuthor(authorDto.getNameAuthor());
+						authorsPublication.setShortNameAuthor(authorDto.getShortNameAuthor());
+						authorsPublicationDao.save(authorsPublication);
+					}
+
 				}
 
 				LOGGER.info("PublicationsServiceImpl addPublications .- Publicación almacenada correctamente");
@@ -293,7 +299,7 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 					}
 					p.setUpdateAdmin("agadelao");
 					p.setUpdateDate(new Date());
-					Publication pSaved = publicationDao.save(p);
+
 					List<AuthorsPublication> listaAutores = authorsPublicationDao.findByIdPublication(p);
 					if (listaAutores != null && !listaAutores.isEmpty()) {
 						for (AuthorsPublication authorsPublication : listaAutores) {
@@ -301,13 +307,22 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 						}
 					}
 					List<AuthorDto> listaAuthorsDto = publicationsFormDto.getAuthorsPublication();
-					for (AuthorDto authorDto : listaAuthorsDto) {
-						AuthorsPublication authorsPublication = new AuthorsPublication();
-						authorsPublication.setIdPublication(pSaved);
-						authorsPublication.setNameAuthor(authorDto.getNameAuthor());
-						authorsPublication.setShortNameAuthor(authorDto.getShortNameAuthor());
-						authorsPublicationDao.save(authorsPublication);
+
+					if (listaAuthorsDto != null && !listaAuthorsDto.isEmpty()) {
+						publicationUpdated = publicationDao.save(p);
+						for (AuthorDto authorDto : listaAuthorsDto) {
+							AuthorsPublication authorsPublication = new AuthorsPublication();
+							authorsPublication.setIdPublication(publicationUpdated);
+							if (authorDto.getIdMember() != null) {
+								authorsPublication.setIdMember(Long.parseLong(authorDto.getIdMember()));
+							}
+
+							authorsPublication.setNameAuthor(authorDto.getNameAuthor());
+							authorsPublication.setShortNameAuthor(authorDto.getShortNameAuthor());
+							authorsPublicationDao.save(authorsPublication);
+						}
 					}
+
 				}
 				LOGGER.info("PublicationsServiceImpl updatePublications .- Publicación almacenada correctamente");
 
@@ -315,7 +330,8 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 				LOGGER.error("PublicationsServiceImpl updatePublications .- Error: Parámetros nulos");
 			}
 		} catch (Exception e) {
-			LOGGER.error("PublicationsServiceImpl updatePublications .- Error no controlado al actualizar la publicación");
+			LOGGER.error(
+					"PublicationsServiceImpl updatePublications .- Error no controlado al actualizar la publicación");
 			throw e;
 		}
 
@@ -324,12 +340,11 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 		return publicationUpdated;
 
 	}
-	
+
 	@Override
 	public void deletePublications(Map<String, String> publicationData) throws Exception {
 
 		LOGGER.info("PublicationsServiceImpl deletePublications .- Inicio");
-
 
 		try {
 			if (publicationData != null && !publicationData.isEmpty()) {
@@ -338,7 +353,7 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 						.findByIdPublication(Long.parseLong(publicationData.get("idPublication")));
 
 				if (p != null) {
-					
+
 					List<AuthorsPublication> listaAutores = authorsPublicationDao.findByIdPublication(p);
 					if (listaAutores != null && !listaAutores.isEmpty()) {
 						for (AuthorsPublication authorsPublication : listaAutores) {
@@ -354,12 +369,12 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 				LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros nulos");
 			}
 		} catch (Exception e) {
-			LOGGER.error("PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
+			LOGGER.error(
+					"PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
 			throw e;
 		}
 
 		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
-
 
 	}
 

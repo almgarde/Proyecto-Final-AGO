@@ -1,10 +1,13 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +51,7 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.Publicatio
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.TechCatDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ThesisDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsFormDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Utils.GeneratorExcels;
 
 @Controller
 @RequestMapping("/management")
@@ -324,6 +328,30 @@ public class AdminController {
 
 		LOGGER.info("AdminController deleteMembersData .- Fin");
 	}
+	
+	@GetMapping("/generateExcel/news")
+	public void exportToExcelNews(HttpServletResponse response) throws Exception {
+		List<NewsDatatableDto> listaNews = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataNews.xlsx\"");
+
+			listaNews = newsService.getAllNewsData();
+
+			if (listaNews != null && !listaNews.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelNews(response, listaNews);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
+	}
 
 	// CATEGORÍAS PROFESIONALES
 
@@ -428,6 +456,30 @@ public class AdminController {
 		LOGGER.info("AdminController deleteMembersData .- Fin");
 	}
 
+	@GetMapping("/generateExcel/proCat")
+	public void exportToExcelProCat(HttpServletResponse response) throws Exception {
+		List<ProCatDatatableDto> listaProCat = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataProCat.xlsx\"");
+
+			listaProCat = proCatService.getAllProCatData();
+
+			if (listaProCat != null && !listaProCat.isEmpty()) {
+				GeneratorExcels generatorExcelProCat = new GeneratorExcels();
+
+				generatorExcelProCat.exportExcelProCat(response, listaProCat);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
+	}
+
 	// CATEGORÍAS TÉCNICAS
 
 	@GetMapping("/getTechCatData")
@@ -528,6 +580,30 @@ public class AdminController {
 		}
 
 		LOGGER.info("AdminController deleteMembersData .- Fin");
+	}
+	
+	@GetMapping("/generateExcel/techCat")
+	public void exportToExcelTechCat(HttpServletResponse response) throws Exception {
+		List<TechCatDatatableDto> listaTechCat = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataTechCat.xlsx\"");
+
+			listaTechCat = techCatService.getAllTechCatData();
+
+			if (listaTechCat != null && !listaTechCat.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelTechCat(response, listaTechCat);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
 	}
 
 	// MIEMBROS
@@ -672,6 +748,30 @@ public class AdminController {
 
 		LOGGER.info("AdminController deleteMembersData .- Fin");
 	}
+	
+	@GetMapping("/generateExcel/members")
+	public void exportToExcelMembers(HttpServletResponse response) throws Exception {
+		List<MembersDatatableDto> listaMembers = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataMembers.xlsx\"");
+
+			listaMembers = membersService.getAllMembersData();
+
+			if (listaMembers != null && !listaMembers.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelMembers(response, listaMembers);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
+	}
 
 	// EQUIPOS DE INVESTIGACIÓN
 
@@ -815,6 +915,30 @@ public class AdminController {
 
 		LOGGER.info("AdminController addFacilitiesData .- Fin");
 	}
+	
+	@GetMapping("/generateExcel/facilities")
+	public void exportToExcelFacilities(HttpServletResponse response) throws Exception {
+		List<FacilitiesDatatableDto> listaFacilities = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataFacilities.xlsx\"");
+
+			listaFacilities = facilitiesService.getAllFacilitiesData();
+
+			if (listaFacilities != null && !listaFacilities.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelFacilities(response, listaFacilities);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
+	}
 
 	// PUBLICACIONES
 
@@ -923,6 +1047,30 @@ public class AdminController {
 
 		LOGGER.info("AdminController addFacilitiesData .- Fin");
 
+	}
+	
+	@GetMapping("/generateExcel/publications")
+	public void exportToExcelPublications(HttpServletResponse response) throws Exception {
+		List<PublicationsDatatableDto> listaPublications = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataPublications.xlsx\"");
+
+			listaPublications = publicationsService.getAllPublicationsData();
+
+			if (listaPublications != null && !listaPublications.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelPublications(response, listaPublications);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
 	}
 
 	// PROYECTOS
@@ -1067,6 +1215,30 @@ public class AdminController {
 
 		LOGGER.info("AdminController deleteMembersData .- Fin");
 	}
+	
+	@GetMapping("/generateExcel/projects")
+	public void exportToExcelProjects(HttpServletResponse response) throws Exception {
+		List<ProjectsDatatableDto> listaProjects = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataProjects.xlsx\"");
+
+			listaProjects = projectsService.getAllProjectsData();
+
+			if (listaProjects != null && !listaProjects.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelProjects(response, listaProjects);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
+	}
 
 	// TESIS
 
@@ -1209,6 +1381,30 @@ public class AdminController {
 
 		LOGGER.info("AdminController deleteMembersData .- Fin");
 	}
+	
+	@GetMapping("/generateExcel/thesis")
+	public void exportToExcelThesis(HttpServletResponse response) throws Exception {
+		List<ThesisDatatableDto> listaThesis = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataThesis.xlsx\"");
+
+			listaThesis = thesisService.getAllThesisData();
+
+			if (listaThesis != null && !listaThesis.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelThesis(response, listaThesis);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
+	}
 
 	// LINKS
 
@@ -1350,6 +1546,30 @@ public class AdminController {
 		}
 
 		LOGGER.info("AdminController deleteMembersData .- Fin");
+	}
+	
+	@GetMapping("/generateExcel/links")
+	public void exportToExcelLinks(HttpServletResponse response) throws Exception {
+		List<LinksDatatableDto> listaLinks = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataLinks.xlsx\"");
+
+			listaLinks = linksService.getAllLinksData();
+
+			if (listaLinks != null && !listaLinks.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelLinks(response, listaLinks);
+			} else {
+				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+
+			throw e;
+		}
 	}
 
 }

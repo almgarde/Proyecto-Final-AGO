@@ -1,9 +1,11 @@
+<div id="response"></div>
+
 <div>
 	<button type="button" id="formAddProCatBtn" class="btn btn-secondary">
 		<a href="javascript: mostrarModalAddProCat();">Añadir nueva
 			categoría profesional</a>
 	</button>
-	<button type="button" class="btn btn-warning">Generar Excel</button>
+	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/proCat}">Generar Excel</a></button>
 </div>
 
 <!-- DATATABLE -->
@@ -45,7 +47,7 @@
 			<div class="modal-header">
 				<h5 id="headerModalAddProCat" class="modal-title">Añadir nueva
 					categoría profesional</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseAddProCat"  type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			
@@ -95,7 +97,7 @@
 			<div class="modal-header">
 				<h5 id="headerModalUpdateProCat" class="modal-title">Editar
 					categoría profesional</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseUpdateProCat" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			
@@ -108,21 +110,21 @@
 					<label for="nameProCatEdit">Categoría profesional</label>
 					<input autocomplete="off" type="text"
 							 class="form-control" id="nameProCatEdit"
-							name="nameProCat"><div class="invalid-feedback" required>Please choose a username.</div>
+							name="nameProCat" required><div class="invalid-feedback" >Please choose a username.</div>
 					
-					</br>
+					
 				</div>
 
 				<!-- ACTIVO -->
 				<div class="form-group">
 					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example">
+						id="activeEdit" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 				<input
-						type="hidden" id="idProCatUpdate"> </br>
+						type="hidden" id="idProCatUpdate"> 
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -150,7 +152,7 @@
 				</div>
 				<div class="modal-body">
 					<label>¿Estás seguro de querer eliminar esta categoría profesional?</label> <input
-						type="hidden" id="idProCatDelete"> </br>
+						type="hidden" id="idProCatDelete"> 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"

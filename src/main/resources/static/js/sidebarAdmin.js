@@ -12,11 +12,15 @@ $(document).ready(function() {
 
 	// Data Picker 
 
-	if($('#inputCatPublication').val()=="true") {
+	if ($('#inputCatPublication').val() == "true") {
 		$('#sidebarPublication').click();
 		$('#publicationsDatatable').DataTable().ajax.reload();
 	}
-	
+
+
+
+
+
 
 
 });
@@ -93,5 +97,46 @@ function activateDatePicker() {
 		language: "es"
 	});
 }
+
+function okMessage() {
+
+	$("#response").animate({
+		height: '+=72px'
+	}, 300);
+
+	$('<div class="alert alert-success">' +
+		'<button type="button" class="close" data-dismiss="alert">' +
+		'&times;</button>success</div>').hide().appendTo('#response').fadeIn(1000);
+
+	$(".alert").delay(3000).fadeOut(
+
+		function() {
+			$(this).remove();
+		});
+
+
+	$("#response").delay(4000).animate({
+		height: '-=72px'
+	}, 300);
+
+};
+
+function errorMessage() {
+	$("#response").animate({
+		height: '+=72px'
+	}, 300);
+	$('<div class="alert alert-danger">' +
+		'<button type="button" class="close" data-dismiss="alert">' +
+		'&times;</button>Failed</div>').hide().appendTo('#response').fadeIn(1000);
+
+	$(".alert").delay(3000).fadeOut(
+		function() {
+			$(this).remove();
+		});
+
+	$("#response").delay(4000).animate({
+		height: '-=72px'
+	}, 300);
+};
 
 

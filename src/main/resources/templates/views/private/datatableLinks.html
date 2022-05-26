@@ -1,8 +1,10 @@
+<div id="response"></div>
+
 <div>
 	<button type="button" id="formAddLinksBtn" class="btn btn-secondary">
 		<a href="javascript: mostrarModalAddLinks();">Añadir nuevo link</a>
 	</button>
-	<button type="button" class="btn btn-warning">Generar Excel</button>
+	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/links}">Generar Excel</a></button>
 </div>
 
 <!-- DATATABLE -->
@@ -65,49 +67,54 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 id="headerModalAddLinks" class="modal-title">Añadir nuevo link</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseAddLinks" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-
+<form id="formAddLinks" class="row g-3 needs-validation">
 
 				<!-- TÍTULO -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="titleLinks">Título</label>
-					<textarea class="form-control" id="titleLinks" style="height: 100px"></textarea>
-					</br>
+					<input autocomplete="off" type="text"
+						class="form-control" id="titleLinks"
+						name="titleLinks" required><div class="invalid-feedback">Please choose a username.</div> 
+				
+				
 				</div>
 				
 				
 				<!-- IMAGEN -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="imageLinks">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageLinks">
-					</br>
+						name="file" class="form-control form-control-sm" id="imageLinks" required><div class="invalid-feedback">Please choose a username.</div> 
+				
 				</div>
 				
 				
 				<!-- URL -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="urlLinks">URL</label>
-					<textarea class="form-control" id="urlLinks"
-						style="height: 100px"></textarea>
-					</br>
+					<input autocomplete="off" type="url"
+						class="form-control" id="urlLinks"
+						name="titleLinks" required>
+				<div class="invalid-feedback">Please choose a username.</div> 
+					
 				</div>
 
 				<!-- ACTIVO -->
 				<div class="form-group">
 					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example">
+						id="active" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 				
-				</br>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -127,41 +134,44 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 id="headerModalUpdateLinks" class="modal-title">Editar link</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseUpdateLinks" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-
+<form id="formUpdateLinks" class="row g-3 needs-validation">
 				<!-- TÍTULO -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="titleLinksEdit">Título</label>
-					<textarea class="form-control" id="titleLinksEdit" style="height: 100px"></textarea>
-					</br>
+					<input autocomplete="off" type="text"
+						class="form-control" id="titleLinksEdit"
+						name="titleLinks" required><div class="invalid-feedback">Please choose a username.</div> 
+					
 				</div>
 				
 				
 				<!-- URL -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="urlLinksEdit">URL</label>
-					<textarea class="form-control" id="urlLinksEdit"
-						style="height: 100px"></textarea>
-					</br>
+					<input autocomplete="off" type="url"
+						class="form-control" id="urlLinksEdit"
+						name="titleLinks" required><div class="invalid-feedback">Please choose a username.</div> 
+					
 				</div>
 
 				<!-- ACTIVO -->
 				<div class="form-group">
 					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example">
+						id="activeEdit" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 				<input
-						type="hidden" id="idLinksUpdate"> </br>
-				</br>
+						type="hidden" id="idLinksUpdate"> 
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -174,39 +184,39 @@
 	</div>
 </div>
 
-<!-- MODAL - EDITAR FOTO LINK -->
+<!-- MODAL - EDITAR IMAGEN LINK -->
 
-<div class="modal" tabindex="-1" id="modalUpdatePhotoLinks">
+<div class="modal" tabindex="-1" id="modalUpdateImageLinks">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 id="headerModalUpdatePhotoLinks" class="modal-title">Editar link</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<h5 id="headerModalUpdateImageLinks" class="modal-title">Editar link</h5>
+				<button id="btnCloseUpdateImageLinks" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
 
-				
+				<form id="formUpdateImageLinks" class="row g-3 needs-validation">
 				
 				<!-- IMAGEN -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="imageLinksEdit">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageLinksEdit">
-					</br>
+						name="file" class="form-control form-control-sm" id="imageLinksEdit" required><div class="invalid-feedback">Please choose a username.</div> 
+					
 				</div>
 				
 
 				<input
-						type="hidden" id="idLinksUpdatePhoto"> </br>
-				</br>
+						type="hidden" id="idLinksUpdateImage"> 
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdatePhotoLinks">Aceptar</button>
+					data-bs-dismiss="modal" id="btnAceptarUpdateImageLinks">Aceptar</button>
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdatePhotoLinks">Cancelar</button>
+					data-bs-dismiss="modal" id="btnCancelarUpdateImageLinks">Cancelar</button>
 
 			</div>
 		</div>
@@ -226,7 +236,7 @@
 				</div>
 				<div class="modal-body">
 					<label>¿Estás seguro de querer eliminar este link?</label> <input
-						type="hidden" id="idLinksDelete"> </br>
+						type="hidden" id="idLinksDelete"> 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"

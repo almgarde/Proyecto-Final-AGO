@@ -2,8 +2,24 @@ function getDatatableTechCat() {
 	let table = $('#techCatDatatable').DataTable({
 		"sAjaxSource": "/management/getTechCatData",
 		"sAjaxDataProp": "",
+		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"language": {
+			"lengthMenu": "Mostrando _MENU_ entradas",
+			"emptyTable": "Sin datos en esta tabla",
+			"zeroRecords": "No se han encontrado coincidencias",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+			"infoFiltered": "(filtrado de _MAX_ entradas)",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Ultimo",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+		},
 		"order": [[0, "desc"]],
 		"aoColumns": [
 			{
@@ -166,6 +182,15 @@ function getDatatableTechCat() {
 
 	});
 	
+	$(document).on("click", "#btnCancelarAddTechCat", function() {
+$("#formAddTechCat").removeClass('was-validated');
+});
+
+		$(document).on("click", "#btnCloseAddTechCat", function() {
+$("#formAddTechCat").removeClass('was-validated');
+
+	});
+	
 	$(document).on("click", "#btnAceptarUpdateTechCat", function(e) {
 	
 		$('#modalUpdateTechCat').modal('show');
@@ -187,6 +212,15 @@ function getDatatableTechCat() {
 
 	});
 	
+	$(document).on("click", "#btnCancelarUpdateTechCat", function(e) {
+$("#formUpdateTechCat").removeClass('was-validated');
+
+	});
+	
+		$(document).on("click", "#btnCloseUpdateTechCat", function(e) {
+$("#formUpdateTechCat").removeClass('was-validated');
+
+	});
 
 	$(document).on("click", "#btnAceptarDeleteTechCat", function(e) {
 		e.preventDefault();
@@ -238,33 +272,22 @@ function anyadirNuevaTechCat() {
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#techCatDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#techCatDatatable').DataTable().ajax.reload();
+		
 		$("#formAddTechCat").removeClass('was-validated');
 		$("#nameTechCat").val('');
 		$("#active").val('1');
@@ -288,34 +311,23 @@ form.append("idTechCat", $("#idTechCatUpdate").val());
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#techCatDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#techCatDatatable').DataTable().ajax.reload();
-
+		
+$("#formUpdateTechCat").removeClass('was-validated');
 
 	});
 }
@@ -334,33 +346,22 @@ form.append("idTechCat", $("#idTechCatDelete").val());
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#techCatDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#techCatDatatable').DataTable().ajax.reload();
+		
 
 
 	});

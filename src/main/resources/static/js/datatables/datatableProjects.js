@@ -2,8 +2,24 @@ function getDatatableProjects() {
 	let table = $('#projectsDatatable').DataTable({
 		"sAjaxSource": "/management/getProjectsData",
 		"sAjaxDataProp": "",
+		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"language": {
+			"lengthMenu": "Mostrando _MENU_ entradas",
+			"emptyTable": "Sin datos en esta tabla",
+			"zeroRecords": "No se han encontrado coincidencias",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+			"infoFiltered": "(filtrado de _MAX_ entradas)",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Ultimo",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+		},
 		"order": [[0, "desc"]],
 		"aoColumns": [
 			{
@@ -123,7 +139,7 @@ function getDatatableProjects() {
 				click: function(e) {
 
 					e.preventDefault();
-					mostrarModalUpdatePhotoProjects(data.idProject);
+					mostrarModalUpdateImageProjects(data.idProject);
 				}
 			});
 
@@ -199,20 +215,99 @@ function getDatatableProjects() {
 	});
 
 	$(document).on("click", "#btnAceptarAddProjects", function(e) {
-		e.preventDefault();
-		anyadirNuevoProyecto();
+		
+		$('#modalAddProjects').modal('show');
+		var form = $("#formAddProjects");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			anyadirNuevoProyecto();
+			$('#modalAddProjects').modal('hide');
+
+		}
+		form.addClass('was-validated');
+		
+
+	});
+	
+					$(document).on("click", "#btnCancelarAddProjects", function() {
+$("#formAddProjects").removeClass('was-validated');
+		$("#titleProjects").val('');
+		$("#imageProjects").val('');
+		$("#descProjects").val('');
+		$("#active").val('1');
+});
+
+		$(document).on("click", "#btnCloseAddProjects", function() {
+$("#formAddProjects").removeClass('was-validated');
+		$("#titleProjects").val('');
+		$("#imageProjects").val('');
+		$("#descProjects").val('');
+		$("#active").val('1');
 
 	});
 	
 	$(document).on("click", "#btnAceptarUpdateProjects", function(e) {
-		e.preventDefault();
-		editarProyecto();
+		
+		$('#modalUpdateProjects').modal('show');
+		var form = $("#formUpdateProjects");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			editarProyecto();
+			$('#modalUpdateProjects').modal('hide');
+
+		}
+		form.addClass('was-validated');
+		
 
 	});
 	
-	$(document).on("click", "#btnAceptarUpdatePhotoProjects", function(e) {
-		e.preventDefault();
+	$(document).on("click", "#btnCancelarUpdateProjects", function(e) {
+$("#formUpdateProjects").removeClass('was-validated');
+
+	});
+	
+		$(document).on("click", "#btnCloseUpdateProjects", function(e) {
+$("#formUpdateProjects").removeClass('was-validated');
+
+	});
+
+	
+	$(document).on("click", "#btnAceptarUpdateImageProjects", function(e) {
+		$('#modalUpdateImageProjects').modal('show');
+		var form = $("#formUpdateImageProjects");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
 		editarImagenProyecto();
+			$('#modalUpdateImageProjects').modal('hide');
+
+		}
+		form.addClass('was-validated');
+		
+
+	});
+	
+		$(document).on("click", "#btnCancelarUpdateImageProjects", function(e) {
+$("#formUpdateImageProjects").removeClass('was-validated');
+
+	});
+	
+		$(document).on("click", "#btnCloseUpdateImageProjects", function(e) {
+$("#formUpdateImageProjects").removeClass('was-validated');
 
 	});
 
@@ -258,9 +353,9 @@ function mostrarModalUpdateProjects(idProject, titleProject, descriptionProject,
 	$("#modalUpdateProjects").modal('toggle');
 }
 
-function mostrarModalUpdatePhotoProjects(idProject) {
-	$('#idProjectUpdatePhoto').val(idProject);
-	$("#modalUpdatePhotoProjects").modal('toggle');
+function mostrarModalUpdateImageProjects(idProject) {
+	$('#idProjectUpdateImage').val(idProject);
+	$("#modalUpdateImageProjects").modal('toggle');
 }
 
 function mostrarModalDeleteProjects(idProject) {
@@ -287,33 +382,23 @@ form.append("titleProjects", $("#titleProjects").val());
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#projectsDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#projectsDatatable').DataTable().ajax.reload();
+		
+		$("#formAddProjects").removeClass('was-validated');
 		$("#titleProjects").val('');
 		$("#imageProjects").val('');
 		$("#descProjects").val('');
@@ -340,33 +425,23 @@ form.append("titleProject", $("#titleProjectsEdit").val());
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#projectsDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#projectsDatatable').DataTable().ajax.reload();
+		
+		$("#formUpdateProjects").removeClass('was-validated');
 
 	});
 }
@@ -375,7 +450,7 @@ function editarImagenProyecto() {
 
 	let form = new FormData();
 form.append("file", $('#imageProjectsEdit')[0].files[0]);
-form.append("idProject", $("#idProjectUpdatePhoto").val());
+form.append("idProject", $("#idProjectUpdateImage").val());
 
 
 	$.ajax({
@@ -386,34 +461,24 @@ form.append("idProject", $("#idProjectUpdatePhoto").val());
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#projectsDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#projectsDatatable').DataTable().ajax.reload();
-
+		
+		$("#formUpdateImageProjects").removeClass('was-validated');
+$("#imageProjectsEdit").val('');
 	});
 }
 
@@ -432,33 +497,22 @@ form.append("idProject", $("#idProjectsDelete").val());
 		data: form,
 
 		success: function(data) {
+			if (data == '') {
+				$('#projectsDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#projectsDatatable').DataTable().ajax.reload();
+		
 
 	});
 }

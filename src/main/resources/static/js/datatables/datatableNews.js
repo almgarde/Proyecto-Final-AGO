@@ -2,8 +2,24 @@ function getDatatableNews() {
 	let table = $('#newsDatatable').DataTable({
 		"sAjaxSource": "/management/getNewsData",
 		"sAjaxDataProp": "",
+		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"language": {
+			"lengthMenu": "Mostrando _MENU_ entradas",
+			"emptyTable": "Sin datos en esta tabla",
+			"zeroRecords": "No se han encontrado coincidencias",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+			"infoFiltered": "(filtrado de _MAX_ entradas)",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Ultimo",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+		},
 		"order": [[0, "desc"]],
 		"aoColumns": [
 			{
@@ -118,7 +134,7 @@ function getDatatableNews() {
 				});
 			}
 			$('td:eq(7)', row).html(activo);
-			
+
 			// Acciones 	 	
 			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
@@ -140,7 +156,7 @@ function getDatatableNews() {
 				click: function(e) {
 
 					e.preventDefault();
-					mostrarModalUpdatePhotoNews(data.idNews);
+					mostrarModalUpdateImageNews(data.idNews);
 				}
 			});
 
@@ -181,20 +197,102 @@ function getDatatableNews() {
 	});
 
 	$(document).on("click", "#btnAceptarAddNews", function(e) {
-		e.preventDefault();
-		anyadirNuevaNoticia();
+		$('#modalAddNews').modal('show');
+
+		var form = $("#formAddNews");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			anyadirNuevaNoticia();
+			$('#modalAddNews').modal('hide');
+
+		}
+		form.addClass('was-validated');
+
 
 	});
 
-$(document).on("click", "#btnAceptarUpdateNews", function(e) {
-		e.preventDefault();
-		editarNews();
+	$(document).on("click", "#btnCancelarAddNews", function() {
+		$("#formAddNews").removeClass('was-validated');
+		$("#titleNews").val('');
+		$("#abstractNews").val('');
+		$("#contentNews").val('');
+		$("#active").val('1');
+		$('#imageNews').val('');
+	});
+
+	$(document).on("click", "#btnCloseAddNews", function() {
+		$("#formAddNews").removeClass('was-validated');
+		$("#titleNews").val('');
+		$("#abstractNews").val('');
+		$("#contentNews").val('');
+		$("#active").val('1');
+		$('#imageNews').val('');
 
 	});
-	
-	$(document).on("click", "#btnAceptarUpdatePhotoNews", function(e) {
-		e.preventDefault();
-		editarImagenNews();
+
+	$(document).on("click", "#btnAceptarUpdateNews", function(e) {
+		$('#modalUpdateNews').modal('show');
+
+		var form = $("#formUpdateNews");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			editarNews();
+			$('#modalUpdateNews').modal('hide');
+
+		}
+		form.addClass('was-validated');
+
+
+	});
+
+	$(document).on("click", "#btnCancelarUpdateNews", function(e) {
+		$("#formUpdateNews").removeClass('was-validated');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdateNews", function(e) {
+		$("#formUpdateNews").removeClass('was-validated');
+
+	});
+
+
+	$(document).on("click", "#btnAceptarUpdateImageNews", function(e) {
+		$('#modalUpdateImageNews').modal('show');
+
+		var form = $("#formUpdateImageNews");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+
+		} else {
+
+			editarImagenNews();
+			$('#modalUpdateImageNews').modal('hide');
+
+		}
+		form.addClass('was-validated');
+
+
+	});
+
+	$(document).on("click", "#btnCancelarUpdateImageNews", function(e) {
+		$("#formUpdateImageNews").removeClass('was-validated');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdatePhotoNews", function(e) {
+		$("#formUpdateImageNews").removeClass('was-validated');
 
 	});
 
@@ -267,31 +365,29 @@ function mostrarModalNewsImage(imagen) {
 }
 
 function mostrarModalUpdateNews(idNews, titleNews, abstractNews, contentNews, active) {
-debugger;
+
 	$('#titleNewsEdit').val(titleNews);
-
-
 
 	$('#abstractNewsEdit').val(abstractNews);
 	$('#contentNewsEdit').val(contentNews);
-		$('#idNewsUpdate').val(idNews);
+	$('#idNewsUpdate').val(idNews);
 	if (active == 'true') {
 		$('#activeEdit').val('1');
 	} else {
 		$('#activeEdit').val('0');
-		
+
 	}
-	
+
 	$("#modalUpdateNews").modal('toggle');
 }
 
-function mostrarModalUpdatePhotoNews(idNews) {
-	$('#idNewsUpdatePhoto').val(idNews);
-	$("#modalUpdatePhotoNews").modal('toggle');
+function mostrarModalUpdateImageNews(idNews) {
+	$('#idNewsUpdateImage').val(idNews);
+	$("#modalUpdateImageNews").modal('toggle');
 }
 
 function mostrarModalDeleteNews(idNews) {
-		$('#idNewsDelete').val(idNews);
+	$('#idNewsDelete').val(idNews);
 	$("#modalDeleteNews").modal('toggle');
 }
 
@@ -327,33 +423,23 @@ function anyadirNuevaNoticia() {
 		//			"active": $("#active").val()
 		//		},
 		success: function(data) {
+			if (data == '') {
+				$('#newsDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#newsDatatable').DataTable().ajax.reload();
+		
+		$("#formAddNews").removeClass('was-validated');
 		$("#titleNews").val('');
 		$("#abstractNews").val('');
 		$("#contentNews").val('');
@@ -364,122 +450,108 @@ function anyadirNuevaNoticia() {
 
 function editarNews() {
 
-		let form = new FormData();
+	let form = new FormData();
 
-		form.append("titleNews", $("#titleNewsEdit").val());
-		form.append("abstractNews", $("#abstractNewsEdit").val());
-		form.append("contentNews", $("#contentNewsEdit").val());
-		form.append("idNews", $("#idNewsUpdate").val());
-		form.append("active", $("#activeEdit").val());
+	form.append("titleNews", $("#titleNewsEdit").val());
+	form.append("abstractNews", $("#abstractNewsEdit").val());
+	form.append("contentNews", $("#contentNewsEdit").val());
+	form.append("idNews", $("#idNewsUpdate").val());
+	form.append("active", $("#activeEdit").val());
 
-		$.ajax({
-			url: '/management/updateNewsData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
-
-
-
-
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/updateNewsData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#newsDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#newsDatatable').DataTable().ajax.reload();
 
-		});
-	}
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
+		
+		$("#formUpdateNews").removeClass('was-validated');
+	});
+}
 
 
 function editarImagenNews() {
 
-		let form = new FormData();
+	let form = new FormData();
 
-form.append("file", $('#imageNewsEdit')[0].files[0]);
-		form.append("idNews", $("#idNewsUpdatePhoto").val());
+	form.append("file", $('#imageNewsEdit')[0].files[0]);
+	form.append("idNews", $("#idNewsUpdateImage").val());
 
-		$.ajax({
-			url: '/management/updateImageNewsData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
-
-
-
-
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/updateImageNewsData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#newsDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#newsDatatable').DataTable().ajax.reload();
 
-		});
-	}
-	
-	function eliminarNews() {
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
+		
+		$("#formUpdateImageNews").removeClass('was-validated');
 
-		let form = new FormData();
+	});
+}
 
+function eliminarNews() {
 
-		form.append("idNews", $("#idNewsDelete").val());
-
-		$.ajax({
-			url: '/management/deleteNewsData',
-			type: "POST",
-			processData: false,
-			contentType: false,
-			data: form,
-			success: function(data) {
+	let form = new FormData();
 
 
+	form.append("idNews", $("#idNewsDelete").val());
 
-
-				//			removePantallaLoader();
-				//			debugger;
-				//			if (!data || data == '') {
-				//				
-				//				refreshDataTable();
-				//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-				//			} else {
-				//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-				//			}
-
+	$.ajax({
+		url: '/management/deleteNewsData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			if (data == '') {
+				$('#newsDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
 			}
-			//error: function(data) {
-			//			removePantallaLoader();
-			//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//		}
-		}).done(function() {
-			$('#newsDatatable').DataTable().ajax.reload();
 
-		});
-	}
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
+		}
+	}).done(function() {
+		
+
+	});
+}
 

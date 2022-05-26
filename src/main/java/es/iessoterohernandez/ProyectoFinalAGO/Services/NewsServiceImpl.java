@@ -165,10 +165,10 @@ public class NewsServiceImpl implements NewsServiceI {
 	 */
 	@Override
 
-	public News addNews(Map<String, String> newsData , String imageNews) throws Exception {
+	public News addNews(Map<String, String> newsData, String imageNews) throws Exception {
 
 		LOGGER.info("NewsServiceImpl addNews .- Inicio");
-		
+
 		News newsSaved2 = null;
 
 		try {
@@ -177,7 +177,8 @@ public class NewsServiceImpl implements NewsServiceI {
 				News n = new News();
 
 				n.setTitleNews(newsData.get("titleNews"));
-				n.setAbstractNews(newsData.get("abstractNews"));
+				n.setAbstractNews("Not Abstract");
+				
 				n.setContentNews(newsData.get("contentNews"));
 				if (Integer.parseInt(newsData.get("active")) == 1) {
 					n.setActive(true);
@@ -188,12 +189,11 @@ public class NewsServiceImpl implements NewsServiceI {
 				n.setImageNews(imageNews);
 				n.setUpdateAdmin("agadelao");
 				n.setUpdateDate(new Date());
-				
+
 				News newsSaved = newsDao.save(n);
 				n.setImageNews(newsSaved.getIdNews() + imageNews);
 				newsSaved2 = newsDao.save(n);
 
-				
 				LOGGER.info("NewsServiceImpl addNews .- Noticia almacenada correctamente");
 
 			} else {
@@ -205,11 +205,11 @@ public class NewsServiceImpl implements NewsServiceI {
 		}
 
 		LOGGER.info("NewsServiceImpl addNews .- Fin");
-		
+
 		return newsSaved2;
 
 	}
-	
+
 	/**
 	 * Almacena una noticia en BDD
 	 * 
@@ -224,15 +224,16 @@ public class NewsServiceImpl implements NewsServiceI {
 		News newsUpdated = null;
 
 		try {
-			if (newsData != null && !newsData.isEmpty() ) {
+			if (newsData != null && !newsData.isEmpty()) {
 
-				News n = newsDao
-						.findByIdNews(Long.parseLong(newsData.get("idNews")));
+				News n = newsDao.findByIdNews(Long.parseLong(newsData.get("idNews")));
 
 				if (n != null) {
-					
+
 					n.setTitleNews(newsData.get("titleNews"));
+					
 					n.setAbstractNews(newsData.get("abstractNews"));
+
 					n.setContentNews(newsData.get("contentNews"));
 					if (Integer.parseInt(newsData.get("active")) == 1) {
 						n.setActive(true);
@@ -262,7 +263,7 @@ public class NewsServiceImpl implements NewsServiceI {
 		return newsUpdated;
 
 	}
-	
+
 	/**
 	 * Almacena una noticia en BDD
 	 * 
@@ -279,8 +280,7 @@ public class NewsServiceImpl implements NewsServiceI {
 		try {
 			if (newsData != null && !newsData.isEmpty() && imageNews != null) {
 
-				News n = newsDao
-						.findByIdNews(Long.parseLong(newsData.get("idNews")));
+				News n = newsDao.findByIdNews(Long.parseLong(newsData.get("idNews")));
 
 				if (n != null) {
 
@@ -304,18 +304,16 @@ public class NewsServiceImpl implements NewsServiceI {
 		return newsImageUpdated;
 
 	}
-	
+
 	@Override
 	public void deleteNews(Map<String, String> newsData) throws Exception {
 
 		LOGGER.info("PublicationsServiceImpl deletePublications .- Inicio");
 
-
 		try {
 			if (newsData != null && !newsData.isEmpty()) {
 
-				News n = newsDao
-						.findByIdNews(Long.parseLong(newsData.get("idNews")));
+				News n = newsDao.findByIdNews(Long.parseLong(newsData.get("idNews")));
 
 				if (n != null) {
 
@@ -328,16 +326,13 @@ public class NewsServiceImpl implements NewsServiceI {
 				LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros nulos");
 			}
 		} catch (Exception e) {
-			LOGGER.error("PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
+			LOGGER.error(
+					"PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
 			throw e;
 		}
 
 		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
 
-
 	}
-
-
-	
 
 }

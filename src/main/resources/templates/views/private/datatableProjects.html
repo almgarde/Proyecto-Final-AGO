@@ -1,8 +1,10 @@
+<div id="response"></div>
+
 <div>
 	<button type="button" id="formAddProjectsBtn" class="btn btn-secondary">
 		<a href="javascript: mostrarModalAddProjects();">Añadir nuevo proyecto</a>
 	</button>
-	<button type="button" class="btn btn-warning">Generar Excel</button>
+	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/projects}">Generar Excel</a></button>
 </div>
 
 <!-- DATATABLE -->
@@ -86,49 +88,49 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 id="headerModalAddProjects" class="modal-title">Añadir nuevo proyecto</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseAddProjects" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-
+<form id="formAddProjects" class="row g-3 needs-validation">
 
 				<!-- TÍTULO -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="titleProjects">Título</label>
-					<textarea class="form-control" id="titleProjects" style="height: 100px"></textarea>
-					</br>
+					<textarea class="form-control" id="titleProjects" style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
+					
 				</div>
 				
 				
 				<!-- IMAGEN -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="imageProjects">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageProjects">
-					</br>
+						name="file" class="form-control form-control-sm" id="imageProjects" required><div class="invalid-feedback">Please choose a username.</div>
+					
 				</div>
 				
 				
 				<!-- CONTENIDO -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="descProjects">Descripción</label>
 					<textarea class="form-control" id="descProjects"
-						style="height: 100px"></textarea>
-					</br>
+						style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
+					
 				</div>
 
 				<!-- ACTIVO -->
 				<div class="form-group">
 					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example">
+						id="active" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 				
-				</br>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -148,40 +150,40 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 id="headerModalUpdateProjects" class="modal-title">Editar proyecto</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseUpdateProjects" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-
+<form id="formUpdateProjects" class="row g-3 needs-validation">
 				<!-- TÍTULO -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="titleProjectsEdit">Título</label>
-					<textarea class="form-control" id="titleProjectsEdit" style="height: 100px"></textarea>
-					</br>
+					<textarea class="form-control" id="titleProjectsEdit" style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
+					
 				</div>
 
-				<!-- CONTENIDO -->
+				<!-- DESCRIPCIÓN -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="descProjectsEdit">Descripción</label>
 					<textarea class="form-control" id="descProjectsEdit"
-						style="height: 100px"></textarea>
-					</br>
+						style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
+					
 				</div>
 
 				<!-- ACTIVO -->
 				<div class="form-group">
 					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example">
+						id="activeEdit" aria-label="Floating label select example" required>
 						<option value="1">Si</option>
 						<option value="0">No</option>
-					</select></br>
+					</select>
 				</div>
 				<input
-						type="hidden" id="idProjectUpdate"> </br>
-				</br>
+						type="hidden" id="idProjectUpdate"> 
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
@@ -196,36 +198,37 @@
 
 <!-- MODAL - EDITAR FOTO PROYECTO -->
 
-<div class="modal" tabindex="-1" id="modalUpdatePhotoProjects">
+<div class="modal" tabindex="-1" id="modalUpdateImageProjects">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 id="headerModalUpdatePhotoProjects" class="modal-title">Editar
+				<h5 id="headerModalUpdateImageProjects" class="modal-title">Editar
 					foto de proyecto</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
+				<button id="btnCloseUpdateImageProjects" type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
 
-
+<form id="formUpdateImageProjects" class="row g-3 needs-validation">
 				<!-- IMAGEN -->
 
-				<div class="form-group">
+				<div class="form-group has-validation">
 					<label for="imageProjectsEdit">Imagen</label> <input type="file"
 						name="file" class="form-control form-control-sm"
-						id="imageProjectsEdit"> </br>
+						id="imageProjectsEdit" required><div class="invalid-feedback">Please choose a username.</div> 
 				</div>
 
 
 
-				<input type="hidden" id="idProjectUpdatePhoto"> </br> </br>
+				<input type="hidden" id="idProjectUpdateImage"> 
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdatePhotoProjects">Aceptar</button>
+					data-bs-dismiss="modal" id="btnAceptarUpdateImageProjects">Aceptar</button>
 				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdatePhotoProjects">Cancelar</button>
+					data-bs-dismiss="modal" id="btnCancelarUpdateImageProjects">Cancelar</button>
 
 			</div>
 		</div>
@@ -245,7 +248,7 @@
 				</div>
 				<div class="modal-body">
 					<label>¿Estás seguro de querer eliminar este proyecto?</label> <input
-						type="hidden" id="idProjectsDelete"> </br>
+						type="hidden" id="idProjectsDelete"> 
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"

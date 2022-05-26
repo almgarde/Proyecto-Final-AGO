@@ -2,8 +2,24 @@ function getDatatableProCat() {
 	let table = $('#proCatDatatable').DataTable({
 		"sAjaxSource": "/management/getProCatData",
 		"sAjaxDataProp": "",
+		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"language": {
+			"lengthMenu": "Mostrando _MENU_ entradas",
+			"emptyTable": "Sin datos en esta tabla",
+			"zeroRecords": "No se han encontrado coincidencias",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+			"infoFiltered": "(filtrado de _MAX_ entradas)",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Ultimo",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+		},
 		"order": [[0, "desc"]],
 		"aoColumns": [
 			{
@@ -164,6 +180,18 @@ function getDatatableProCat() {
 		form.addClass('was-validated')
 
 	});
+	
+	$(document).on("click", "#btnCancelarAddProCat", function() {
+$("#formAddProCat").removeClass('was-validated');
+		$("#nameProCat").val('');
+		$("#active").val('1');
+});
+
+		$(document).on("click", "#btnCloseAddProCat", function() {
+$("#formAddProCat").removeClass('was-validated');
+		$("#nameProCat").val('');
+		$("#active").val('1');
+});
 
 	$(document).on("click", "#btnAceptarUpdateProCat", function(e) {
 		
@@ -184,6 +212,17 @@ function getDatatableProCat() {
 		form.addClass('was-validated')
 
 	});
+	
+	$(document).on("click", "#btnCancelarUpdateProCat", function(e) {
+$("#formUpdateProCat").removeClass('was-validated');
+
+	});
+	
+		$(document).on("click", "#btnCloseUpdateProCat", function(e) {
+$("#formUpdateProCat").removeClass('was-validated');
+
+	});
+
 
 
 	$(document).on("click", "#btnAceptarDeleteProCat", function(e) {
@@ -249,33 +288,22 @@ function anyadirNuevaProCat() {
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#proCatDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#proCatDatatable').DataTable().ajax.reload();
+		
 		$("#formAddProCat").removeClass('was-validated');
 		$("#nameProCat").val('');
 		$("#active").val('1');
@@ -298,34 +326,23 @@ function editarProCat() {
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#proCatDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#proCatDatatable').DataTable().ajax.reload();
-
+		
+$("#formUpdateProCat").removeClass('was-validated');
 
 	});
 }
@@ -344,33 +361,22 @@ function eliminarProCat() {
 		contentType: false,
 		data: form,
 		success: function(data) {
+			if (data == '') {
+				$('#proCatDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text('Bieeen');
+			} else {
+				errorMessage();
+				$(".alert").text('Joooo');
+			}
 
-			//			$('#newsDatatable').DataTable().ajax.reload();
-			//			$("#titleNews").val('');
-			//			$("#abstractNews").val('');
-			//			$("#contentNews").val('');
-			//			$("#active").val('1');
-			//			$('#imageNews').val('');
-
-
-
-			//			removePantallaLoader();
-			//			debugger;
-			//			if (!data || data == '') {
-			//				
-			//				refreshDataTable();
-			//				mostrarNotificacion('missatge-feedback-positiu', Globalize.localize('label.listaUsuarios.modal.anyadir.confirmacion'));
-			//			} else {
-			//				mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-			//			}
-
+		},
+		error: function(data) {
+			errorMessage();
+			$(".alert").text('Joooo');
 		}
-		//error: function(data) {
-		//			removePantallaLoader();
-		//			mostrarNotificacion('missatge-error', Globalize.localize('label.listaUsuarios.modal.anyadir.error'));
-		//		}
 	}).done(function() {
-		$('#proCatDatatable').DataTable().ajax.reload();
+		
 
 
 	});
