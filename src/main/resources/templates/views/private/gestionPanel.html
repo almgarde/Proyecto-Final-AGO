@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="views/common/head :: head"></head>
-<body>
+<body class="border border-danger">
 	<header th:replace="views/common/header :: header"></header>
 
 	<div class="container-fluid" style="margin-top: 20px;">
 		<div class="row">
-			<div class="col-3" style="padding-left: 0px;">
-				<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
+			<div class=" col-lg-2" style="padding-left: 0px;">
+				<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar"
 					style="width: 320px;">
 					<a href="/"
 						class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
@@ -15,99 +15,66 @@
 							xlink:href="#bootstrap"></use></svg> <span class="fs-4">Sidebar</span>
 					</a>
 					<hr>
-					<ul class="nav nav-pills flex-column mb-auto">
+					<ul class="listCat nav nav-pills flex-column mb-auto">
 						<li class="nav-item"><a href="#"
-							class="catSidebar nav-link active text-white" aria-current="page"
+							class="catSidebar nav-link" aria-current="page"
 							data-num-cat="0"> <svg class="bi me-2" width="16" height="16">
-								<use xlink:href="#home"></use></svg> Inicio
+								</use></svg> Inicio
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
+						<li><a href="#" class="catSidebar nav-link "
 							data-num-cat="1"> <svg class="bi me-2" width="16" height="16">
 								<use xlink:href="#speedometer2"></use></svg> Noticias
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
+						<li><a href="#" class="catSidebar nav-link "
 							data-num-cat="2"> <svg class="bi me-2" width="16" height="16">
 								<use xlink:href="#speedometer2"> </use></svg> Categorías profesionales
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
+						<li><a href="#" class="catSidebar nav-link "
 							data-num-cat="3"> <svg class="bi me-2" width="16" height="16">
 								<use xlink:href="#speedometer2"> </use></svg> Miembros
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
+						<li><a href="#" class="catSidebar nav-link "
 							data-num-cat="4"> <svg class="bi me-2" width="16" height="16">
 								<use xlink:href="#table"></use></svg> Proyectos
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
+						<li><a href="#" class="catSidebar nav-link "
 							data-num-cat="5"> <svg class="bi me-2" width="16" height="16">
 								<use xlink:href="#speedometer2"> </use></svg> Categorías técnicas
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
-							data-num-cat="6"> <svg class="bi me-2" width="16" height="16">
-								<use xlink:href="#grid"></use></svg> Servicios de investigacion
+						<li><a href="#" class="catSidebar "
+							data-num-cat="6">  Servicios de investigacion
 						</a></li>
 						<li><a id="sidebarPublication" href="#"
-							class="catSidebar nav-link text-white" data-num-cat="7"> <svg
+							class="catSidebar nav-link " data-num-cat="7"> <svg
 									class="bi me-2" width="16" height="16"> <use
 									xlink:href="#people-circle"></use></svg> Publicaciones
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
+						<li><a href="#" class="catSidebar "
 							data-num-cat="8"> <svg class="bi me-2" width="16" height="16">
 								<use xlink:href="#speedometer2"></use></svg> Tesis
 						</a></li>
-						<li><a href="#" class="catSidebar nav-link text-white"
+						<li><a href="#" class="catSidebar "
 							data-num-cat="9"> <svg class="bi me-2" width="16" height="16">
 								<use xlink:href="#speedometer2"></use></svg> Enlaces
 						</a></li>
 					</ul>
-					<hr>
-					<div class="dropdown">
-						<a href="#"
-							class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-							id="dropdownUser1" data-bs-toggle="dropdown"
-							aria-expanded="false"> <img src="https://github.com/mdo.png"
-							alt="" width="32" height="32" class="rounded-circle me-2">
-							<strong>mdo</strong>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-dark text-small shadow"
-							aria-labelledby="dropdownUser1">
-							<li><a class="dropdown-item" href="#">New project...</a></li>
-							<li><a class="dropdown-item" href="#">Settings</a></li>
-							<li><a class="dropdown-item" href="#">Profile</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Sign out</a></li>
-						</ul>
-					</div>
+						
 				</div>
 			</div>
-			<div class="col-9" id="containerDataTables">
-				<table id="newsDatatable" class="table" style="margin-left: 0;">
-					<thead>
-						<tr>
-							<th scope="col">ID</th>
-							<th scope="col">Titulo</th>
-							<th scope="col">Imagen</th>
-							<th scope="col">Abstract</th>
-							<th scope="col">Contenido</th>
-							<th scope="col">Activo</th>
-							<th scope="col">Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-
-					</tbody>
-
-				</table>
+			<div class="col-10">
+				<div class="container-fluid" id="containerDataTables"
+					style="overflow: scroll;"></div>
 			</div>
 		</div>
 	</div>
 	<input id="inputCatPublication" type="hidden"
 		th:value="${catPublication}">
 
-	
 
 
+<div class="footer">
 	<footer th:replace="views/common/footer :: footer"></footer>
-
+</div>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
@@ -130,7 +97,6 @@
 	<script src="/js/datatables/datatableThesis.js"></script>
 	<script src="/js/datatables/datatableFacilities.js"></script>
 	<script src="/js/datatables/datatablePublications.js"></script>
-
 
 
 </body>

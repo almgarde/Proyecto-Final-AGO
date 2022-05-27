@@ -7,33 +7,107 @@
 	<div class="container">
 		<div class="row g-2">
 			<div class="col-12">
-				<img src="images/principal.png" style="width: 100%; height: 500px;"
-					class="img-fluid" alt="">
+				<!-- 				<img src="images/principal.png" style="width: 100%; height: 500px;" -->
+				<!-- 					class="img-fluid" alt=""> -->
+				<div id="carouselHome" class="carousel slide"
+					data-bs-ride="true">
+					<div class="carousel-indicators">
+						<button type="button" data-bs-target="#carouselExampleIndicators"
+							data-bs-slide-to="0" class="active" aria-current="true"
+							aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators"
+							data-bs-slide-to="1" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators"
+							data-bs-slide-to="2" aria-label="Slide 3"></button>
+					</div>
+					<div id="carouselInnerHome" class="carousel-inner">
+						<div class="carousel-item active">
+							<img src="images/principal2.png" class="imgCarousel" alt="...">
+						</div>
+						<div class="carousel-item">
+							<img src="images/principal2.png" class="imgCarousel" alt="...">
+						</div>
+						<div class="carousel-item">
+							<img src="images/principal2.png" class=" imgCarousel" alt="...">
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button"
+						data-bs-target="#carouselHome" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button"
+						data-bs-target="#carouselHome" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
 			</div>
 			<div class="col-12 mb-3"></div>
+		</div>
 
-			<div th:each="news:${listaNews}" class="col-10" style="margin: auto;">
-				<div class="card mb-3">
-					<div class="row g-0">
-						<div class="col-md-4">
-							<img src="images/flamenca.png" style="height: auto; width: auto;"
-								class="img-fluid rounded-start" alt="...">
+	</div>
+
+	<div class="container">
+
+		<div class="row">
+			<!-- 			<div th:each="news:${listaNews}" style="margin: auto;"> -->
+
+			<div class="row row-cols-1 row-cols-md-2 g-4 col-12">
+				<div th:each="news:${listaNews}" class="col">
+					<div class="card ">
+						<div class="card-body ">
+							<h5 th:text="${news.titleNews}" class="card-title"></h5>
 						</div>
-						<div class="col-md-8">
-							<div class="card-body mt-3">
-								<h5 th:text="${news.titleNews}" class="card-title"></h5>
-								<p th:text="${news.abstractNews}" class="card-text text-muted"></p>
-								<p class="card-text">
+						<img th:src="@{/images/}+${news.imageNews}" class="card-img-top"
+							width="200" height="250">
+						<div class="card-body ">
 
-									<a th:href="@{/news/newsComplete/}+${news.idNews}" style="color: blue;">Más información...</a>
+							<p th:text="${news.contentNews}" class="card-text text-muted"></p>
+							<p class="card-text">
 
-								</p>
-							</div>
+								<a th:href="@{/news/newsComplete/}+${news.idNews}"
+									style="color: blue;">Más información...</a>
+
+							</p>
 						</div>
 					</div>
 				</div>
-			
 			</div>
+			<!-- 								<div class="card mb-3"> -->
+			<!-- 									<div class="row g-0"> -->
+			<!-- 										<div class="col-md-4"> -->
+			<!-- 											<img src="images/flamenca.png" style="height: auto; width: auto;" -->
+			<!-- 												class="img-fluid rounded-start" alt="..."> -->
+			<!-- 										</div> -->
+			<!-- 										<div class="col-md-8"> -->
+			<!-- 											<div class="card-body mt-3"> -->
+			<!-- 												<h5 th:text="${news.titleNews}" class="card-title"></h5> -->
+			<!-- 												<p th:text="${news.abstractNews}" class="card-text text-muted"></p> -->
+			<!-- 												<p class="card-text"> -->
+
+			<!-- 													<a th:href="@{/news/newsComplete/}+${news.idNews}" -->
+			<!-- 														style="color: blue;">Más información...</a> -->
+
+			<!-- 												</p> -->
+			<!-- 											</div> -->
+			<!-- 										</div> -->
+			<!-- 									</div> -->
+			<!-- 								</div> -->
+
+			<!-- 				<div class="card mb-3" style="width: 20rem;"> -->
+			<!-- 					<img src="images/flamenca.png" class="card-img-top " alt="..."> -->
+			<!-- 					<div class="card-body h-25"> -->
+			<!-- 						<h5 th:text="${news.titleNews}" class="card-title">Card title</h5> -->
+			<!-- 						<p th:text="${news.abstractNews}" class="card-text"></p> -->
+			<!-- 						<p class="card-text"> -->
+			<!-- 							<a th:href="@{/news/newsComplete/}+${news.idNews}" -->
+			<!-- 								style="color: blue;">Más información...</a> -->
+			<!-- 						</p> -->
+			<!-- 					</div> -->
+			<!-- 				</div> -->
+
+			<!-- 			</div> -->
 
 		</div>
 	</div>
@@ -44,6 +118,6 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
-	
+
 </body>
 </html>

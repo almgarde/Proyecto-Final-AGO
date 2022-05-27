@@ -8,20 +8,32 @@
 		<div class="col-12">
 			<div class="card" style="padding: 25px;">
 				<h5 th:text="${news.titleNews}" class="card-title"></h5>
-				<div class="row">
+				<!-- 				<div class="row " style="float:left;"> -->
 
+				<div class="row" style="float: left;">
 
+					<div style="float: left;">
+						<img th:src="@{/images/}+${news.imageNews}" class="card-img-top"
+							alt="..." style="height: 300px; width: 300px;">
 
+						<p th:text="${news.contentNews}" class="card-text"></p>
 
-					<img src="/images/flamenca.png" class="card-img-top" alt="..."
-						style="float: left; height: 300px; width: 300px;">
+					</div>
 
-					<p th:text="${news.contentNews}" class="card-text"></p>
 				</div>
-				<!-- 				<div class="card-body"> -->
 
 
+				<!-- 					<img th:src="@{/images/}+${news.imageNews}" class="card-img-top" alt="..." -->
+				<!-- 						style="height: 300px; width: 300px;"> -->
+
+				<!-- 					<p th:text="${news.contentNews}" class="card-text">th:text="${news.contentNews}"</p> -->
 				<!-- 				</div> -->
+				<!-- 								<div class="card-body"> -->
+
+
+				<!-- 								</div> -->
+				<!-- 			</div> -->
+
 			</div>
 		</div>
 	</div>
@@ -31,6 +43,5 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
-
 </body>
 </html>

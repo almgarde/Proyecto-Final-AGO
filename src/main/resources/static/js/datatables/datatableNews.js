@@ -405,7 +405,9 @@ function anyadirNuevaNoticia() {
 	form.append("file", $('#imageNews')[0].files[0]);
 	form.append("titleNews", $("#titleNews").val());
 	form.append("abstractNews", $("#abstractNews").val());
-	form.append("contentNews", $("#contentNews").val());
+	var contenido = $("#contentNews").val();
+	contenido.replace("\n", "<br/>");
+	form.append("contentNews", contenido);
 	form.append("active", $("#active").val());
 
 	$.ajax({

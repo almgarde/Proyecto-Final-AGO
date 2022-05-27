@@ -105,6 +105,7 @@ function okMessage() {
 	}, 300);
 
 	$('<div class="alert alert-success">' +
+	
 		'<button type="button" class="close" data-dismiss="alert">' +
 		'&times;</button>success</div>').hide().appendTo('#response').fadeIn(1000);
 
@@ -125,7 +126,7 @@ function errorMessage() {
 	$("#response").animate({
 		height: '+=72px'
 	}, 300);
-	$('<div class="alert alert-danger">' +
+	$('<div class="alert alert-danger"><i class="bi bi-exclamation-triangle"></i>' +
 		'<button type="button" class="close" data-dismiss="alert">' +
 		'&times;</button>Failed</div>').hide().appendTo('#response').fadeIn(1000);
 

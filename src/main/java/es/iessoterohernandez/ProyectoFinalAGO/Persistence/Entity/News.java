@@ -67,7 +67,7 @@ public class News extends AbstractEntity implements Serializable {
 		this.imageNews = imageNews;
 	}
 
-	@Column(name = "ABSTRACT_NEWS", nullable = false)
+	@Column(name = "ABSTRACT_NEWS", nullable = true)
 	public String getAbstractNews() {
 		return abstractNews;
 	}

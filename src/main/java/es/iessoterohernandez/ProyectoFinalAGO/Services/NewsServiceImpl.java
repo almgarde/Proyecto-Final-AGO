@@ -53,7 +53,10 @@ public class NewsServiceImpl implements NewsServiceI {
 					newsDto.setIdNews(String.valueOf(n.getIdNews()));
 					newsDto.setTitleNews(n.getTitleNews());
 					newsDto.setAbstractNews(n.getAbstractNews());
-					newsDto.setContentNews(n.getContentNews());
+					String subStringNews = n.getContentNews().substring(0, 300);
+					subStringNews= subStringNews +"...";
+					subStringNews.replaceAll("\n", "br/>");
+					newsDto.setContentNews(subStringNews);
 					newsDto.setImageNews(n.getImageNews());
 
 					listaNewsDto.add(newsDto);
@@ -177,8 +180,7 @@ public class NewsServiceImpl implements NewsServiceI {
 				News n = new News();
 
 				n.setTitleNews(newsData.get("titleNews"));
-				n.setAbstractNews("Not Abstract");
-				
+								
 				n.setContentNews(newsData.get("contentNews"));
 				if (Integer.parseInt(newsData.get("active")) == 1) {
 					n.setActive(true);

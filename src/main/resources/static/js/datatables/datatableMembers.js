@@ -5,9 +5,14 @@ function getDatatableMembers() {
 	let table = $('#membersDatatable').DataTable({
 		"sAjaxSource": "/management/getMembersData",
 		"sAjaxDataProp": "",
-		"sDom":"ltipr",
+		
+//		"scrollX": 500,
+//		"deferRender": true,
+//		"scroller": true,
+		"sDom": "ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+
 		"language": {
 			"lengthMenu": "Mostrando _MENU_ entradas",
 			"emptyTable": "Sin datos en esta tabla",
@@ -220,6 +225,7 @@ function getDatatableMembers() {
 	});
 
 
+
 	$('#membersDatatable thead tr').clone(true).addClass('filters').appendTo('#membersDatatable thead');
 
 	$('#membersDatatable thead tr.filters th').each(function() {
@@ -270,6 +276,7 @@ function getDatatableMembers() {
 			}
 		});
 	});
+
 
 
 
@@ -510,7 +517,7 @@ function anyadirNuevoMiembro() {
 
 		},
 		error: function(data) {
-			errorMessage();
+			errorMessage();			
 			$(".alert").text('Joooo');
 		}
 	}).done(function() {
