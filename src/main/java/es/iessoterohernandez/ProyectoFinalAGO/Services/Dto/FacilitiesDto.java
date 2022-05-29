@@ -8,20 +8,20 @@ package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto;
  */
 public class FacilitiesDto {
 
-	private String nameFacilitie;
+	private String nameFacility;
 
 	private String idTechCat;
 
-	private String photoFacilitie;
+	private String photoFacility;
 
-	private String featuresFacilitie;
+	private String featuresFacility;
 
-	public String getNameFacilitie() {
-		return nameFacilitie;
+	public String getNameFacility() {
+		return nameFacility;
 	}
 
-	public void setNameFacilitie(String nameFacilitie) {
-		this.nameFacilitie = nameFacilitie;
+	public void setNameFacility(String nameFacility) {
+		this.nameFacility = nameFacility;
 	}
 
 	public String getIdTechCat() {
@@ -32,20 +32,23 @@ public class FacilitiesDto {
 		this.idTechCat = idTechCat;
 	}
 
-	public String getPhotoFacilitie() {
-		return photoFacilitie;
+	public String getPhotoFacility() {
+		return photoFacility;
 	}
 
-	public void setPhotoFacilitie(String photoFacilitie) {
-		this.photoFacilitie = photoFacilitie;
+	public void setPhotoFacility(String photoFacility) {
+		this.photoFacility = photoFacility;
 	}
 
-	public String getFeaturesFacilitie() {
-		return featuresFacilitie;
+	public String getFeaturesFacility() {
+		return featuresFacility;
 	}
 
-	public void setFeaturesFacilitie(String featuresFacilitie) {
-		this.featuresFacilitie = featuresFacilitie;
+	public void setFeaturesFacility(String featuresFacility) {
+		this.featuresFacility = featuresFacility;
 	}
+
+	
+
 
 }

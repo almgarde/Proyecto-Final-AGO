@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Thesis;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Thesis;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ThesisDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ThesisDatatableDto;
 
 public interface ThesisServiceI {
@@ -29,5 +29,7 @@ public interface ThesisServiceI {
 	public Thesis updateCoverPageThesis(Map<String, String> thesisData, String photoThesis) throws Exception;
 	
 	public void deleteThesis(Map<String, String> thesisData) throws Exception;
+	
+	public List<ThesisDto> getAllThesisActive() throws Exception;
 
 }

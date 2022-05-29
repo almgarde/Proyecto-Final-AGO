@@ -4,84 +4,35 @@
 <body>
 	<header th:replace="views/common/header :: header"></header>
 
-	<!-- 	<form th:object="${proCatFormDto}" method="POST"> -->
-	<!-- 		<div class="form-group"> -->
-	<!-- 			<!-- DNI -->
-	
-	<!-- 			<label for="idProCat">Categoría</label> <select -->
-	<!-- 				th:field="*{idProCat}"> -->
-	<!-- 				<option value="0">Seleccione una categoría</option> -->
-	<!-- 				<option th:each="proCatDto : ${listaProCatDto}" -->
-	<!-- 					th:text="${proCatDto.nameProCat}" th:value="${proCatDto.idProCat}"> -->
-	<!-- 			</select></br> -->
+	<div class="container">
+		<div id="listMembersContainer" class="dataCompleteContainer">
+			<div class="accordion" id="accordionExample">
+				<div class="accordion-item"
+					th:each="proCatMemberDto:${listaProCatMemberDto}">
+					<div class="containerAccordionHeaders">
+						<h5 class="accordion-header"
+							th:id="'heading'+ ${proCatMemberDto.idProCat}">
+							<button th:text="${proCatMemberDto.nameProCat}"
+								class="accordion-button" type="button" data-bs-toggle="collapse"
+								th:data-bs-target="'#collapse'+${proCatMemberDto.idProCat}"
+								aria-expanded="true"
+								th:aria-controls="'collapse'+${proCatMemberDto.idProCat}"></button>
+						</h5>
+					</div>
+					<div 
+						th:id="'collapse'+${proCatMemberDto.idProCat}"
+						class="accordion-collapse collapse show"
+						th:aria-labelledby="'heading'+${proCatMemberDto.idProCat}">
+						<div class="accordion-body d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 
-	<!-- 		</div> -->
-	<!-- 		</br> -->
-	<!-- 		<button id="filtrarBtn" type="button" class="btn btn-success">Filtrar</button> -->
-	<!-- 	</form> -->
-
-<!-- 	<div id="listMembersContainer" class="container"> -->
-<!-- 		<div th:each="proCatMemberDto:${listaProCatMemberDto}"> -->
-<!-- 			<div class="row justify-content-center mb-4"> -->
-<!-- 				<div class="col-md-7 text-center"> -->
-<!-- 					<h3 th:text="${proCatMemberDto.nameProCat}" class="mb-3"></h3> -->
-
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 			<div class="row"> -->
-
-<!-- 				column  -->
-<!-- 				<div th:each="memberDto:${proCatMemberDto.membersDto}" -->
-<!-- 					class="col-lg-3 mb-4"> -->
-<!-- 					Row -->
-<!-- 					<div class="row"> -->
-<!-- 						<div class="col-md-12"> -->
-<!-- 							<a th:href="@{/memberComplete/}+${memberDto.idMember}"> <img -->
-<!-- 								src="/images/flamenca.png" alt="..." -->
-<!-- 								style="width: 250px; height: 250px" -->
-<!-- 								class="img-fluid rounded-circle" /></a> -->
-<!-- 						</div> -->
-<!-- 						<div class="col-md-12 text-center"> -->
-<!-- 							<div class="pt-2"> -->
-<!-- 								<h5 th:text="${memberDto.nameMember}" -->
-<!-- 									class="mt-4 font-weight-medium mb-0"></h5> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					Row -->
-<!-- <!-- 				</div> --> 
-<!-- 				column  -->
-
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-
-
-	<div class="container" id="listMembersContainer">
-		<div class="accordion" id="accordionExample">
-			<div class="accordion-item"
-				th:each="proCatMemberDto:${listaProCatMemberDto}">
-				<h2 class="accordion-header"
-					th:id="'heading'+ ${proCatMemberDto.idProCat}">
-					<button th:text="${proCatMemberDto.nameProCat}"
-						class="accordion-button" type="button" data-bs-toggle="collapse"
-						th:data-bs-target="'#collapse'+${proCatMemberDto.idProCat}"
-						aria-expanded="true"
-						th:aria-controls="'collapse'+${proCatMemberDto.idProCat}"></button>
-				</h2>
-				<div th:each="memberDto:${proCatMemberDto.membersDto}"
-					th:id="'collapse'+${proCatMemberDto.idProCat}"
-					class="accordion-collapse collapse show"
-					th:aria-labelledby="'heading'+${proCatMemberDto.idProCat}">
-					<div class="accordion-body">
-
-						<div class="col-6">
-							<a th:href="@{/memberComplete/}+${memberDto.idMember}"> <img
-								src="/images/flamenca.png" alt="..."
-								style="width: 250px; height: 250px;"
-								class="img-fluid rounded-circle" /></a>
-							<h5 th:text="${memberDto.nameMember}"
-								class="mt-4 font-weight-medium mb-0"></h5>
+							<div class="infoMembers" th:each="memberDto:${proCatMemberDto.membersDto}">
+								<a th:href="@{/memberComplete/}+${memberDto.idMember}"> <img
+									th:src="@{/images/}+${memberDto.photoMember}" alt="..."
+									
+									class="img-fluid rounded-circle" /></a>
+								<h5 th:text="${memberDto.nameMember}"
+									></h5>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -97,7 +48,7 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 
-	<script src="/js/members.js"></script>
+
 
 </body>
 </html>

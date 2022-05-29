@@ -134,7 +134,7 @@ public class MembersController {
 				
 				if (membersDto != null) {
 					model.addAttribute("member", membersDto);
-					viewResult = "/views/public/home";
+					viewResult = "/views/public/memberComplete";
 				} else {
 					LOGGER.error("NewsController getMember .- Parámetros nulos");
 				}

@@ -37,7 +37,7 @@ public class HomeController {
 		String viewResult = "/views/common/Errors";
 
 		try {
-			final List<NewsDto> listaNewsDto = newsService.getFourMostRecentNewsActive();
+			final List<NewsDto> listaNewsDto = newsService.getSixMostRecentNewsActive();
 
 			if (listaNewsDto != null && !listaNewsDto.isEmpty()) {
 				model.addAttribute("listaNews", listaNewsDto);

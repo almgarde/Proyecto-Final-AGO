@@ -39,7 +39,7 @@ public class Member extends AbstractEntity implements Serializable {
 	private String emailMember;
 
 	/** Teléfono */
-	private int phoneMember;
+	private String phoneMember;
 
 	/** Categoría profesional */
 	private ProfessionalCategory idProCat;
@@ -88,7 +88,7 @@ public class Member extends AbstractEntity implements Serializable {
 		this.shortNameMember = shortNameMember;
 	}
 
-	@Column(name = "DNI_MEMBER", nullable = false, length = 9, unique = true)
+	@Column(name = "DNI_MEMBER", nullable = true, unique = true)
 	public String getDniMember() {
 		return dniMember;
 	}
@@ -106,12 +106,12 @@ public class Member extends AbstractEntity implements Serializable {
 		this.emailMember = emailMember;
 	}
 
-	@Column(name = "PHONE_MEMBER", nullable = true, length = 9)
-	public int getPhoneMember() {
+	@Column(name = "PHONE_MEMBER", nullable = true)
+	public String getPhoneMember() {
 		return phoneMember;
 	}
 
-	public void setPhoneMember(int phoneMember) {
+	public void setPhoneMember(String phoneMember) {
 		this.phoneMember = phoneMember;
 	}
 
@@ -134,7 +134,7 @@ public class Member extends AbstractEntity implements Serializable {
 		this.photoMember = photoMember;
 	}
 
-	@Column(name = "RESEARCH_ID_MEMBER", nullable = true, length = 11, unique = true)
+	@Column(name = "RESEARCH_ID_MEMBER", nullable = true, unique = true)
 	public String getReseachIdMember() {
 		return reseachIdMember;
 	}
@@ -143,7 +143,7 @@ public class Member extends AbstractEntity implements Serializable {
 		this.reseachIdMember = reseachIdMember;
 	}
 
-	@Column(name = "SCOPUS_ID_MEMBER", nullable = true, length = 11, unique = true)
+	@Column(name = "SCOPUS_ID_MEMBER", nullable = true, unique = true)
 	public String getScopusIdMember() {
 		return scopusIdMember;
 	}
@@ -152,7 +152,7 @@ public class Member extends AbstractEntity implements Serializable {
 		this.scopusIdMember = scopusIdMember;
 	}
 
-	@Column(name = "ORC_ID_MEMBER", nullable = true, length = 16, unique = true)
+	@Column(name = "ORC_ID_MEMBER", nullable = true, unique = true)
 	public String getOrcIdMember() {
 		return orcIdMember;
 	}

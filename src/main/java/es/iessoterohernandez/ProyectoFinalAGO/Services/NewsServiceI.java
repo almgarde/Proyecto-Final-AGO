@@ -21,7 +21,7 @@ public interface NewsServiceI {
 	 * @return List<NewsDto>
 	 * @throws Exception
 	 */
-	public List<NewsDto> getFourMostRecentNewsActive() throws Exception;
+	public List<NewsDto> getSixMostRecentNewsActive() throws Exception;
 
 	/** Recupera una noticia activa por su Id 
 	 * 

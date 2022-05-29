@@ -37,14 +37,14 @@ public class NewsServiceImpl implements NewsServiceI {
 	 * @return List<NewsDto>
 	 */
 	@Override
-	public List<NewsDto> getFourMostRecentNewsActive() throws Exception {
+	public List<NewsDto> getSixMostRecentNewsActive() throws Exception {
 
 		LOGGER.info("NewsServiceImpl getFourMostRecentNews .- Inicio");
 
 		List<NewsDto> listaNewsDto = new ArrayList<NewsDto>();
 
 		try {
-			List<News> listNews = newsDao.findTop4ByActiveOrderByUpdateDateDesc(Boolean.TRUE);
+			List<News> listNews = newsDao.findTop6ByActiveOrderByUpdateDateDesc(Boolean.TRUE);
 
 			if (listNews != null && !listNews.isEmpty()) {
 
@@ -55,7 +55,7 @@ public class NewsServiceImpl implements NewsServiceI {
 					newsDto.setAbstractNews(n.getAbstractNews());
 					String subStringNews = n.getContentNews().substring(0, 300);
 					subStringNews= subStringNews +"...";
-					subStringNews.replaceAll("\n", "br/>");
+//					subStringNews.replaceAll("\n", "br/>");
 					newsDto.setContentNews(subStringNews);
 					newsDto.setImageNews(n.getImageNews());
 

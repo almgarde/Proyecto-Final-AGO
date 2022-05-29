@@ -14,7 +14,7 @@ public class MembersDatatableDto {
 
 	private String emailMember;
 
-	private int phoneMember;
+	private String phoneMember;
 
 	private String activeProCat;
 
@@ -78,11 +78,11 @@ public class MembersDatatableDto {
 		this.emailMember = emailMember;
 	}
 
-	public int getPhoneMember() {
+	public String getPhoneMember() {
 		return phoneMember;
 	}
 
-	public void setPhoneMember(int phoneMember) {
+	public void setPhoneMember(String phoneMember) {
 		this.phoneMember = phoneMember;
 	}
 

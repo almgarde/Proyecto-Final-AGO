@@ -63,63 +63,64 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 
 			if (ascendente != null) {
 				listaYears = publicationDao.getYearsPublicationsActiveOrdered(Boolean.TRUE, ascendente);
+
+				if (listaYears != null && !listaYears.isEmpty()) {
+					listaPublicationsYearsDto = new ArrayList<PublicationsYearsDto>();
+
+					for (Integer year : listaYears) {
+						PublicationsYearsDto publicationsYearsDto = new PublicationsYearsDto();
+						publicationsYearsDto.setYearPublication(year);
+
+						List<Publication> listaPublications = publicationDao.findByYearPublicationAndActive(year,
+								Boolean.TRUE);
+
+						if (listaPublications != null && !listaPublications.isEmpty()) {
+
+							List<PublicationsDto> listaPublicationsDto = new ArrayList<PublicationsDto>();
+							for (Publication p : listaPublications) {
+								PublicationsDto publicationsDto = new PublicationsDto();
+								publicationsDto.setYearPublication(p.getYearPublication());
+								publicationsDto.setTitlePublication(p.getTitlePublication());
+								publicationsDto.setJournalPublication(p.getJournalPublication());
+								publicationsDto.setDoiPublication(p.getDoiPublication());
+
+								List<AuthorDto> listaAuthorDto = new ArrayList<AuthorDto>();
+								for (AuthorsPublication authorPublication : p.getAuthorsPublication()) {
+									AuthorDto authorDto = new AuthorDto();
+									authorDto.setNameAuthor(authorPublication.getNameAuthor());
+									authorDto.setShortNameAuthor(authorPublication.getShortNameAuthor());
+									Member member = memberDao.findByIdMemberAndActive(authorPublication.getIdMember(),
+											Boolean.TRUE);
+									if (member != null) {
+										authorDto.setIsMember(Boolean.TRUE);
+										authorDto.setIdMember(String.valueOf(member.getIdMember()));
+									} else {
+										authorDto.setIsMember(Boolean.FALSE);
+									}
+									listaAuthorDto.add(authorDto);
+								}
+								publicationsDto.setAuthorsPublication(listaAuthorDto);
+								publicationsDto.setNumAuthors(listaAuthorDto.size());
+
+								listaPublicationsDto.add(publicationsDto);
+
+							}
+							publicationsYearsDto.setListaPublicationsDto(listaPublicationsDto);
+							listaPublicationsYearsDto.add(publicationsYearsDto);
+
+						} else {
+							LOGGER.error(
+									"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros nulos de publicaciones");
+						}
+					}
+
+				} else {
+					LOGGER.error(
+							"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros nulos de años");
+				}
 			} else {
 				LOGGER.error(
 						"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros nulos de modo de ordenación");
-			}
-
-			if (listaYears != null && !listaYears.isEmpty()) {
-				listaPublicationsYearsDto = new ArrayList<PublicationsYearsDto>();
-
-				for (Integer year : listaYears) {
-					PublicationsYearsDto publicationsYearsDto = new PublicationsYearsDto();
-					publicationsYearsDto.setYearPublication(year);
-
-					List<Publication> listaPublications = publicationDao.findByYearPublicationAndActive(year,
-							Boolean.TRUE);
-
-					if (listaPublications != null && !listaPublications.isEmpty()) {
-
-						List<PublicationsDto> listaPublicationsDto = new ArrayList<PublicationsDto>();
-						for (Publication p : listaPublications) {
-							PublicationsDto publicationsDto = new PublicationsDto();
-							publicationsDto.setYearPublication(p.getYearPublication());
-							publicationsDto.setTitlePublication(p.getTitlePublication());
-							publicationsDto.setJournalPublication(p.getJournalPublication());
-							publicationsDto.setDoiPublication(p.getDoiPublication());
-
-							List<AuthorDto> listaAuthorDto = new ArrayList<AuthorDto>();
-							for (AuthorsPublication authorPublication : p.getAuthorsPublication()) {
-								AuthorDto authorDto = new AuthorDto();
-								authorDto.setNameAuthor(authorPublication.getNameAuthor());
-								authorDto.setShortNameAuthor(authorPublication.getShortNameAuthor());
-								List<Member> miembros = memberDao.findByShortNameMemberAndActive(
-										authorPublication.getShortNameAuthor(), Boolean.TRUE);
-								if (miembros != null && miembros.size() == 1) {
-									authorDto.setIsMember(Boolean.TRUE);
-									authorDto.setIdMember(String.valueOf(miembros.get(0).getIdMember()));
-								} else {
-									authorDto.setIsMember(Boolean.FALSE);
-								}
-								listaAuthorDto.add(authorDto);
-							}
-							publicationsDto.setAuthorsPublication(listaAuthorDto);
-
-							listaPublicationsDto.add(publicationsDto);
-
-						}
-						publicationsYearsDto.setListaPublicationsDto(listaPublicationsDto);
-						listaPublicationsYearsDto.add(publicationsYearsDto);
-
-					} else {
-						LOGGER.error(
-								"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros nulos de publicaciones");
-					}
-				}
-
-			} else {
-				LOGGER.error(
-						"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros nulos de años");
 			}
 
 		} catch (Exception e) {
@@ -161,11 +162,11 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 						AuthorDto authorDto = new AuthorDto();
 						authorDto.setNameAuthor(authorPublication.getNameAuthor());
 						authorDto.setShortNameAuthor(authorPublication.getShortNameAuthor());
-						List<Member> miembros = memberDao
-								.findByShortNameMemberAndActive(authorPublication.getShortNameAuthor(), Boolean.TRUE);
-						if (miembros != null && miembros.size() == 1) {
+						Member member = memberDao.findByIdMemberAndActive(authorPublication.getIdMember(),
+								Boolean.TRUE);
+						if (member != null) {
 							authorDto.setIsMember(Boolean.TRUE);
-							authorDto.setIdMember(String.valueOf(miembros.get(0).getIdMember()));
+							authorDto.setIdMember(String.valueOf(member.getIdMember()));
 						} else {
 							authorDto.setIsMember(Boolean.FALSE);
 						}

@@ -14,6 +14,8 @@ public class PublicationsDto {
 
 	private List<AuthorDto> authorsPublication;
 
+	private int numAuthors;
+
 	private String journalPublication;
 
 	private String doiPublication;
@@ -34,6 +36,14 @@ public class PublicationsDto {
 
 	public void setAuthorsPublication(List<AuthorDto> authorsPublication) {
 		this.authorsPublication = authorsPublication;
+	}
+
+	public int getNumAuthors() {
+		return numAuthors;
+	}
+
+	public void setNumAuthors(int numAuthors) {
+		this.numAuthors = numAuthors;
 	}
 
 	public String getJournalPublication() {
@@ -59,8 +69,5 @@ public class PublicationsDto {
 	public void setYearPublication(Integer yearPublication) {
 		this.yearPublication = yearPublication;
 	}
-
-
-
 
 }

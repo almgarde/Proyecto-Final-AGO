@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.ThesisDaoI;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Link;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Thesis;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.LinksDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ThesisDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ThesisDatatableDto;
 
 /**
@@ -269,6 +272,51 @@ public class ThesisServiceImpl implements ThesisServiceI {
 
 		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
 
+
+	}
+	
+	
+	/**
+	 * Muestra las cuatro noticias más recientes
+	 * 
+	 * @return List<NewsDto>
+	 */
+	@Override
+	public List<ThesisDto> getAllThesisActive() throws Exception {
+
+		LOGGER.info("LinksServiceImpl getAllLinksActive .- Inicio");
+
+		List<ThesisDto> listaThesisDto = null;
+
+		try {
+			List<Thesis> listThesis = thesisDao.findByActive(Boolean.TRUE);
+
+			if (listThesis != null && !listThesis.isEmpty()) {
+				listaThesisDto = new ArrayList<ThesisDto>();
+				for (Thesis t : listThesis) {
+					ThesisDto thesisDto = new ThesisDto();
+					thesisDto.setDoctorThesis(t.getDoctorThesis());
+					thesisDto.setTitleThesis(t.getTitleThesis());
+					thesisDto.setCoverPageThesis(t.getCoverPageThesis());
+					thesisDto.setDateDefenseThesis(t.getDateDefenseThesis());
+					thesisDto.setDirectorThesis(t.getDirectorThesis());
+					thesisDto.setCoDirectorThesis(t.getCoDirectorThesis());
+					thesisDto.setUrlThesis(t.getUrlThesis());
+
+					listaThesisDto.add(thesisDto);
+				}
+
+			} else {
+				LOGGER.error("LinksServiceImpl getAllLinksActive .- Error: Parámetros nulos");
+			}
+		} catch (Exception e) {
+			LOGGER.error("LinksServiceImpl getAllLinksActive .- Error no controlado al recuperar las noticias");
+			throw e;
+		}
+
+		LOGGER.info("LinksServiceImpl getAllLinksActive .- Fin");
+
+		return listaThesisDto;
 
 	}
 

@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.ProjectDaoI;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Project;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.MembersDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProjectsDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ProjectsDatatableDto;
 
 /**
@@ -256,6 +259,50 @@ public class ProjectsServiceImpl implements ProjectsServiceI {
 		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
 
 
+	}
+	
+	/**
+	 * Recupera los proyectos activos
+	 * 
+	 * @param proCat
+	 * @return ProCatMembersDto
+	 * @throws Exception
+	 */
+	@Override
+	public List<ProjectsDto> getAllProjectsActive() throws Exception {
+		
+		List<ProjectsDto> listaProjectsDto = null;
+
+		LOGGER.info("MembersServiceImpl getMembersByActive .- Inicio");
+		try {
+		
+
+			List<Project> listaProjects = projectDao.findByActive(Boolean.TRUE);
+
+			if (listaProjects != null && !listaProjects.isEmpty()) {
+				listaProjectsDto = new ArrayList<ProjectsDto>();
+				for (Project p : listaProjects) {
+
+					ProjectsDto projectsDto = new ProjectsDto();
+					projectsDto.setTitleProject(p.getTitleProject());
+					projectsDto.setImageProject(p.getImageProject());
+					projectsDto.setDescriptionProject(p.getDescriptionProject());
+
+					listaProjectsDto.add(projectsDto);
+				}
+				
+
+			} else {
+				LOGGER.info("MembersServiceImpl getMembersByActive .- Parámetros nulos");
+			}
+		} catch (Exception e) {
+			LOGGER.error(
+					"MembersServiceImpl getMembersByActive .- Error no controlado al recuperar los miembros");
+			throw e;
+		}
+
+		LOGGER.info("MembersServiceImpl getMembersByActive .- Fin");
+		return listaProjectsDto;
 	}
 
 }

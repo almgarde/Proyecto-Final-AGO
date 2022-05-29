@@ -323,7 +323,7 @@ public class MembersServiceImpl implements MembersServiceI {
 				m.setShortNameMember(membersData.get("shortNameMember"));
 				m.setDniMember(membersData.get("dniMember"));
 				m.setEmailMember(membersData.get("emailMember"));
-				m.setPhoneMember(Integer.parseInt(membersData.get("phoneMember")));
+				m.setPhoneMember(membersData.get("phoneMember"));
 				m.setIdProCat(
 						proCatDao.findByIdProCatAndActive(Long.parseLong(membersData.get("idProCat")), Boolean.TRUE));
 				m.setReseachIdMember(membersData.get("reseachIdMember"));
@@ -386,7 +386,7 @@ public class MembersServiceImpl implements MembersServiceI {
 					m.setShortNameMember(membersData.get("shortNameMember"));
 					m.setDniMember(membersData.get("dniMember"));
 					m.setEmailMember(membersData.get("emailMember"));
-					m.setPhoneMember(Integer.parseInt(membersData.get("phoneMember")));
+					m.setPhoneMember(membersData.get("phoneMember"));
 					m.setIdProCat(
 							proCatDao.findByIdProCat(Long.parseLong(membersData.get("idProCat"))));
 					m.setReseachIdMember(membersData.get("reseachIdMember"));

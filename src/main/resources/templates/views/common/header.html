@@ -6,66 +6,182 @@
 </head>
 <body>
 
+	<!-- 	<div id="header" th:fragment="header" class="p-3 bg-dark text-white"> -->
+	<!-- 		<div -->
+	<!-- 			class="d-flex flex-wrap align-items-center justify-content-lg-start"> -->
+	<!-- 			<div class="col-1 "> -->
+	<!-- 				<a href="https://www.icms.us-csic.es/" -->
+	<!-- 					class="text-white d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none"> -->
+	<!-- 					<img class="me-2" src="/images/logoIcmse.png" alt="" width="75" -->
+	<!-- 					height="60">Mechanochemistry and Reactivity of Materials -->
+	<!-- 				</a> -->
+	<!-- 			</div> -->
+
+	<!-- 			<ul -->
+	<!-- 				class="nav col-12 col-lg-auto ms-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"> -->
+	<!-- 				<li><a href="/home" class="nav-link px-3 text-white">Inicio</a></li> -->
+	<!-- 				<li><a href="/members/" class="nav-link px-3 text-white">Miembros</a></li> -->
+	<!-- 				<li><a href="/projects" class="nav-link px-3 text-white">Proyectos</a></li> -->
+	<!-- 				<li><a href="/facilities" class="nav-link px-3 text-white">Servicios -->
+	<!-- 						de investigacion</a></li> -->
+	<!-- 				<li><a href="/publications" class="nav-link px-3 text-white">Publicaciones</a></li> -->
+	<!-- 				<li><a href="/thesis" class="nav-link px-3 text-white">Tesis</a></li> -->
+	<!-- 				<li><a href="/links" class="nav-link px-3 text-white">Enlaces</a></li> -->
+	<!-- 			</ul> -->
+
+
+	<!-- 			<div class="text-end"> -->
+	<!-- 				<li style="list-style-type: none" class="nav-item dropdown"><a -->
+	<!-- 					class="text-white nav-link dropdown-toggle" href="#" -->
+	<!-- 					id="navbarDarkDropdownMenuLink" role="button" -->
+	<!-- 					data-bs-toggle="dropdown" aria-expanded="false">Lenguaje</a> -->
+	<!-- 					<ul class="dropdown-menu dropdown-menu-dark" -->
+	<!-- 						aria-labelledby="navbarDarkDropdownMenuLink"> -->
+	<!-- 						<li><a class="dropdown-item" href="#"><img class="me-2" -->
+	<!-- 								src="/images/es.svg" alt="" width="25" height="15">Español</a></li> -->
+	<!-- 						<li><a class="dropdown-item" href="#"><img class="me-2" -->
+	<!-- 								src="/images/gb.svg" alt="" width="25" height="15">English</a></li> -->
+	<!-- 						<li><a class="dropdown-item" href="#"><img class="me-2" -->
+	<!-- 								src="/images/fr.svg" alt="" width="25" height="15">Français</a></li> -->
+	<!-- 					</ul></li> -->
+	<!-- 			</div> -->
+	<!-- 			<div class="text-end"> -->
+	<!-- 				<li style="list-style-type: none" class="nav-item dropdown"><a -->
+	<!-- 					class="text-white nav-link dropdown-toggle" href="#" -->
+	<!-- 					id="navbarDarkDropdownMenuLink" role="button" -->
+	<!-- 					data-bs-toggle="dropdown" aria-expanded="false"><svg -->
+	<!-- 							xmlns="http://www.w3.org/2000/svg" width="16" height="16" -->
+	<!-- 							fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16"> -->
+	<!-- 						<path -->
+	<!-- 							d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /> -->
+	<!-- 						</svg></a> -->
+	<!-- 					<ul class="dropdown-menu dropdown-menu-dark" -->
+	<!-- 						aria-labelledby="navbarDarkDropdownMenuLink"> -->
+	<!-- 						<li><i class="flag flag-spain"></i><a class="dropdown-item" -->
+	<!-- 							href="/management">Gestion</a></li> -->
+	<!-- 						<li><a class="dropdown-item" href="#">Another action</a></li> -->
+	<!-- 						<li><a class="dropdown-item" href="#">Something else here</a></li> -->
+	<!-- 					</ul></li> -->
+
+	<!-- 			</div> -->
+	<!-- 		</div> -->
+	<!-- 	</div> -->
+
+
+
+
+
+
+
 	<div id="header" th:fragment="header" class="p-3 bg-dark text-white">
-		<div
+		<div id="contentHeader"
 			class="d-flex flex-wrap align-items-center justify-content-lg-start">
-			<div class="col-1 ">
-				<a href="https://www.icms.us-csic.es/"
-					class="text-white d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-					<img class="me-2" src="/images/logoIcmse.png" alt="" width="75"
-					height="60">Mechanochemistry and Reactivity of Materials
-				</a>
+			<div id="logoHeader"
+				class="d-flex flex-wrap align-items-center justify-content-lg-start logo">
+				<div>
+					<a href="https://www.icms.us-csic.es/" class="text-white"> <img
+						src="/images/logoIcmse.png" alt="" width="75"
+						height="60">
+					</a>
+
+					<div >
+						<p>Mechanochemistry and Reactivity of Materials</p>
+					</div>
+				</div>
 			</div>
+			<div id="menuHeader"
+				class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+				<div>
+					<a href="/home" class="nav-link px-3 text-white">Inicio</a>
+				</div>
+				<div>
 
-			<ul
-				class="nav col-12 col-lg-auto ms-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-				<li><a href="/home" class="nav-link px-3 text-white">Inicio</a></li>
-				<li><a href="/members/" class="nav-link px-3 text-white">Miembros</a></li>
-				<li><a href="/projects" class="nav-link px-3 text-white">Proyectos</a></li>
-				<li><a href="/facilities" class="nav-link px-3 text-white">Servicios
-						de investigacion</a></li>
-				<li><a href="/publications" class="nav-link px-3 text-white">Publicaciones</a></li>
-				<li><a href="#" class="nav-link px-3 text-white">Tesis</a></li>
-				<li><a href="/links" class="nav-link px-3 text-white">Enlaces</a></li>
-			</ul>
+					<a href="/members/" class="nav-link px-3 text-white">Miembros</a>
+				</div>
+				<div>
+					<a href="/projects" class="nav-link px-3 text-white">Proyectos</a>
+				</div>
 
+				<div>
+					<a href="/facilities" class="nav-link px-3 text-white">Servicios
+						de investigacion</a>
+				</div>
+				<div>
+					<a href="/publications" class="nav-link px-3 text-white">Publicaciones</a>
+				</div>
+				<div>
+					<a href="/thesis" class="nav-link px-3 text-white">Tesis</a>
+				</div>
+				<div>
+					<a href="/links" class="nav-link px-3 text-white">Enlaces</a>
+				</div>
 
-			<div class="text-end">
-				<li style="list-style-type: none" class="nav-item dropdown"><a
-					class="text-white nav-link dropdown-toggle" href="#"
-					id="navbarDarkDropdownMenuLink" role="button"
-					data-bs-toggle="dropdown" aria-expanded="false">Lenguaje</a>
-					<ul class="dropdown-menu dropdown-menu-dark"
-						aria-labelledby="navbarDarkDropdownMenuLink">
-						<li><a class="dropdown-item" href="#"><img class="me-2"
-								src="/images/es.svg" alt="" width="25" height="15">Español</a></li>
-						<li><a class="dropdown-item" href="#"><img class="me-2"
-								src="/images/gb.svg" alt="" width="25" height="15">English</a></li>
-						<li><a class="dropdown-item" href="#"><img class="me-2"
-								src="/images/fr.svg" alt="" width="25" height="15">Français</a></li>
-					</ul></li>
 			</div>
-			<div class="text-end">
-				<li style="list-style-type: none" class="nav-item dropdown"><a
-					class="text-white nav-link dropdown-toggle" href="#"
-					id="navbarDarkDropdownMenuLink" role="button"
-					data-bs-toggle="dropdown" aria-expanded="false"><svg
-							xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-							fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-						<path
-							d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-						</svg></a>
-					<ul class="dropdown-menu dropdown-menu-dark"
-						aria-labelledby="navbarDarkDropdownMenuLink">
-						<li><i class="flag flag-spain"></i><a class="dropdown-item"
-							href="/management">Gestion</a></li>
-						<li><a class="dropdown-item" href="#">Another action</a></li>
-						<li><a class="dropdown-item" href="#">Something else here</a></li>
-					</ul></li>
+			<div id="gestionHeader" 
+				class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+				<div class="text-end">
+					<li style="list-style-type: none" class="nav-item dropdown"><a
+						class="text-white nav-link dropdown-toggle" href="#"
+						id="navbarDarkDropdownMenuLink" role="button"
+						data-bs-toggle="dropdown" aria-expanded="false">Lenguaje</a>
+						<ul class="dropdown-menu dropdown-menu-dark"
+							aria-labelledby="navbarDarkDropdownMenuLink">
+							<li><a class="dropdown-item" href="#"><img class="me-2"
+									src="/images/es.svg" alt="" width="25" height="15">Español</a></li>
+							<li><a class="dropdown-item" href="#"><img class="me-2"
+									src="/images/gb.svg" alt="" width="25" height="15">English</a></li>
+							<li><a class="dropdown-item" href="#"><img class="me-2"
+									src="/images/fr.svg" alt="" width="25" height="15">Français</a></li>
+						</ul></li>
+				</div>
+				<div class="text-end">
+					<li style="list-style-type: none" class="nav-item dropdown"><a
+						class="text-white nav-link dropdown-toggle" href="#"
+						id="navbarDarkDropdownMenuLink" role="button"
+						data-bs-toggle="dropdown" aria-expanded="false"><svg
+								xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+								fill="currentColor" class="bi bi-person-fill"
+								viewBox="0 0 16 16"> <path
+								d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+							</svg></a>
+						<ul class="dropdown-menu dropdown-menu-dark"
+							aria-labelledby="navbarDarkDropdownMenuLink">
+							<li><i class="flag flag-spain"></i><a class="dropdown-item"
+								href="/management">Gestion</a></li>
+							<li><a class="dropdown-item" href="#">Another action</a></li>
+							<li><a class="dropdown-item" href="#">Something else
+									here</a></li>
+						</ul></li>
 
+				</div>
 			</div>
 		</div>
 	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>

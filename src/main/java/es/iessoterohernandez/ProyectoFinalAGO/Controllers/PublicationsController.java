@@ -46,6 +46,7 @@ public class PublicationsController {
 
 			if (listaPublicationsYearsDto != null && !listaPublicationsYearsDto.isEmpty()) {
 				model.addAttribute("listaPublicationsYearsDto", listaPublicationsYearsDto);
+				
 				model.addAttribute("publicationsOrderFormDto", new PublicationsOrderFormDto());
 				viewResult = "/views/public/publications";
 			} else {
@@ -68,7 +69,7 @@ public class PublicationsController {
 
 		LOGGER.info("PublicationsController orderPublication .- Inicio");
 
-		String viewResult = "/views/common/Errors";
+		String viewResult = "/views/common/ErrorAjax";
 
 		try {
 			if (publicationsOrderFormDto != null) {

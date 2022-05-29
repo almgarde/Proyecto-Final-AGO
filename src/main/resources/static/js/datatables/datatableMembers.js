@@ -5,10 +5,10 @@ function getDatatableMembers() {
 	let table = $('#membersDatatable').DataTable({
 		"sAjaxSource": "/management/getMembersData",
 		"sAjaxDataProp": "",
-		
-//		"scrollX": 500,
-//		"deferRender": true,
-//		"scroller": true,
+
+		//		"scrollX": 500,
+		//		"deferRender": true,
+		//		"scroller": true,
 		"sDom": "ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
@@ -485,7 +485,6 @@ function mostrarModalDeleteMembers(idMember) {
 function anyadirNuevoMiembro() {
 
 	let form = new FormData();
-
 	form.append("file", $('#imageMembers')[0].files[0]);
 	form.append("nameMember", $("#nameMember").val());
 	form.append("shortNameMember", $("#shortNameMember").val());
@@ -507,7 +506,7 @@ function anyadirNuevoMiembro() {
 		data: form,
 		success: function(data) {
 			if (data == '') {
-				$('#facilitiesDatatable').DataTable().ajax.reload();
+				
 				okMessage();
 				$(".alert").text('Bieeen');
 			} else {
@@ -517,11 +516,11 @@ function anyadirNuevoMiembro() {
 
 		},
 		error: function(data) {
-			errorMessage();			
+			errorMessage();
 			$(".alert").text('Joooo');
 		}
 	}).done(function() {
-		$('#membersDatatable').DataTable().ajax.reload();
+		
 		$("#formAddMembers").removeClass('was-validated');
 		$("#nameMember").val('');
 		$("#shortNameMember").val('');
@@ -536,8 +535,12 @@ function anyadirNuevoMiembro() {
 		$("#trajectoryMember").val('');
 		$("#active").val('1');
 		$('#imageMembers').val('');
+	}).always(function() {
+		$('#membersDatatable').DataTable().ajax.reload();
 	});
 }
+
+
 
 function editarMiembro() {
 
@@ -565,7 +568,7 @@ function editarMiembro() {
 		data: form,
 		success: function(data) {
 			if (data == '') {
-				$('#membersDatatable').DataTable().ajax.reload();
+				
 				okMessage();
 				$(".alert").text('Bieeen');
 			} else {
@@ -582,6 +585,8 @@ function editarMiembro() {
 
 		$('#imageMembersEdit').val('');
 		$("#formUpdateMembers").removeClass('was-validated');
+	}).always(function() {
+		$('#membersDatatable').DataTable().ajax.reload();
 	});
 }
 
@@ -600,8 +605,7 @@ function editarFotoMiembro() {
 		data: form,
 		success: function(data) {
 			if (data == '') {
-				$('#membersDatatable').DataTable().ajax.reload();
-				okMessage();
+						okMessage();
 				$(".alert").text('Bieeen');
 			} else {
 				errorMessage();
@@ -614,9 +618,10 @@ function editarFotoMiembro() {
 			$(".alert").text('Joooo');
 		}
 	}).done(function() {
-
 		$("#formUpdatePhotoMembers").removeClass('was-validated');
 		$("#imageMembersEdit").val('');
+	}).always(function() {
+		$('#membersDatatable').DataTable().ajax.reload();
 	});
 }
 
@@ -637,7 +642,6 @@ function eliminarMiembro() {
 		data: form,
 		success: function(data) {
 			if (data == '') {
-				$('#membersDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text('Bieeen');
 			} else {
@@ -650,9 +654,8 @@ function eliminarMiembro() {
 			errorMessage();
 			$(".alert").text('Joooo');
 		}
-	}).done(function() {
-
-
-	});
+	}).always(function() {
+		$('#membersDatatable').DataTable().ajax.reload();
+	});;
 }
 

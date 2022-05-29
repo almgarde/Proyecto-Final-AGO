@@ -4,13 +4,10 @@
 <body>
 	<header th:replace="views/common/header :: header"></header>
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row g-2">
 			<div class="col-12">
-				<!-- 				<img src="images/principal.png" style="width: 100%; height: 500px;" -->
-				<!-- 					class="img-fluid" alt=""> -->
-				<div id="carouselHome" class="carousel slide"
-					data-bs-ride="true">
+				<div id="carouselHome" class="carousel slide" data-bs-ride="true">
 					<div class="carousel-indicators">
 						<button type="button" data-bs-target="#carouselExampleIndicators"
 							data-bs-slide-to="0" class="active" aria-current="true"
@@ -22,13 +19,13 @@
 					</div>
 					<div id="carouselInnerHome" class="carousel-inner">
 						<div class="carousel-item active">
-							<img src="images/principal2.png" class="imgCarousel" alt="...">
+							<img src="images/carousel1.png" class="imgCarousel" alt="...">
 						</div>
 						<div class="carousel-item">
-							<img src="images/principal2.png" class="imgCarousel" alt="...">
+							<img src="images/carousel2.jpg" class="imgCarousel" alt="...">
 						</div>
 						<div class="carousel-item">
-							<img src="images/principal2.png" class=" imgCarousel" alt="...">
+							<img src="images/carousel3.jpg" class=" imgCarousel" alt="...">
 						</div>
 					</div>
 					<button class="carousel-control-prev" type="button"
@@ -43,20 +40,34 @@
 					</button>
 				</div>
 			</div>
-			<div class="col-12 mb-3"></div>
+
 		</div>
 
 	</div>
 
-	<div class="container">
+	<div id="containerHome" class="container">
+		<div id="contenidoContainerHome">
 
-		<div class="row">
-			<!-- 			<div th:each="news:${listaNews}" style="margin: auto;"> -->
+			<div class="col-lg-12" id="contenedorBienvenida">
+				<div id="bienvenida">
+					<blockquote >
+						<p class="text-center">
+							Bienvenid@ a la web del grupo de investigación <b>Mecanoquímica
+								y reactividad de materiales</b> del <b>Instituto de Ciencia de
+								Materiales de Sevilla</b> (ICMS)
+						</p>
+						<p class="text-center">Centro Mixto Universidad de Sevilla
+							(US) - Consejo Superior de Investigaciones Científicas (CSIC)</p>
 
-			<div class="row row-cols-1 row-cols-md-2 g-4 col-12">
-				<div th:each="news:${listaNews}" class="col">
-					<div class="card ">
-						<div class="card-body ">
+					</blockquote>
+
+				</div>
+			</div>
+
+			<div id="cardsNewsContainer" class="row">
+				<div  th:each="news:${listaNews}"  class="cardsNews">
+					<div  class="card ">
+						<div class="containerTitles">
 							<h5 th:text="${news.titleNews}" class="card-title"></h5>
 						</div>
 						<img th:src="@{/images/}+${news.imageNews}" class="card-img-top"
@@ -64,56 +75,22 @@
 						<div class="card-body ">
 
 							<p th:text="${news.contentNews}" class="card-text text-muted"></p>
-							<p class="card-text">
+							<p id="masInfo" class="card-text">
 
-								<a th:href="@{/news/newsComplete/}+${news.idNews}"
-									style="color: blue;">Más información...</a>
+								<a id="masInfo" th:href="@{/news/newsComplete/}+${news.idNews}"
+									>Más información...</a>
 
 							</p>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 								<div class="card mb-3"> -->
-			<!-- 									<div class="row g-0"> -->
-			<!-- 										<div class="col-md-4"> -->
-			<!-- 											<img src="images/flamenca.png" style="height: auto; width: auto;" -->
-			<!-- 												class="img-fluid rounded-start" alt="..."> -->
-			<!-- 										</div> -->
-			<!-- 										<div class="col-md-8"> -->
-			<!-- 											<div class="card-body mt-3"> -->
-			<!-- 												<h5 th:text="${news.titleNews}" class="card-title"></h5> -->
-			<!-- 												<p th:text="${news.abstractNews}" class="card-text text-muted"></p> -->
-			<!-- 												<p class="card-text"> -->
-
-			<!-- 													<a th:href="@{/news/newsComplete/}+${news.idNews}" -->
-			<!-- 														style="color: blue;">Más información...</a> -->
-
-			<!-- 												</p> -->
-			<!-- 											</div> -->
-			<!-- 										</div> -->
-			<!-- 									</div> -->
-			<!-- 								</div> -->
-
-			<!-- 				<div class="card mb-3" style="width: 20rem;"> -->
-			<!-- 					<img src="images/flamenca.png" class="card-img-top " alt="..."> -->
-			<!-- 					<div class="card-body h-25"> -->
-			<!-- 						<h5 th:text="${news.titleNews}" class="card-title">Card title</h5> -->
-			<!-- 						<p th:text="${news.abstractNews}" class="card-text"></p> -->
-			<!-- 						<p class="card-text"> -->
-			<!-- 							<a th:href="@{/news/newsComplete/}+${news.idNews}" -->
-			<!-- 								style="color: blue;">Más información...</a> -->
-			<!-- 						</p> -->
-			<!-- 					</div> -->
-			<!-- 				</div> -->
-
-			<!-- 			</div> -->
-
 		</div>
 	</div>
-
+	<!-- 	</div> -->
+<div>
 	<footer th:replace="views/common/footer :: footer"></footer>
-
+</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"

@@ -4,39 +4,31 @@
 <body>
 	<header th:replace="views/common/header :: header"></header>
 
-	<div class="container" style="margin-top: 50px;">
-		<div class="col-12">
-			<div class="card" style="padding: 25px;">
-				<h5 th:text="${news.titleNews}" class="card-title"></h5>
-				<!-- 				<div class="row " style="float:left;"> -->
+	<div class="container ">
+		<div id="newsCompleteContainer" class="row dataCompleteContainer">
+			<div class="card ">
+				<div id="containerTitleNewsComplete" class="containerTitles containerTitleDataComplete" >
+					<h5 th:text="${news.titleNews}" class="card-title"></h5>
+					<!-- 				<div class="row " style="float:left;"> -->
+				</div>
+				<div class="card-body ">
 
-				<div class="row" style="float: left;">
-
-					<div style="float: left;">
+					
 						<img th:src="@{/images/}+${news.imageNews}" class="card-img-top"
-							alt="..." style="height: 300px; width: 300px;">
-
+							alt="..."> <b><p th:text="${news.abstractNews}"
+								class="card-text mt-1 mb-3"></p></b>
 						<p th:text="${news.contentNews}" class="card-text"></p>
 
-					</div>
+					
 
 				</div>
-
-
-				<!-- 					<img th:src="@{/images/}+${news.imageNews}" class="card-img-top" alt="..." -->
-				<!-- 						style="height: 300px; width: 300px;"> -->
-
-				<!-- 					<p th:text="${news.contentNews}" class="card-text">th:text="${news.contentNews}"</p> -->
-				<!-- 				</div> -->
-				<!-- 								<div class="card-body"> -->
-
-
-				<!-- 								</div> -->
-				<!-- 			</div> -->
-
 			</div>
 		</div>
+
+
 	</div>
+
+
 	<footer th:replace="views/common/footer :: footer"></footer>
 
 	<script

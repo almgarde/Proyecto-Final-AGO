@@ -22,7 +22,7 @@ public interface NewsDaoI extends JpaRepository<News, Long> {
 	 * 
 	 * @return List<News>
 	 */
-	public List<News> findTop4ByActiveOrderByUpdateDateDesc(Boolean activo);
+	public List<News> findTop6ByActiveOrderByUpdateDateDesc(Boolean activo);
 
 	/**
 	 * Recupera una noticia s/n activa por su Id

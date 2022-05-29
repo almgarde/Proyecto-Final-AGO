@@ -113,10 +113,10 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 					for (Facility f : listaFacilities) {
 
 						FacilitiesDto facilitiesDto = new FacilitiesDto();
-						facilitiesDto.setNameFacilitie(f.getNameFacility());
+						facilitiesDto.setNameFacility(f.getNameFacility());
 						facilitiesDto.setIdTechCat(String.valueOf(techCat2.getIdTechCat()));
-						facilitiesDto.setPhotoFacilitie(f.getPhotoFacility());
-						facilitiesDto.setFeaturesFacilitie(f.getFeaturesFacility());
+						facilitiesDto.setPhotoFacility(f.getPhotoFacility());
+						facilitiesDto.setFeaturesFacility(f.getFeaturesFacility());
 
 						listaFacilitiesDto.add(facilitiesDto);
 					}

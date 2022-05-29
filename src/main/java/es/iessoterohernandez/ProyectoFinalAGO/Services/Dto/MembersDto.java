@@ -1,7 +1,5 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
-
 /**
  * DTO entidad: Miembros
  * 
@@ -18,7 +16,7 @@ public class MembersDto {
 
 	private String emailMember;
 
-	private int phoneMember;
+	private String phoneMember;
 
 	private String nameProCat;
 
@@ -64,11 +62,11 @@ public class MembersDto {
 		this.emailMember = emailMember;
 	}
 
-	public int getPhoneMember() {
+	public String getPhoneMember() {
 		return phoneMember;
 	}
 
-	public void setPhoneMember(int phoneMember) {
+	public void setPhoneMember(String phoneMember) {
 		this.phoneMember = phoneMember;
 	}
 

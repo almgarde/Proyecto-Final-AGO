@@ -37,14 +37,7 @@ public interface MemberDaoI extends JpaRepository<Member, Long> {
 	 */
 	public List<Member> findByIdProCatAndActive(ProfessionalCategory proCat, Boolean activo);
 	
-	/**
-	 * Recupera las miembros s/n activos por su nombre corto 
-	 * 
-	 * @param proCat
-	 * @param activo
-	 * @return List<Member>
-	 */
-	public List<Member> findByShortNameMemberAndActive(String shortNameMember, Boolean activo);
+
 	
 	/**
 	 * Recupera un miembro s/n activa por su Id

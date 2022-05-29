@@ -6,6 +6,7 @@ import java.util.Map;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Project;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Project;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProjectsDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ProjectsDatatableDto;
 
 public interface ProjectsServiceI {
@@ -29,5 +30,15 @@ public interface ProjectsServiceI {
 
 	public Project updateImageProjects(Map<String, String> projectData, String photoProjects) throws Exception;
 	public void deleteProjects(Map<String, String> projectsData) throws Exception;
+	
+	/**
+	 * Recupera los proyectos activos
+	 * 
+	 * @param proCat
+	 * @return ProCatMembersDto
+	 * @throws Exception
+	 */
+	
+	public List<ProjectsDto> getAllProjectsActive() throws Exception;
 
 }

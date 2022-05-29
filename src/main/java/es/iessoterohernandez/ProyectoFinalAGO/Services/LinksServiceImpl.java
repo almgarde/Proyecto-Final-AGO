@@ -36,6 +36,7 @@ public class LinksServiceImpl implements LinksServiceI {
 	 * 
 	 * @return List<NewsDto>
 	 */
+	@Override
 	public List<LinksDto> getAllLinksActive() throws Exception {
 
 		LOGGER.info("LinksServiceImpl getAllLinksActive .- Inicio");
