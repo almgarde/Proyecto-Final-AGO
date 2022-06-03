@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
 
 /**
@@ -18,49 +16,45 @@ import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCat
  */
 @Repository
 public interface MemberDaoI extends JpaRepository<Member, Long> {
-	
+
 	/**
-	 * Recupera las miembros s/n activos  
+	 * Recupera las miembros s/n activos
 	 * 
-	 * @param proCat
 	 * @param activo
 	 * @return List<Member>
 	 */
 	public List<Member> findByActive(Boolean activo);
-	
+
 	/**
-	 * Recupera las miembros s/n activos por su categoría profesional 
+	 * Recupera los miembros s/n activos por su categoría profesional
 	 * 
 	 * @param proCat
 	 * @param activo
 	 * @return List<Member>
 	 */
 	public List<Member> findByIdProCatAndActive(ProfessionalCategory proCat, Boolean activo);
-	
 
-	
 	/**
-	 * Recupera un miembro s/n activa por su Id
+	 * Recupera un miembro s/n activo por su Id
 	 * 
 	 * @param id
+	 * @param activo
 	 * @return Member
 	 */
 	public Member findByIdMemberAndActive(Long id, Boolean activo);
-	
+
 	/**
-	 * Recupera los miembros por su Id
+	 * Recupera un miembros por su Id
 	 * 
-	 * @param techCat
-	 * @param activo
-	 * @return List<Facility>
+	 * @param Id
+	 * @return Member
 	 */
 	public Member findByIdMember(Long Id);
-	
+
 	/**
-	 * Recupera las miembros s/n activos por su categoría profesional 
+	 * Recupera los miembros por su categoría profesional
 	 * 
 	 * @param proCat
-	 * @param activo
 	 * @return List<Member>
 	 */
 	public List<Member> findByIdProCat(ProfessionalCategory proCat);

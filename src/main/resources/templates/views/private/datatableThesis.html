@@ -1,67 +1,118 @@
-<div id="response"></div>
 
-<div>
-	<button type="button" id="formAddThesisBtn" class="btn btn-secondary">
-		<a href="javascript: mostrarModalAddThesis();">Añadir nueva Tesis</a>
+<div class="response" id="response"></div>
+
+<div id="buttonContainer">
+	<button type="button" id="formAddThesisBtn" class="btn btn-light">
+		<a th:text="#{datatable.btn.nuevoregistro}"
+			href="javascript: mostrarModalAddThesis();"></a>
 	</button>
-	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/thesis}">Generar Excel</a></button>
+	<button type="button" th:text="#{datatable.btn.generarexcel}"
+		class="btn btn-light">
+		<a th:href="@{/management/generateExcel/thesis}"></a>
+	</button>
 </div>
 
 <!-- DATATABLE -->
 
-<table id="thesisDatatable" class="table datatableAdmin display nowrap"
-	style="text-align: center;">
-	<thead>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col">Doctor</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
-			<th class="atri" scope="col">Portada</th>
-			<th class="atri filterDataPicker" scope="col">Fecha defensa</th>
-			<th class="atri" scope="col">Director</th>
-			<th class="atri" scope="col">Co-director</th>
-			<th class="atri" scope="col">URL</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri filterDataPicker" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</thead>
-	<tbody>
+<div class="container" id="datatableThesisContainer"
+	style="padding-left: 0;">
+	<table id="thesisDatatable" class="table datatableAdmin display nowrap">
+		<thead>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.thesis.doctor}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.thesis.titulo}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.thesis.portada}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.thesis.fecha}"
+					class="atri"
+					style="word-break: break-word; white-space: pre-line;" scope="col"></th>
+				<th th:text="#{datatable.thesis.directores}" class="atri"
+					scope="col"></th>
+				<th th:text="#{datatable.thesis.url}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri filterDataPicker"
+					scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.thesis.doctor}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.thesis.titulo}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.thesis.portada}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.thesis.fecha}"
+					class="atri"
+					style="word-break: break-word; white-space: pre-line;" scope="col"></th>
+				<th th:text="#{datatable.thesis.directores}" class="atri"
+					scope="col"></th>
+				<th th:text="#{datatable.thesis.url}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri filterDataPicker"
+					scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
 
-	</tbody>
-	<tfoot>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col">Doctor</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
-			<th class="atri" scope="col">Portada</th>
-			<th class="atri filterDataPicker" scope="col">Fecha defensa</th>
-			<th class="atri" scope="col">Director</th>
-			<th class="atri" scope="col">Co-director</th>
-			<th class="atri" scope="col">URL</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri filterDataPicker" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</tfoot>
-
-</table>
 <input class="selectedCat" type="hidden" value="8">
+
 
 <!-- MODAL - PORTADA -->
 
 <div class="modal" tabindex="-1" id="modalCoverPageThesis">
 	<div class="modal-dialog">
 		<div class="modal-content">
+			<div class="modal-header containerTitles">
+				<h5 id="headerCoverPageThesis" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
 			<div class="modal-body">
-				<img id="bodyModalCoverPageThesis"></img>
+				<img class="modalImage" id="bodyModalCoverPageThesis"></img>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
+			</div>
+		</div>
+	</div>
+</div>
 
+
+<!-- MODAL - DIRECTORES -->
+
+<div class="modal" tabindex="-1" id="modalDirectorsThesisData">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles">
+				<h5 id="headerDirectorsThesisData" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="apartado">
+				<h5 th:text="#{datatable.thesis.modal.directores}"></h5>
+			</div>
+			<div class="modal-body" id="modalBodyDirectorsThesisData">
+				<div class="col-sm-12">
+					<label th:text="#{datatable.thesis.modal.director}"></label>
+					<p id="modalDirectorThesis"></p>
+				</div>
+
+				<div class="col-sm-12">
+					<label th:text="#{datatable.thesis.modal.codirector}"></label>
+					<p id="modalCoDirectorThesis"></p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
@@ -73,120 +124,126 @@
 <div class="modal" tabindex="-1" id="modalAddThesis">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalAddThesis" class="modal-title">Añadir nueva
-					Tesis</h5>
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.modal.add.header}"
+					id="headerModalAddThesis" class="modal-title"></h5>
 				<button id="btnCloseAddThesis" type="button" class="btn-close"
 					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
 				<form id="formAddThesis" class="row g-3 needs-validation">
+
 					<!-- DOCTOR -->
 
 					<div class="form-group has-validation">
-						<label for="doctorThesis">Doctor</label> <input type="text"
-							autocomplete="off" class="form-control" id="doctorThesis"
-							name="doctorThesis" required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.thesis.doctor}" for="doctorThesis"></label>
+						<input type="text" autocomplete="off" class="form-control"
+							id="doctorThesis" name="doctorThesis" required>
+						<div th:text="#{datatable.thesis.modal.validacion.doctor}"
+							class="invalid-feedback"></div>
 					</div>
-
 
 					<!-- TÍTULO -->
 
 					<div class="form-group has-validation">
-						<label for="titleThesis">Título</label>
+						<label th:text="#{datatable.thesis.titulo}" for="titleThesis"></label>
 						<textarea class="form-control" id="titleThesis"
-							style="height: 100px" required></textarea>
-						<div class="invalid-feedback">Please choose a username.</div>
-
+							required></textarea>
+						<div th:text="#{datatable.thesis.modal.validacion.titulo}"
+							class="invalid-feedback"></div>
 					</div>
-
 
 					<!-- PORTADA -->
 
 					<div class="form-group has-validation">
-						<label for="coverPageThesis">Imagen</label> <input type="file"
-							name="file" class="form-control form-control-sm"
-							id="coverPageThesis" required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.thesis.portada}" for="coverPageThesis"></label>
+						<input type="file" name="file"
+							class="form-control form-control-sm" id="coverPageThesis"
+							required>
+						<div th:text="#{datatable.thesis.modal.validacion.portada}"
+							class="invalid-feedback"></div>
 					</div>
 
 					<!-- FECHA DEFENSA -->
 
 					<div class="form-group has-validation" inline="true">
-						<label for="date" class="col-form-label">Fecha de defensa</label>
+						<label th:text="#{datatable.thesis.fecha}" for="date"
+							class="col-form-label"></label>
 						<div class="input-group date" id="datepicker">
 							<input id="dateDefenseThesis" name="dateDefenseThesis"
-								type="text" class="form-control" required><div class="invalid-feedback">Please choose a username.</div>
-							
-							<span class="input-group-text bg-white d-block"><span
-								class="input-group-append"> <i class="bi bi-calendar3"></i></span>
+								type="text" class="form-control" required>
+							<div th:text="#{datatable.thesis.modal.validacion.fecha}"
+								class="invalid-feedback"></div>
 
+							<span id ="calendarThesis" class="input-group-text bg-white d-block"><span
+								class="input-group-append"> <i class="bi bi-calendar3"></i></span>
 							</span>
 						</div>
 
 					</div>
 
-
 					<!-- DIRECTOR -->
 
 					<div class="form-group has-validation">
-						<label for="directorThesis">Director</label> <input type="text"
-							autocomplete="off" class="form-control" id="directorThesis"
-							name="directorThesis" required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.thesis.director}" for="directorThesis">Director</label>
+						<input type="text" autocomplete="off" class="form-control"
+							id="directorThesis" name="directorThesis" required>
+						<div th:text="#{datatable.thesis.modal.validacion.director}"
+							class="invalid-feedback"></div>
 					</div>
 
 					<!-- CO-DIRECTOR -->
 
 					<div class="form-group">
-						<label for="coDirectorThesis">Co-director</label> <input
-							autocomplete="off" type="text" class="form-control"
-							id="coDirectorThesis" name="coDirectorThesis">
+						<label th:text="#{datatable.thesis.codirector}"
+							for="coDirectorThesis"></label> <input autocomplete="off"
+							type="text" class="form-control" id="coDirectorThesis"
+							name="coDirectorThesis">
 					</div>
 
 					<!-- URL -->
 
 					<div class="form-group has-validation">
-						<label for="urlThesis">URL</label>
-						<input
-							type="url" class="form-control"
-							id="urlThesis" name="urlThesis">
-
+						<label th:text="#{datatable.thesis.url}" for="urlThesis"></label>
+						<input type="url" class="form-control" id="urlThesis"
+							name="urlThesis">
 					</div>
 
 					<!-- ACTIVO -->
 
 					<div class="form-group">
-						<label for="active">Activo</label> <select class="form-select"
-							id="active" aria-label="Floating label select example" required>
-							<option value="1">Si</option>
-							<option value="0">No</option>
+						<label th:text="#{datatable.table.activo}" for="active"></label> <select
+							class="form-select" id="active"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
 						</select>
 					</div>
 
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarAddThesis">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarAddThesis">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarAddThesis"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarAddThesis"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR THESIS -->
 
 <div class="modal" tabindex="-1" id="modalUpdateThesis">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateThesis" class="modal-title">Editar
-					Tesis</h5>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.header}"
+					id="headerModalUpdateThesis" class="modal-title"></h5>
 				<button id="btnCloseUpdateThesis" type="button" class="btn-close"
 					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
@@ -196,88 +253,90 @@
 					<!-- DOCTOR -->
 
 					<div class="form-group has-validation">
-						<label for="doctorThesisEdit">Doctor</label> <input type="text"
-							autocomplete="off" class="form-control" id="doctorThesisEdit"
-							name="doctorThesis" required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.thesis.doctor}" for="doctorThesisEdit"></label>
+						<input type="text" autocomplete="off" class="form-control"
+							id="doctorThesisEdit" name="doctorThesis" required>
+						<div th:text="#{datatable.thesis.modal.validacion.doctor}"
+							class="invalid-feedback"></div>
 					</div>
-
 
 					<!-- TÍTULO -->
 
 					<div class="form-group has-validation">
-						<label for="titleThesisEdit">Título</label>
+						<label th:text="#{datatable.thesis.titulo}" for="titleThesisEdit"></label>
 						<textarea class="form-control" id="titleThesisEdit"
-							style="height: 100px" required></textarea>
-						<div class="invalid-feedback">Please choose a username.</div>
-
+							required></textarea>
+						<div th:text="#{datatable.thesis.modal.validacion.titulo}"
+							class="invalid-feedback"></div>
 					</div>
-
 
 					<!-- FECHA DEFENSA -->
 
 					<div class="form-group has-validation">
-						<label for="dateDefenseThesisEdit" class="col-form-label">Fecha
-							de defensa</label>
+						<label th:text="#{datatable.thesis.fecha}"
+							for="dateDefenseThesisEdit" class="col-form-label"></label>
 						<div class="input-group date" id="datepicker">
 							<input id="dateDefenseThesisEdit" name="dateDefenseThesis"
 								type="text" class="form-control" required>
-							<div class="invalid-feedback">Please choose a username.</div>
-							<span class="input-group-text bg-white d-block"><span
+							<div th:text="#{datatable.thesis.modal.validacion.fecha}"
+								class="invalid-feedback"></div>
+							<span id ="calendarThesis" class="input-group-text bg-white d-block"><span
 								class="input-group-append"> <i class="bi bi-calendar3"></i></span>
-
 							</span>
 						</div>
 
 					</div>
 
-
 					<!-- DIRECTOR -->
 
 					<div class="form-group has-validation">
-						<label for="directorThesisEdit">Director</label> <input
-							type="text" autocomplete="off" class="form-control"
-							id="directorThesisEdit" name="directorThesis" required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.thesis.director}"
+							for="directorThesisEdit"></label> <input type="text"
+							autocomplete="off" class="form-control" id="directorThesisEdit"
+							name="directorThesis" required>
+						<div th:text="#{datatable.thesis.modal.validacion.director}"
+							class="invalid-feedback"></div>
 					</div>
 
 					<!-- CO-DIRECTOR -->
 
 					<div class="form-group">
-						<label for="coDirectorThesisEdit">Co-director</label> <input
-							autocomplete="off" type="text" class="form-control"
-							id="coDirectorThesisEdit" name="coDirectorThesis">
+						<label th:text="#{datatable.thesis.codirector}"
+							for="coDirectorThesisEdit"></label> <input autocomplete="off"
+							type="text" class="form-control" id="coDirectorThesisEdit"
+							name="coDirectorThesis">
 					</div>
 
 					<!-- URL -->
 
 					<div class="form-group has-validation">
-						<label for="urlThesisEdit">URL</label>
-						<input
-							type="url" class="form-control"
-							id="urlThesisEdit" name="urlThesisEdit">
-						
+						<label th:text="#{datatable.thesis.url}" for="urlThesisEdit"></label>
+						<input type="url" class="form-control" id="urlThesisEdit"
+							name="urlThesisEdit">
 					</div>
 
 					<!-- ACTIVO -->
 
 					<div class="form-group">
-						<label for="activeEdit">Activo</label> <select class="form-select"
-							id="activeEdit" aria-label="Floating label select example"
-							required>
-							<option value="1">Si</option>
-							<option value="0">No</option>
+						<label th:text="#{datatable.table.activo}" for="activeEdit"></label>
+						<select class="form-select" id="activeEdit"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
 						</select>
 					</div>
+
 					<input type="hidden" id="idThesisUpdate">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateThesis">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateThesis">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateThesis"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateThesis"></button>
 			</div>
 		</div>
 	</div>
@@ -288,9 +347,9 @@
 <div class="modal" tabindex="-1" id="modalUpdateCoverPageThesis">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalmodalUpdateCoverPageThesis" class="modal-title">Editar
-					foto Tesis</h5>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.photo.header}"
+					id="headerModalmodalUpdateCoverPageThesis" class="modal-title"></h5>
 				<button id="btnCloseUpdateCoverPageThesis" type="button"
 					class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
@@ -302,21 +361,25 @@
 					<!-- PORTADA -->
 
 					<div class="form-group has-validation">
-						<label for="coverPageThesisEdit">Imagen</label> <input type="file"
-							name="file" class="form-control form-control-sm"
-							id="coverPageThesisEdit" required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.thesis.portada}"
+							for="coverPageThesisEdit"></label> <input type="file" name="file"
+							class="form-control form-control-sm" id="coverPageThesisEdit"
+							required>
+						<div th:text="#{datatable.thesis.modal.validacion.portada}"
+							class="invalid-feedback"></div>
 					</div>
 
 					<input type="hidden" id="idThesisUpdateCoverPage">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateCoverPageThesis">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateCoverPageThesis">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateCoverPageThesis"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateCoverPageThesis"></button>
 			</div>
 		</div>
 	</div>
@@ -324,25 +387,26 @@
 
 <!-- MODAL - ELIMINAR TESIS -->
 
-<div class="modal" tabindex="-1" id="modalDeleteThesis">
+<div class="modal modalDelete" tabindex="-1" id="modalDeleteThesis">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalDeleteThesis" class="modal-title">Eliminar
-					equipo</h5>
+			<div class="modal-header containerTitles ">
+				<h5 th:text="#{datatable.modal.delete.header}"
+					id="headerModalDeleteThesis" class="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<label>¿Estás seguro de querer eliminar este equipo?</label> <input
+				<label th:text="#{datatable.thesis.modal.delete.label}"></label> <input
 					type="hidden" id="idThesisDelete">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarDeleteThesis">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarDeleteThesis">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarDeleteThesis"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarDeleteThesis"></button>
 			</div>
 		</div>
 	</div>

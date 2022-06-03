@@ -4,10 +4,6 @@
 	padding: 0;
 }
 
-/* html { */
-/*   min-height: 100%; */
-/*   position: relative; */
-/* } */
 body {
 	font-family: objektiv-mk1, sans-serif;
 	font-style: normal;
@@ -17,6 +13,7 @@ body {
 	margin: 0;
 	padding: 0;
 	line-height: 1.5;
+
 	/* 	font-weight: 300; */
 }
 
@@ -44,38 +41,43 @@ html, body, div, blockquote, p, ul, ol, li, h1, h2, h3, h4, h5, h6, th,
 	background: black;
 	padding: 0;
 	margin: 0;
-	clear: both;	
+	clear: both;
 	width: 100%;
 }
 
 #contentHeader {
-	width:100%;
-	margin:0;
-	text-align:center;
-	
+	width: 100%;
+	margin: 0;
+	text-align: center;
+	justify-content: center;
 }
-#logoHeader, {
-	margin-top:3px;
-	margin-bottom:3px;
+
+#logoHeader {
+	margin-top: 3px;
+	margin-bottom: 3px;
 }
- #menuHeader, #gestionHeader {
-	margin:auto;
-} 
+
+#menuHeader {
+	margin: auto;
+}
+
+#gestionHeader {
+	margin-left: 50px;
+	margin-right: 50px;
+}
 
 .logo p {
 	font-weight: normal;
 	white-space: pre-line;
 	line-height: normal;
-	max-width:250px;
-	text-align:left;
-  
+	max-width: 250px;
+	text-align: left;
 }
 
 .logo img {
 	float: left;
-	margin-left:10px;
-	margin-right:10px;
-  
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 /* FOOTER */
@@ -84,67 +86,42 @@ footer {
 	background: black;
 	padding: 0;
 	margin: 0;
-	clear: both;	
+	clear: both;
 	width: 100%;
 	bottom: 0;
 }
 
 #footerContainer {
-	width:100%;
-	margin:0;
-	text-align:center;
+	width: 100%;
+	margin: 0;
+	text-align: center;
 }
 
-/* #logoFooter { */
-/* 	width: 250px; */
-/* 	margin: auto; */
-/* 	margin-top: 10px; */
-/* 	margin-bottom: 10px; */
-/* 	text-align: left; */
-/* } */
-
 #infoFooter {
-	text-align:center;
+	text-align: center;
 }
 
 #infoFooter h6 {
-	color:CornflowerBlue;
+	color: CornflowerBlue;
 }
 
 #infoFooter, #mapaFooter {
-	margin:auto;
-} 
+	margin: auto;
+}
 
 #mapaFooter {
-/* 	margin-right:100px; */
-	justify-content:center;
-margin-left:50px;
-margin-right:50px;
+	/* 	margin-right:100px; */
+	justify-content: center;
+	margin-left: 50px;
+	margin-right: 50px;
 }
 
 #logoFooter, #infoFooter, #mapaFooter {
-	margin-top:10px;
-	margin-bottom:10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
-
-
-
-/* #infoFooter { */
-/* 	width: 500px; */
-/* 	margin: auto; */
-/* 	margin-top: 10px; */
-/* 	margin-bottom: 10px; */
-/* } */
-
-/* #mapaFooter { */
-/* 	width: 250px; */
-/* 	margin: auto; */
-/* 	margin-top: 10px; */
-/* 	margin-bottom: 10px; */
-/* 	text-align: right; */
-/* } */
-
+/* PANTALLAS ERROR */
 #imageError, #imageErrorAjax {
 	/* 	margin-top: 50px; */
 	width: 100%;
@@ -159,7 +136,7 @@ margin-right:50px;
 	width: 100%;
 	text-align: center;
 }
-/* CAROUSEL */
+
 #carouselHome {
 	margin: 0;
 	padding: 0;
@@ -168,7 +145,7 @@ margin-right:50px;
 
 #carouselInnerHome {
 	width: 100%;
-	height: 250px;
+	height: 300px;
 	padding: 0;
 	margin-left: 0;
 	margin-right: auto;
@@ -176,6 +153,7 @@ margin-right:50px;
 
 .imgCarousel {
 	width: 100%;
+	height: 300px;
 	display: inline;
 	vertical-align: parent;
 }
@@ -323,12 +301,11 @@ blockquote {
 .listDataContainer .contentImage {
 	max-height: 200px;
 	max-width: 200px;
-
 	margin-top: 20px;
 }
 
-.listDataContainer .contentImage img{
-	width:100%;
+.listDataContainer .contentImage img {
+	width: 100%;
 }
 
 .infoDataMember, .infoDataThesis, .infoDataLinks {
@@ -337,8 +314,9 @@ blockquote {
 }
 
 .infoDataMember {
-	margin-left:20px;
+	margin-left: 20px;
 }
+
 #memberData {
 	margin-bottom: 30px;
 }
@@ -350,6 +328,7 @@ blockquote {
 #listFacilitiesContainer .card-body h5 {
 	font-weight: bolder;
 }
+
 #listFacilitiesContainer .accordion-body {
 	padding: 0;
 }
@@ -371,7 +350,7 @@ blockquote {
 }
 
 #titlePublication a {
-	color: black;
+	color: black !important;
 	background-color: transparent;
 	text-decoration: none;
 }
@@ -412,7 +391,7 @@ blockquote {
 	vertical-align: middle;
 }
 
-.textOrdenPublication h5 {
+.textOrdenPublication h5, .sidebar h5 {
 	margin: auto;
 	font-weight: bold;
 	font-size: 120%;
@@ -423,92 +402,565 @@ blockquote {
 	margin-bottom: 10px;
 }
 
- #imgLink, #imgThesis {
-
-	max-width: 100px;
-	
-}
-
 #imgLink, #imgThesis {
-	text-align:center;
-	margin:auto;
-	margin-left:20px;
-	margin-right:30px;
-	padding:0;
-	
+	max-width: 100px;
+	text-align: center;
+	margin: auto;
+	margin-left: 20px;
+	margin-right: 30px;
+	padding: 0;
 }
 
 #imgLink img, #imgThesis img {
-	width:100%;
-	margin-top:0;
-	margin-bottom:10px;
+	width: 100%;
+	margin-top: 0;
+	margin-bottom: 10px;
 }
 
-
 .infoDataLinks {
-
-	margin-top:10px;
+	margin-top: 10px;
 }
 
 #titleLink {
 	font-size: 1.25rem;
-	
 }
 
+#containerHomeGestion {
+	/* 	margin:30px; */
+	/* 	display:inline-block; */
+	width: 100%;
+}
 
+#containerHomeGestion .card {
+	background-color: WhiteSmoke;
+	margin: 0px 30px 0 30px;
+	border: none;
+	max-width: 45%;
+}
 
-/* #listThesisContainer .card-body { */
-/* 	padding:0.5rem; */
-/* 	padding-top:1rem; */
-/* } */
+#containerHomeGestion .card .card-title {
+	/* 	background-color:smokeWhite; */
+	width: 100%;
+	margin-top: 10px;
+}
 
-/* .sidebar { */
-/* 	margin: 0; */
-/* 	padding: 0; */
-/* 	width: 400px; */
-/* 	background-color: #f1f1f1; */
-/* 	position: fixed; */
-/* 	height: 70%; */
-/* 	overflow: auto; */
-/* } */
+#carouselHomeGestion {
+	width: 100%;
+	height: 200px;
+}
 
-/* .listCat a { */
-/* 	display: block; */
-/* 	color: white; */
-/* 	padding: 16px; */
-/* 	text-decoration: none; */
-/* } */
+#carouselHomeGestion #carouselInnerHomeGestion .carousel-item img {
+	width: 100%;
+	height: 200px;
+}
 
-/* .listCat a.active { */
-/* 	background-color: #04AA6D; */
-/* 	color: white; */
-/* } */
+#imagesCarouselEditContainer table {
+	width: 100%;
+}
 
-/* .sidebar a:hover:not(.active) { */
-/* 	background-color: lightblue; */
-/* 	color: white; */
-/* } */
+#imagesCarouselEditContainer table tr, #imagesCarouselEditContainer table td
+	{
+	border: none !important;
+	border-style: none !important;
+}
 
-/* @media screen and (max-width: 700px) { */
-/* 	.sidebar { */
-/* 		width: 100%; */
-/* 		height: auto; */
-/* 		position: relative; */
-/* 	} */
-/* 	.sidebar a { */
-/* 		float: left; */
-/* 	} */
-/* 	div.content { */
-/* 		margin-left: 0; */
-/* 	} */
-/* } */
+#imagesCarouselEditContainer table tr {
+	border-bottom: 2px dashed !important;
+}
 
-/* @media screen and (max-width: 400px) { */
-/* 	.sidebar a { */
-/* 		text-align: center; */
-/* 		float: none; */
-/* 	} */
-/* } */
+#imagesCarouselEditContainer table tr:nth-child(3) td {
+	font-weight: bold;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+#imagesCarouselEditContainer table tr td:nth-child(1) {
+	font-weight: bold;
+}
+
+#imagesCarouselEditContainer table th, #imagesCarouselEditContainer table td
+	{
+	border-bottom: 1px solid;
+	text-align: center;
+	padding: 10px;
+}
+
+#imagesCarouselEditContainer .card-body #btnActualizarCarouselImage {
+	width: 100%;
+	text-align: center;
+	margin-top: 10px;
+}
+
+#containerHomeGestion #labelBienvenidaContainer .card-title {
+	margin-top: 50px;
+}
+
+#containerHomeGestion #labelBienvenidaContainer h1 {
+	font-size: 400%;
+	text-decoration: underline;
+	text-align: center;
+}
+
+#containerHomeGestion #labelBienvenidaContainer p {
+	font-size: 200%;
+	text-decoration: none;
+	margin-top: 100px;
+	text-align: center;
+	vertical-align: middle;
+	word-break: break-word;
+	max-width: 100%;
+	white-space: normal;
+}
+
+.response {
+	width: 100%;
+}
+
 table.DataTable.datatableAdmin {
 	width: auto;
+}
+
+.sidebar {
+	margin: 0;
+	padding: 1rem;
+	width: 215px;
+	/* background: rgb(33,37,41); */
+	background: linear-gradient(0deg, rgba(33, 37, 41, 1) 0%,
+		rgba(112, 171, 118, 1) 25%, rgba(112, 171, 118, 1), 75%,
+		rgba(33, 37, 41, 1) 100%);
+	color: white;
+	height: 100%;
+	overflow: auto;
+	float: left;
+	text-align: center;
+	color: white;
+}
+
+#sidebarTitle h5 {
+	text-align: center;
+	margin-top: 1rem;
+}
+
+.sidebar a {
+	color: white;
+	display: block;
+	padding: 8.5px;
+	text-decoration: none;
+}
+
+.sidebar a.active {
+	background-color: #0d6efd;
+	border-radius: 0.375rem;
+}
+
+.sidebar a:hover:not(.active) {
+	background-color: #555;
+	border-radius: 0.375rem;
+	color: white;
+}
+
+#containerDataTables {
+	margin: 20px;
+	margin-left: 10px;
+}
+
+table.dataTable tr td {
+	font-size: 15px;
+	text-align: center;
+}
+
+table.dataTable th {
+	text-align: center;
+}
+
+table.dataTable thead th input {
+	max-width: 80px;
+	margin-bottom: 5px;
+}
+
+table.dataTable thead th:nth-last-child(2), th:nth-last-child(3) input,
+	th:nth-last-child(4) input {
+	max-width: 90px;
+}
+
+table.dataTable thead th:nth-child(2) input {
+	max-width: 300px !important;
+}
+
+#membersDatatable.dataTable thead th:nth-child(2) input {
+	max-width: 100px !important;
+}
+
+#membersDatatable.dataTable thead th:nth-child(4) {
+	max-width: 100px !important;
+}
+
+#publicationsDatatable.dataTable thead th:nth-child(6) input {
+	max-width: 90px !important;
+}
+
+#publicationsDatatable.dataTable thead th:nth-child(2) input {
+	max-width: 150px !important;
+}
+
+#thesisDatatable.dataTable thead th:nth-child(2) input {
+	max-width: 80px !important;
+}
+
+#thesisDatatable.dataTable thead th:nth-child(1) input {
+	max-width: 40px !important;
+}
+
+#thesisDatatable.dataTable thead th:nth-child(7) input {
+	max-width: 60px !important;
+}
+
+#thesisDatatable.dataTable thead th:nth-child(3) input {
+	max-width: 140px !important;
+}
+
+#calendarThesis {
+	padding: 0.75rem 0.75rem !important;
+}
+
+table.dataTable.nowrap td {
+	word-break: break-word;
+	max-width: 100px;
+	white-space: pre-line;
+}
+
+.dataTables_info, .dataTables_paginate {
+	margin-top: 20px;
+}
+
+#containerDataTables .btn-light {
+	color: #252730;
+	background-color: #979ba1 !important;
+	background-image: linear-gradient(0deg, #979ba1, #E6EAEF) !important;
+	border-color: #c7d0db;
+}
+
+#containerDataTables .btn-light a {
+	color: black;
+	text-decoration: none;
+}
+
+#containerDataTables .btn {
+	display: inline-block;
+	margin: 6px;
+	font-size: inherit;
+	line-height: 1.42;
+	padding: 0.3em 1.1em;
+	font-weight: normal;
+	border-width: 1px;
+	border-style: solid;
+	background: transparent;
+	border-radius: 1.01em;
+	cursor: pointer;
+	font-family: "Booster Next FY", "Avenir Next", Avenir, sans-serif;
+	user-select: none;
+	vertical-align: bottom;
+	box-shadow: 0 1px 1px 0 rgb(255 255 255/ 20%) inset;
+}
+
+#buttonContainer, .dataTables_length {
+	margin-bottom: 20px;
+	margin-left: 30px;
+}
+
+.dataTables_length {
+	padding-top: 5px;
+}
+
+.dataTables_filter {
+	margin-bottom: 15px;
+}
+
+.btn-close {
+	margin: 0 10px 10px 10px !important;
+}
+
+.modal-header {
+	background: radial-gradient(circle, rgba(141, 201, 147, 1) 100%,
+		rgba(185, 185, 185, 1) 100%);
+}
+
+.apartado {
+	background: radial-gradient(circle, rgba(204, 225, 206, 1) 100%,
+		rgba(185, 185, 185, 1) 100%);
+	text-align: center;
+	margin-top: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.modal-header h5 {
+	width: 100%;
+	text-align: center;
+	padding-right: 10px;
+	padding-left: 60px;
+}
+
+.modal-body {
+	word-break: break-word;
+	max-width: 100% !important;
+	white-space: normal;
+	line-height: 30px;
+}
+
+.modalImage {
+	width: 100%
+}
+
+.modalTexto {
+	white-space: pre-line;
+}
+
+.modalUpdate {
+	background: radial-gradient(circle, rgba(196, 189, 68, 1) 100%,
+		rgba(185, 185, 185, 1) 100%);
+}
+
+.modalDelete .modal-header {
+	background: radial-gradient(circle, rgba(227, 121, 121, 1) 100%,
+		rgba(185, 185, 185, 1) 100%);
+}
+
+.modal label {
+	font-weight: bold;
+	line-height: normal;
+	float: left;
+	margin: 5px 10px 5px 10px;
+}
+
+.modalDelete label {
+	width: 100%;
+	text-align: center;
+	margin: 0;
+}
+
+.modal textarea {
+	min-height: 150px;
+}
+
+.datosModal {
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	min-height: 40px;
+	vertical-align: middle;
+}
+
+.authorsTable select, .authorsTable option {
+	font-size: 15px;
+	white-space: normal;
+}
+
+.authorsTable table, .authorsTable table input {
+	font-size: 15px;
+}
+
+.authorsTable table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.authorsTable table tbody tr:nth-child(2) td:nth-child(1) {
+	text-align: left;
+}
+
+.authorsTable tbody, .authorsTable td, .authorsTable tfoot,
+	.authorsTable th, .authorsTable thead, .authorsTable tr {
+	border: none !important;
+	border-style: none !important;
+}
+
+.authorsTable table tbody tr:nth-child(1) {
+	border-top: 2px solid !important;
+}
+
+.authorsTable table tbody tr:nth-child(2), .authorsTable table tbody tr:nth-child(3)
+	{
+	border-bottom: 2px solid !important;
+}
+
+.authorsTable table tbody tr:nth-child(1) td:nth-child(2) {
+	border-left: 2px solid !important;
+	border-bottom: 2px solid !important;
+}
+
+.btn-danger {
+	background-color: #dc3545 !important;
+}
+
+@media screen and (max-width: 700px) {
+	.sidebar {
+		width: 100%;
+		height: auto;
+		position: relative;
+	}
+	.sidebar a {
+		float: left;
+	}
+	div.content {
+		margin-left: 0;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.sidebar a {
+		text-align: center;
+		float: none;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	#containerDataTables {
+		margin: 0 !important;
+	}
+	.response {
+		position: fixed;
+		z-index: 2;
+		top: 0;
+		width: 93%;
+	}
+	#titleThesisPublic {
+		text-align: center !important;
+	}
+	table.dataTable {
+		border: 0;
+	}
+	.table {
+		float: left;
+	}
+	table.dataTable thead, tfoot {
+		border: none;
+		clip: rect(0, 0, 0, 0);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
+	}
+	table.dataTable tr {
+		border: 3px solid #ddd;
+		display: block;
+		margin-bottom: .625em;
+	}
+	.text-end {
+		text-align: center !important;
+	}
+	table.dataTable td {
+		border-bottom: 1px solid #ddd;
+		display: block;
+		font-size: .8em;
+		text-align: right !important;
+		min-height: 30px;
+	}
+	table.dataTable td::before {
+		/*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+		content: attr(data-label);
+		float: left;
+		font-weight: bold;
+		margin-bottom: 1px;
+		vertical-align: middle;
+	}
+	table.dataTable td:nth-child(2)::before {
+		margin-right: 50px !important;
+	}
+	table.dataTable.nowrap td {
+		word-break: break-word;
+		max-width: 100% !important;
+		white-space: pre-line;
+		line-height: 30px;
+	}
+	.sorting_1 {
+		background-color: lightgreen !important;
+	}
+	#containerDataTables .btn-light {
+		margin-top: 15px !important;
+		margin-bottom: 0px !important;
+	}
+	#buttonContainer {
+		margin-bottom: 20px;
+		margin-right: 35px;
+		text-align: center;
+	}
+	.dataTables_length {
+		margin-left: 0 !important;
+	}
+	.dataTables_paginate {
+		margin-top: 10px !important;
+		margin-bottom: 20px !important;
+	}
+	.modal-header h5 {
+		padding-left: 35px !important;
+	}
+	.modal label {
+		margin-left: 0 !important;
+	}
+	.authorsTable select {
+		height: 100px !important;
+		text-align: center;
+	}
+	.authorsTable option {
+		font-size: 10px !important;
+		word-break: normal;
+		max-width: 100%;
+	}
+	.authorsTable table input {
+		font-size: 10px !important;
+	}
+	#authorsTable table tbody tr .btn-light {
+		margin-top: 0px !important;
+	}
+	#authorsTableEdit .btn-light {
+		margin-top: 0px !important;
+	}
+	#containerHomeGestion {
+		margin: 0px;
+	}
+	#containerHomeGestion #labelBienvenidaContainer,
+		#imagesCarouselEditContainer {
+		max-width: 100% !important;
+		width: 100%;
+		margin: 0 !important;
+	}
+	#containerHomeGestion #labelBienvenidaContainer h1 {
+		font-size: 250%;
+		width: 100%;
+	}
+	#containerHomeGestion #labelBienvenidaContainer p {
+		font-size: 120%;
+		margin: 0 !important;
+	}
+	#imagesCarouselEditContainer .card-body {
+		padding: 0px !important;
+	}
+	#imagesCarouselEditContainer table th, #imagesCarouselEditContainer table td
+		{
+		width: 70px;
+		font-size: 12px !important;
+	}
+	#imagesCarouselEditContainer table {
+		table-layout: fixed;
+	}
+	#btnActualizarCarouselImage {
+		margin: 0 !important;
+		padding-bottom: 15px;
+		padding-right: 15px;
+	}
+	#imagesCarouselEditContainer table tr:nth-child(4) td:nth-child(3) {
+		padding-left: 0 !important;
+	}
+	#containerHomeGestion {
+		margin-bottom: 50px;
+	}
+	#panelGestion {
+		flex-direction: column;
+	}
 }

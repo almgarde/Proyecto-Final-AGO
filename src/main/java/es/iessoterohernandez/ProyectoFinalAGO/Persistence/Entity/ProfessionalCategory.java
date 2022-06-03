@@ -29,11 +29,9 @@ public class ProfessionalCategory extends AbstractEntity implements Serializable
 
 	/** Nombre */
 	private String nameProCat;
-	
-	/** Lista de miembros */
+
+	/** Miembros */
 	private List<Member> listMembers;
-	
-	
 
 	@Id
 	@GeneratedValue(generator = "genSeqProCat")
@@ -63,7 +61,5 @@ public class ProfessionalCategory extends AbstractEntity implements Serializable
 	public void setListMembers(List<Member> listMembers) {
 		this.listMembers = listMembers;
 	}
-	
-	
 
 }

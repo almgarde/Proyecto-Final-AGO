@@ -10,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Services.ProjectsServiceI;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatFormDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatMembersDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProjectsDto;
 
 /**
@@ -22,40 +20,37 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProjectsDto;
  */
 @Controller
 public class ProjectsController {
-	
-	/** Logger */
+
 	final static Logger LOGGER = LoggerFactory.getLogger(ProjectsController.class);
 
 	@Autowired
 	ProjectsServiceI projectsService;
 
-
 	@GetMapping("/projects")
-	public String getMembers(Model model) throws Exception {
+	public String getProjects(Model model) throws Exception {
 
-		LOGGER.info("MembersController getMembers .- Inicio");
+		LOGGER.info("ProjectsController getProjects .- Inicio");
 
 		String viewResult = "/views/common/Errors";
 
 		try {
-			// Para la lista del filtro - Se muestran entonces todas las categorías,
-			// incluidas las que no tienen miembros
+
 			final List<ProjectsDto> listaProjectsDto = projectsService.getAllProjectsActive();
 
-			
 			if (listaProjectsDto != null && !listaProjectsDto.isEmpty()) {
 				model.addAttribute("listaProjectsDto", listaProjectsDto);
-
 				viewResult = "/views/public/projects";
 			} else {
-				LOGGER.error("MembersController getMembers .- Error: Parámetros nulos");
+				LOGGER.error("ProjectsController getProjects .- Error: No existen proyectos activos registrados");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("MembersController getMembers .- Error no controlado al redireccionar a la pantalla members");
+			LOGGER.error(
+					"ProjectsController getProjects .- Error no controlado al redireccionar a la pantalla projects");
 			throw e;
 		}
 
-		LOGGER.info("MembersController getMembers .- Fin");
+		LOGGER.info("ProjectsController getProjects .- Fin");
 
 		return viewResult;
 

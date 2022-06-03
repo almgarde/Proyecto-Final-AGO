@@ -26,7 +26,6 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ProCatData
 @Service
 public class ProCatServiceImpl implements ProCatServiceI {
 
-	/** Logger */
 	final static Logger LOGGER = LoggerFactory.getLogger(ProCatServiceImpl.class);
 
 	@Autowired
@@ -36,87 +35,9 @@ public class ProCatServiceImpl implements ProCatServiceI {
 	MemberDaoI memberDao;
 
 	/**
-	 * Recupera las categorías profesionales activas
+	 * Recupera todos los datos de las categorías profesionales almacenadas en BDD
 	 * 
-	 * @return List<ProCatDto>
-	 */
-	@Override
-	public List<ProCatDto> getAllProCatActive() throws Exception {
-
-		LOGGER.info("ProCatServiceImpl getAllProCatActive .- Inicio");
-
-		List<ProCatDto> listaProCatDto = null;
-
-		try {
-			List<ProfessionalCategory> listaProCat = proCatDao.findByActive(Boolean.TRUE);
-
-			if (listaProCat != null && !listaProCat.isEmpty()) {
-				listaProCatDto = new ArrayList<ProCatDto>();
-				for (ProfessionalCategory pc : listaProCat) {
-					ProCatDto proCatDto = new ProCatDto();
-					proCatDto.setIdProCat(String.valueOf(pc.getIdProCat()));
-					proCatDto.setNameProCat(pc.getNameProCat());
-
-					listaProCatDto.add(proCatDto);
-				}
-			} else {
-				LOGGER.error("ProCatServiceImpl getAllProCatActive .- Error: Parámetros nulos");
-			}
-		} catch (Exception e) {
-			LOGGER.error(
-					"ProCatServiceImpl getAllProCatActive .- Error no controlado al recuperar las categorías profesionales activas");
-			throw e;
-		}
-
-		LOGGER.info("ProCatServiceImpl getAllProCatActive .- Fin");
-
-		return listaProCatDto;
-
-	}
-
-	/**
-	 * Recupera las categorías profesionales
-	 * 
-	 * @return List<ProCatDto>
-	 */
-	@Override
-	public List<ProCatDto> getAllProCat() throws Exception {
-
-		LOGGER.info("ProCatServiceImpl getAllProCat .- Inicio");
-
-		List<ProCatDto> listaProCatDto = null;
-
-		try {
-			List<ProfessionalCategory> listaProCat = proCatDao.findAll();
-
-			if (listaProCat != null && !listaProCat.isEmpty()) {
-				listaProCatDto = new ArrayList<ProCatDto>();
-				for (ProfessionalCategory pc : listaProCat) {
-					ProCatDto proCatDto = new ProCatDto();
-					proCatDto.setIdProCat(String.valueOf(pc.getIdProCat()));
-					proCatDto.setNameProCat(pc.getNameProCat());
-
-					listaProCatDto.add(proCatDto);
-				}
-			} else {
-				LOGGER.error("ProCatServiceImpl getAllProCat .- Error: Parámetros nulos");
-			}
-		} catch (Exception e) {
-			LOGGER.error(
-					"ProCatServiceImpl getAllProCat .- Error no controlado al recuperar las categorías profesionales");
-			throw e;
-		}
-
-		LOGGER.info("ProCatServiceImpl getAllProCat .- Fin");
-
-		return listaProCatDto;
-
-	}
-
-	/**
-	 * Recupera todos las categorías profesionales almacenadas en BDD
-	 * 
-	 * @return
+	 * @return List<ProCatDatatableDto>
 	 * @throws Exception
 	 */
 	public List<ProCatDatatableDto> getAllProCatData() throws Exception {
@@ -126,14 +47,17 @@ public class ProCatServiceImpl implements ProCatServiceI {
 		List<ProCatDatatableDto> listaProCatDatatableDto = new ArrayList<ProCatDatatableDto>();
 
 		try {
+
 			List<ProfessionalCategory> listProCat = proCatDao.findAll();
 
 			if (listProCat != null && !listProCat.isEmpty()) {
 
 				for (ProfessionalCategory pc : listProCat) {
+
 					ProCatDatatableDto proCatDatatableDto = new ProCatDatatableDto();
 					proCatDatatableDto.setIdProCat(String.valueOf(pc.getIdProCat()));
 					proCatDatatableDto.setNameProCat(pc.getNameProCat());
+
 					if (pc.getActive()) {
 						proCatDatatableDto.setActive("true");
 					} else {
@@ -146,8 +70,10 @@ public class ProCatServiceImpl implements ProCatServiceI {
 				}
 
 			} else {
-				LOGGER.error("ProCatServiceImpl getAllProCatData .- Error: Parámetros nulos");
+				LOGGER.error(
+						"ProCatServiceImpl getAllProCatData .- Error: No existen categorías profesionales registradas");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error(
 					"ProCatServiceImpl getAllProCatData .- Error no controlado al recuperar las categorías profesionales");
@@ -164,6 +90,8 @@ public class ProCatServiceImpl implements ProCatServiceI {
 	 * Almacena una categoría profesional en BDD
 	 * 
 	 * @param proCatData
+	 * @return ProfessionalCategory
+	 * @throws Exception
 	 */
 	@Override
 	public ProfessionalCategory addProCat(Map<String, String> proCatData) throws Exception {
@@ -173,11 +101,13 @@ public class ProCatServiceImpl implements ProCatServiceI {
 		ProfessionalCategory proCatSaved = null;
 
 		try {
+
 			if (proCatData != null && !proCatData.isEmpty()) {
 
 				ProfessionalCategory pc = new ProfessionalCategory();
 
 				pc.setNameProCat(proCatData.get("nameProCat"));
+
 				if (Integer.parseInt(proCatData.get("active")) == 1) {
 					pc.setActive(true);
 				} else {
@@ -192,8 +122,9 @@ public class ProCatServiceImpl implements ProCatServiceI {
 				LOGGER.info("ProCatServiceImpl addProCat .- Categoría profesional almacenada correctamente");
 
 			} else {
-				LOGGER.error("ProCatServiceImpl addProCat .- Error: Parámetros nulos");
+				LOGGER.error("ProCatServiceImpl addProCat .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("ProCatServiceImpl addProCat .- Error no controlado al añadir la categoría profesional");
 			throw e;
@@ -206,10 +137,11 @@ public class ProCatServiceImpl implements ProCatServiceI {
 	}
 
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza los datos de una categoría profesional almacenada en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param proCatData
+	 * @return ProfessionalCategory
+	 * @throws Exception
 	 */
 	@Override
 	public ProfessionalCategory updateProCat(Map<String, String> proCatData) throws Exception {
@@ -219,6 +151,7 @@ public class ProCatServiceImpl implements ProCatServiceI {
 		ProfessionalCategory proCatUpdated = null;
 
 		try {
+
 			if (proCatData != null && !proCatData.isEmpty()) {
 
 				ProfessionalCategory pc = proCatDao.findByIdProCat(Long.parseLong(proCatData.get("idProCat")));
@@ -230,29 +163,32 @@ public class ProCatServiceImpl implements ProCatServiceI {
 						pc.setActive(true);
 					} else {
 						List<Member> listaMembers = memberDao.findByIdProCat(pc);
+
 						for (Member member : listaMembers) {
 							member.setActive(false);
 							memberDao.save(member);
 							pc.setActive(false);
-
 						}
-
 					}
 
 					pc.setUpdateAdmin("agadelao");
 					pc.setUpdateDate(new Date());
 
 					proCatUpdated = proCatDao.save(pc);
+
 				} else {
-					LOGGER.error("ProCatServiceImpl updateProCat .- Equipo no encontrado");
+					LOGGER.error("ProCatServiceImpl updateProCat .- Categoría profesional no encontrada");
 				}
-				LOGGER.info("ProCatServiceImpl updateProCat .- Equipo actualizado correctamente");
+
+				LOGGER.info("ProCatServiceImpl updateProCat .- Categoría profesional actualizada correctamente");
 
 			} else {
-				LOGGER.error("ProCatServiceImpl updateProCat .- Error: Parámetros nulos");
+				LOGGER.error("ProCatServiceImpl updateProCat .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("ProCatServiceImpl updateProCat .- Error no controlado al actualizar la publicación");
+			LOGGER.error(
+					"ProCatServiceImpl updateProCat .- Error no controlado al actualizar la categoría profesional");
 			throw e;
 		}
 
@@ -262,12 +198,19 @@ public class ProCatServiceImpl implements ProCatServiceI {
 
 	}
 
+	/**
+	 * Elimina una categoría profesional almacenada en BDD
+	 * 
+	 * @param proCatData
+	 * @throws Exception
+	 */
 	@Override
 	public void deleteProCat(Map<String, String> proCatData) throws Exception {
 
-		LOGGER.info("PublicationsServiceImpl deletePublications .- Inicio");
+		LOGGER.info("ProCatServiceImpl deleteProCat .- Inicio");
 
 		try {
+
 			if (proCatData != null && !proCatData.isEmpty()) {
 
 				ProfessionalCategory pc = proCatDao.findByIdProCat(Long.parseLong(proCatData.get("idProCat")));
@@ -275,21 +218,111 @@ public class ProCatServiceImpl implements ProCatServiceI {
 				if (pc != null) {
 
 					proCatDao.delete(pc);
-					
-					LOGGER.info("PublicationsServiceImpl deletePublications .- Publicación eliminada correctamente");
+
+					LOGGER.info("ProCatServiceImpl deleteProCat .- Categoría profesional eliminada correctamente");
 
 				} else {
-					LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros nulos");
-
+					LOGGER.error("ProCatServiceImpl deleteProCat .- Error: Parámetros de entrada nulos");
 				}
 			}
+
 		} catch (Exception e) {
-			LOGGER.error(
-					"PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
+			LOGGER.error("ProCatServiceImpl deleteProCat .- Error no controlado al eliminar la Categoría profesional");
 			throw e;
 		}
 
-		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
+		LOGGER.info("ProCatServiceImpl deleteProCat .- Fin");
+
+	}
+
+	/**
+	 * Recupera las categorías profesionales activas
+	 * 
+	 * @return List<ProCatDto>
+	 * @throws Exception
+	 */
+	@Override
+	public List<ProCatDto> getAllProCatActive() throws Exception {
+
+		LOGGER.info("ProCatServiceImpl getAllProCatActive .- Inicio");
+
+		List<ProCatDto> listaProCatDto = null;
+
+		try {
+
+			List<ProfessionalCategory> listaProCat = proCatDao.findByActive(Boolean.TRUE);
+
+			if (listaProCat != null && !listaProCat.isEmpty()) {
+				listaProCatDto = new ArrayList<ProCatDto>();
+
+				for (ProfessionalCategory pc : listaProCat) {
+
+					ProCatDto proCatDto = new ProCatDto();
+					proCatDto.setIdProCat(String.valueOf(pc.getIdProCat()));
+					proCatDto.setNameProCat(pc.getNameProCat());
+
+					listaProCatDto.add(proCatDto);
+				}
+
+			} else {
+				LOGGER.error(
+						"ProCatServiceImpl getAllProCatActive .- Error: No existen categorías proifesionales activas registradas");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"ProCatServiceImpl getAllProCatActive .- Error no controlado al recuperar las categorías profesionales activas");
+			throw e;
+		}
+
+		LOGGER.info("ProCatServiceImpl getAllProCatActive .- Fin");
+
+		return listaProCatDto;
+
+	}
+
+	/**
+	 * Recupera todas las categorías profesionales almacenadas en BDD
+	 * 
+	 * @return List<ProCatDto>
+	 * @throws Exception
+	 */
+	@Override
+	public List<ProCatDto> getAllProCat() throws Exception {
+
+		LOGGER.info("ProCatServiceImpl getAllProCat .- Inicio");
+
+		List<ProCatDto> listaProCatDto = null;
+
+		try {
+
+			List<ProfessionalCategory> listaProCat = proCatDao.findAll();
+
+			if (listaProCat != null && !listaProCat.isEmpty()) {
+				listaProCatDto = new ArrayList<ProCatDto>();
+
+				for (ProfessionalCategory pc : listaProCat) {
+
+					ProCatDto proCatDto = new ProCatDto();
+					proCatDto.setIdProCat(String.valueOf(pc.getIdProCat()));
+					proCatDto.setNameProCat(pc.getNameProCat());
+
+					listaProCatDto.add(proCatDto);
+				}
+			} else {
+				LOGGER.error(
+						"ProCatServiceImpl getAllProCat .- Error: No existen categorías profesionales registradas");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"ProCatServiceImpl getAllProCat .- Error no controlado al recuperar las categorías profesionales");
+			throw e;
+		}
+
+		LOGGER.info("ProCatServiceImpl getAllProCat .- Fin");
+
+		return listaProCatDto;
 
 	}
 

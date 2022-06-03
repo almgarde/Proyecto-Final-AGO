@@ -1,44 +1,55 @@
-<div id="response"></div>
 
-<div>
-	<button type="button" id="formAddProjectsBtn" class="btn btn-secondary">
-		<a href="javascript: mostrarModalAddProjects();">Añadir nuevo proyecto</a>
+<div class="response" id="response"></div>
+
+<div id="buttonContainer">
+	<button type="button" id="formAddProjectsBtn" class="btn btn-light">
+		<a th:text="#{datatable.btn.nuevoregistro}"
+			href="javascript: mostrarModalAddProjects();"></a>
 	</button>
-	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/projects}">Generar Excel</a></button>
+	<button type="button" th:text="#{datatable.btn.generarexcel}"
+		class="btn btn-light">
+		<a th:href="@{/management/generateExcel/projects}"></a>
+	</button>
 </div>
+
 
 <!-- DATATABLE -->
 
-<table id="projectsDatatable" class="table datatableAdmin display nowrap" style="text-align: center;">
-	<thead>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
-			<th class="atri" scope="col">Imagen</th>
-			<th class="atri" scope="col">Descripción</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</thead>
-	<tbody>
+<div class="container" id="datatableProjectsContainer">
+	<table id="projectsDatatable"
+		class="table datatableAdmin display nowrap">
+		<thead>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.projects.titulo}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.projects.imagen}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.projects.descripcion}" class="atri"
+					scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.projects.titulo}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.projects.imagen}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.projects.descripcion}" class="atri"
+					scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
 
-	</tbody>
-	<tfoot>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
-			<th class="atri" scope="col">Imagen</th>
-			<th class="atri" scope="col">Descripción</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</tfoot>
-
-</table>
 <input class="selectedCat" type="hidden" value="4">
 
 
@@ -47,218 +58,254 @@
 <div class="modal" tabindex="-1" id="modalImageProject">
 	<div class="modal-dialog">
 		<div class="modal-content">
+			<div class="modal-header containerTitles">
+				<h5 id="headerModalImageProject" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
 			<div class="modal-body">
-				<img id="bodyModalImageProject"></img>
+				<img class="modalImage" id="bodyModalImageProject"></img>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - DESCRIPCIÓN -->
 
 <div class="modal" tabindex="-1" id="modalDescriptionProject">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header containerTitles">
 				<h5 id="headerModalDescriptionProject" class="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
+			<div class="apartado">
+				<h5 th:text="#{datatable.projects.modal.descripcion}"></h5>
+			</div>
+			<div class="modal-body modalTexto">
 				<p id="bodyModalDescriptionProject"></p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - AÑADIR PROYECTO -->
 
 <div class="modal" tabindex="-1" id="modalAddProjects">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalAddProjects" class="modal-title">Añadir nuevo proyecto</h5>
-				<button id="btnCloseAddProjects" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.modal.add.header}"
+					id="headerModalAddProjects" class="modal-title"></h5>
+				<button id="btnCloseAddProjects" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-<form id="formAddProjects" class="row g-3 needs-validation">
+				<form id="formAddProjects" class="row g-3 needs-validation">
 
-				<!-- TÍTULO -->
+					<!-- TÍTULO -->
 
-				<div class="form-group has-validation">
-					<label for="titleProjects">Título</label>
-					<textarea class="form-control" id="titleProjects" style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
-					
-				</div>
-				
-				
-				<!-- IMAGEN -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.projects.titulo}" for="titleProjects"></label>
+						<textarea class="form-control" id="titleProjects" required></textarea>
+						<div th:text="#{datatable.projects.modal.validacion.titulo}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<div class="form-group has-validation">
-					<label for="imageProjects">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageProjects" required><div class="invalid-feedback">Please choose a username.</div>
-					
-				</div>
-				
-				
-				<!-- CONTENIDO -->
+					<!-- IMAGEN -->
 
-				<div class="form-group has-validation">
-					<label for="descProjects">Descripción</label>
-					<textarea class="form-control" id="descProjects"
-						style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
-					
-				</div>
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.projects.imagen}" for="imageProjects"></label>
+						<input type="file" name="file"
+							class="form-control form-control-sm" id="imageProjects" required>
+						<div th:text="#{datatable.projects.modal.validacion.imagen}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<!-- ACTIVO -->
-				<div class="form-group">
-					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
-				
+					<!-- DESCRIPCIÓN -->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.projects.descripcion}"
+							for="descProjects"></label>
+						<textarea class="form-control" id="descProjects" required></textarea>
+						<small th:text="#{datatable.modal.maximo}"></small>
+						<div th:text="#{datatable.projects.modal.validacion.descripcion}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="active"></label> <select
+							class="form-select" id="active"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarAddProjects">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarAddProjects">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarAddProjects"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarAddProjects"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR PROYECTO -->
 
 <div class="modal" tabindex="-1" id="modalUpdateProjects">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateProjects" class="modal-title">Editar proyecto</h5>
-				<button id="btnCloseUpdateProjects" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.header}"
+					id="headerModalUpdateProjects" class="modal-title"></h5>
+				<button id="btnCloseUpdateProjects" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-<form id="formUpdateProjects" class="row g-3 needs-validation">
-				<!-- TÍTULO -->
+				<form id="formUpdateProjects" class="row g-3 needs-validation">
 
-				<div class="form-group has-validation">
-					<label for="titleProjectsEdit">Título</label>
-					<textarea class="form-control" id="titleProjectsEdit" style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
-					
-				</div>
+					<!-- TÍTULO -->
 
-				<!-- DESCRIPCIÓN -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.projects.titulo}"
+							for="titleProjectsEdit"></label>
+						<textarea class="form-control" id="titleProjectsEdit" required></textarea>
+						<div th:text="#{datatable.projects.modal.validacion.titulo}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<div class="form-group has-validation">
-					<label for="descProjectsEdit">Descripción</label>
-					<textarea class="form-control" id="descProjectsEdit"
-						style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
-					
-				</div>
+					<!-- DESCRIPCIÓN -->
 
-				<!-- ACTIVO -->
-				<div class="form-group">
-					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
-				<input
-						type="hidden" id="idProjectUpdate"> 
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.projects.descripcion}"
+							for="descProjectsEdit"></label>
+						<textarea class="form-control" id="descProjectsEdit" required></textarea>
+						<small th:text="#{datatable.modal.maximo}"></small>
+						<div th:text="#{datatable.projects.modal.validacion.descripcion}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="activeEdit"></label>
+						<select class="form-select" id="activeEdit"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
+
+					<input type="hidden" id="idProjectUpdate">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateProjects">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateProjects">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateProjects"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateProjects"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR FOTO PROYECTO -->
 
 <div class="modal" tabindex="-1" id="modalUpdateImageProjects">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateImageProjects" class="modal-title">Editar
-					foto de proyecto</h5>
-				<button id="btnCloseUpdateImageProjects" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.photo.header}"
+					id="headerModalUpdateImageProjects" class="modal-title"></h5>
+				<button id="btnCloseUpdateImageProjects" type="button"
+					class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
+				<form id="formUpdateImageProjects" class="row g-3 needs-validation">
 
-<form id="formUpdateImageProjects" class="row g-3 needs-validation">
-				<!-- IMAGEN -->
+					<!-- IMAGEN -->
 
-				<div class="form-group has-validation">
-					<label for="imageProjectsEdit">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm"
-						id="imageProjectsEdit" required><div class="invalid-feedback">Please choose a username.</div> 
-				</div>
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.projects.imagen}"
+							for="imageProjectsEdit"></label> <input type="file" name="file"
+							class="form-control form-control-sm" id="imageProjectsEdit"
+							required>
+						<div th:text="#{datatable.projects.modal.validacion.imagen}"
+							class="invalid-feedback"></div>
+					</div>
 
+					<input type="hidden" id="idProjectUpdateImage">
 
-
-				<input type="hidden" id="idProjectUpdateImage"> 
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateImageProjects">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateImageProjects">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateImageProjects"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateImageProjects"></button>
 			</div>
 		</div>
 	</div>
 </div>
 
-	<!-- MODAL - ELIMINAR PROYECTO -->
 
-	<div class="modal" tabindex="-1" id="modalDeleteProjects">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 id="headerModalDeleteProjects" class="modal-title">Eliminar
-						proyecto</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<label>¿Estás seguro de querer eliminar este proyecto?</label> <input
-						type="hidden" id="idProjectsDelete"> 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarDeleteProjects">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarDeleteProjects">Cancelar</button>
+<!-- MODAL - ELIMINAR PROYECTO -->
 
-				</div>
+<div class="modal modalDelete" tabindex="-1" id="modalDeleteProjects">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles ">
+				<h5 th:text="#{datatable.modal.delete.header}"
+					id="headerModalDeleteProjects" class="modal-title">Eliminar
+					proyecto</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label th:text="#{datatable.projects.modal.delete.label}"></label> <input
+					type="hidden" id="idProjectsDelete">
+			</div>
+			<div class="modal-footer">
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarDeleteProjects"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarDeleteProjects"></button>
 			</div>
 		</div>
 	</div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+	integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+	crossorigin="anonymous"></script>

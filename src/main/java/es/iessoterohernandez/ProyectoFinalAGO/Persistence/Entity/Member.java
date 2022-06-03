@@ -55,7 +55,7 @@ public class Member extends AbstractEntity implements Serializable {
 
 	/** ORCID */
 	private String orcIdMember;
-	
+
 	/** Trayectoria profesional */
 	private String trajectoryMember;
 
@@ -160,6 +160,7 @@ public class Member extends AbstractEntity implements Serializable {
 	public void setOrcIdMember(String orcIdMember) {
 		this.orcIdMember = orcIdMember;
 	}
+
 	@Column(name = "TRAJECTORY_MEMBER", nullable = true)
 	public String getTrajectoryMember() {
 		return trajectoryMember;
@@ -168,7 +169,5 @@ public class Member extends AbstractEntity implements Serializable {
 	public void setTrajectoryMember(String trajectoryMember) {
 		this.trajectoryMember = trajectoryMember;
 	}
-	
-	
 
 }

@@ -32,7 +32,7 @@ public class Link extends AbstractEntity implements Serializable {
 
 	/** URL */
 	private String urlLink;
-	
+
 	@Id
 	@GeneratedValue(generator = "genSeqLinks")
 	@SequenceGenerator(name = "genSeqLinks", sequenceName = "SEQ_LINKS", allocationSize = 1)
@@ -43,7 +43,7 @@ public class Link extends AbstractEntity implements Serializable {
 	public void setIdLink(Long idLink) {
 		this.idLink = idLink;
 	}
-	
+
 	@Column(name = "TITLE_LINK", nullable = false, unique = true)
 	public String getTitleLink() {
 		return titleLink;

@@ -31,7 +31,6 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsForm
 @Service
 public class PublicationsServiceImpl implements PublicationsServiceI {
 
-	/** Logger */
 	final static Logger LOGGER = LoggerFactory.getLogger(PublicationsServiceImpl.class);
 
 	@Autowired
@@ -44,100 +43,9 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 	AuthorsPublicationDaoI authorsPublicationDao;
 
 	/**
-	 * Recupera todas las publicaciones activas ordenadas por fecha de publicación
+	 * Recupera todos los datos de las publicaciones almacenadas en BDD
 	 * 
-	 * @param ascendente
-	 * @return List<PublicationsDto>
-	 * @throws Exception
-	 */
-	@Override
-	public List<PublicationsYearsDto> getAllPublicationsActiveOrdered(Boolean ascendente) throws Exception {
-
-		LOGGER.info("PublicationsServiceImpl getAllPublicationsActiveOrdered .- Inicio");
-
-		List<PublicationsYearsDto> listaPublicationsYearsDto = null;
-
-		try {
-
-			List<Integer> listaYears = null;
-
-			if (ascendente != null) {
-				listaYears = publicationDao.getYearsPublicationsActiveOrdered(Boolean.TRUE, ascendente);
-
-				if (listaYears != null && !listaYears.isEmpty()) {
-					listaPublicationsYearsDto = new ArrayList<PublicationsYearsDto>();
-
-					for (Integer year : listaYears) {
-						PublicationsYearsDto publicationsYearsDto = new PublicationsYearsDto();
-						publicationsYearsDto.setYearPublication(year);
-
-						List<Publication> listaPublications = publicationDao.findByYearPublicationAndActive(year,
-								Boolean.TRUE);
-
-						if (listaPublications != null && !listaPublications.isEmpty()) {
-
-							List<PublicationsDto> listaPublicationsDto = new ArrayList<PublicationsDto>();
-							for (Publication p : listaPublications) {
-								PublicationsDto publicationsDto = new PublicationsDto();
-								publicationsDto.setYearPublication(p.getYearPublication());
-								publicationsDto.setTitlePublication(p.getTitlePublication());
-								publicationsDto.setJournalPublication(p.getJournalPublication());
-								publicationsDto.setDoiPublication(p.getDoiPublication());
-
-								List<AuthorDto> listaAuthorDto = new ArrayList<AuthorDto>();
-								for (AuthorsPublication authorPublication : p.getAuthorsPublication()) {
-									AuthorDto authorDto = new AuthorDto();
-									authorDto.setNameAuthor(authorPublication.getNameAuthor());
-									authorDto.setShortNameAuthor(authorPublication.getShortNameAuthor());
-									Member member = memberDao.findByIdMemberAndActive(authorPublication.getIdMember(),
-											Boolean.TRUE);
-									if (member != null) {
-										authorDto.setIsMember(Boolean.TRUE);
-										authorDto.setIdMember(String.valueOf(member.getIdMember()));
-									} else {
-										authorDto.setIsMember(Boolean.FALSE);
-									}
-									listaAuthorDto.add(authorDto);
-								}
-								publicationsDto.setAuthorsPublication(listaAuthorDto);
-								publicationsDto.setNumAuthors(listaAuthorDto.size());
-
-								listaPublicationsDto.add(publicationsDto);
-
-							}
-							publicationsYearsDto.setListaPublicationsDto(listaPublicationsDto);
-							listaPublicationsYearsDto.add(publicationsYearsDto);
-
-						} else {
-							LOGGER.error(
-									"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros nulos de publicaciones");
-						}
-					}
-
-				} else {
-					LOGGER.error(
-							"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros nulos de años");
-				}
-			} else {
-				LOGGER.error(
-						"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros nulos de modo de ordenación");
-			}
-
-		} catch (Exception e) {
-			LOGGER.error(
-					"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error no controlado al recuperar las publicaciones");
-			throw e;
-		}
-
-		LOGGER.info("PublicationsServiceImpl getAllPublicationsActiveOrdered .- Fin");
-
-		return listaPublicationsYearsDto;
-	}
-
-	/**
-	 * Recupera todos las noticias almacenadas en BDD
-	 * 
-	 * @return
+	 * @return List<PublicationsDatatableDto>
 	 * @throws Exception
 	 */
 	public List<PublicationsDatatableDto> getAllPublicationsData() throws Exception {
@@ -147,11 +55,13 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 		List<PublicationsDatatableDto> listaPublicationsDatatableDto = new ArrayList<PublicationsDatatableDto>();
 
 		try {
+
 			List<Publication> listPublications = publicationDao.findAll();
 
 			if (listPublications != null && !listPublications.isEmpty()) {
 
 				for (Publication p : listPublications) {
+
 					PublicationsDatatableDto publicationsDatatableDto = new PublicationsDatatableDto();
 					publicationsDatatableDto.setIdPublication(String.valueOf(p.getIdPublication()));
 					publicationsDatatableDto.setTitlePublication(p.getTitlePublication());
@@ -159,19 +69,24 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 					List<AuthorDto> listaAuthorDto = new ArrayList<AuthorDto>();
 
 					for (AuthorsPublication authorPublication : p.getAuthorsPublication()) {
+
 						AuthorDto authorDto = new AuthorDto();
 						authorDto.setNameAuthor(authorPublication.getNameAuthor());
 						authorDto.setShortNameAuthor(authorPublication.getShortNameAuthor());
 						Member member = memberDao.findByIdMemberAndActive(authorPublication.getIdMember(),
 								Boolean.TRUE);
+
 						if (member != null) {
 							authorDto.setIsMember(Boolean.TRUE);
 							authorDto.setIdMember(String.valueOf(member.getIdMember()));
 						} else {
 							authorDto.setIsMember(Boolean.FALSE);
+							authorDto.setIdMember(null);
 						}
+
 						listaAuthorDto.add(authorDto);
 					}
+
 					publicationsDatatableDto.setAuthorsPublication(listaAuthorDto);
 					publicationsDatatableDto.setJournalPublication(p.getJournalPublication());
 					publicationsDatatableDto.setDoiPublication(p.getDoiPublication());
@@ -189,8 +104,10 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 				}
 
 			} else {
-				LOGGER.error("PublicationsServiceImpl getAllPublicationsData .- Error: Parámetros nulos");
+				LOGGER.error(
+						"PublicationsServiceImpl getAllPublicationsData .- Error: No existen publicaciones registradas");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error(
 					"PublicationsServiceImpl getAllPublicationsData .- Error no controlado al recuperar las publicaciones");
@@ -204,13 +121,13 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 	}
 
 	/**
-	 * Almacena una noticia en BDD
+	 * Almacena una publicación en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param publicationsFormDto
+	 * @return Publication
+	 * @throws Exception
 	 */
 	@Override
-
 	public Publication addPublications(PublicationsFormDto publicationsFormDto) throws Exception {
 
 		LOGGER.info("PublicationsServiceImpl addPublications .- Inicio");
@@ -218,6 +135,7 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 		Publication publicationSaved = null;
 
 		try {
+
 			if (publicationsFormDto != null) {
 
 				Publication p = new Publication();
@@ -237,15 +155,20 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 				p.setUpdateDate(new Date());
 
 				List<AuthorDto> listaAuthorsDto = publicationsFormDto.getAuthorsPublication();
+
 				if (listaAuthorsDto != null && !listaAuthorsDto.isEmpty()) {
 
 					publicationSaved = publicationDao.save(p);
+
 					for (AuthorDto authorDto : listaAuthorsDto) {
+
 						AuthorsPublication authorsPublication = new AuthorsPublication();
 						authorsPublication.setIdPublication(publicationSaved);
+
 						if (authorDto.getIdMember() != null) {
 							authorsPublication.setIdMember(Long.parseLong(authorDto.getIdMember()));
 						}
+
 						authorsPublication.setNameAuthor(authorDto.getNameAuthor());
 						authorsPublication.setShortNameAuthor(authorDto.getShortNameAuthor());
 						authorsPublicationDao.save(authorsPublication);
@@ -256,8 +179,9 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 				LOGGER.info("PublicationsServiceImpl addPublications .- Publicación almacenada correctamente");
 
 			} else {
-				LOGGER.error("PublicationsServiceImpl addPublications .- Error: Parámetros nulos");
+				LOGGER.error("PublicationsServiceImpl addPublications .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("PublicationsServiceImpl addPublications .- Error no controlado al añadir la publicación");
 			throw e;
@@ -270,10 +194,11 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 	}
 
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza los datos de una publicacion almacenada en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param publicationsFormDto
+	 * @return Publication
+	 * @throws Exception
 	 */
 	@Override
 	public Publication updatePublications(PublicationsFormDto publicationsFormDto) throws Exception {
@@ -283,38 +208,48 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 		Publication publicationUpdated = null;
 
 		try {
+
 			if (publicationsFormDto != null) {
 
 				Publication p = publicationDao
 						.findByIdPublication(Long.parseLong(publicationsFormDto.getIdPublication()));
 
 				if (p != null) {
+
 					p.setTitlePublication(publicationsFormDto.getTitlePublication());
 					p.setJournalPublication(publicationsFormDto.getJournalPublication());
 					p.setDoiPublication(publicationsFormDto.getDoiPublication());
 					p.setYearPublication(Integer.parseInt(publicationsFormDto.getYearPublication()));
+
 					if (Integer.parseInt(publicationsFormDto.getActive()) == 1) {
 						p.setActive(true);
 					} else {
 						p.setActive(false);
 					}
+
 					p.setUpdateAdmin("agadelao");
 					p.setUpdateDate(new Date());
 
 					List<AuthorsPublication> listaAutores = authorsPublicationDao.findByIdPublication(p);
+
 					if (listaAutores != null && !listaAutores.isEmpty()) {
 						for (AuthorsPublication authorsPublication : listaAutores) {
 							authorsPublicationDao.delete(authorsPublication);
 						}
 					}
+
 					List<AuthorDto> listaAuthorsDto = publicationsFormDto.getAuthorsPublication();
 
 					if (listaAuthorsDto != null && !listaAuthorsDto.isEmpty()) {
+
 						publicationUpdated = publicationDao.save(p);
+
 						for (AuthorDto authorDto : listaAuthorsDto) {
+
 							AuthorsPublication authorsPublication = new AuthorsPublication();
 							authorsPublication.setIdPublication(publicationUpdated);
-							if (authorDto.getIdMember() != null) {
+
+							if (authorDto.getIdMember() != null && !authorDto.getIdMember().equals("null")) {
 								authorsPublication.setIdMember(Long.parseLong(authorDto.getIdMember()));
 							}
 
@@ -325,11 +260,13 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 					}
 
 				}
-				LOGGER.info("PublicationsServiceImpl updatePublications .- Publicación almacenada correctamente");
+
+				LOGGER.info("PublicationsServiceImpl updatePublications .- Publicación actualizada correctamente");
 
 			} else {
-				LOGGER.error("PublicationsServiceImpl updatePublications .- Error: Parámetros nulos");
+				LOGGER.error("PublicationsServiceImpl updatePublications .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error(
 					"PublicationsServiceImpl updatePublications .- Error no controlado al actualizar la publicación");
@@ -342,12 +279,19 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 
 	}
 
+	/**
+	 * Elimina una publicacion almacenada en BDD
+	 * 
+	 * @param publicationData
+	 * @throws Exception
+	 */
 	@Override
 	public void deletePublications(Map<String, String> publicationData) throws Exception {
 
 		LOGGER.info("PublicationsServiceImpl deletePublications .- Inicio");
 
 		try {
+
 			if (publicationData != null && !publicationData.isEmpty()) {
 
 				Publication p = publicationDao
@@ -356,7 +300,9 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 				if (p != null) {
 
 					List<AuthorsPublication> listaAutores = authorsPublicationDao.findByIdPublication(p);
+
 					if (listaAutores != null && !listaAutores.isEmpty()) {
+
 						for (AuthorsPublication authorsPublication : listaAutores) {
 							authorsPublicationDao.delete(authorsPublication);
 						}
@@ -367,8 +313,9 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 				LOGGER.info("PublicationsServiceImpl deletePublications .- Publicación eliminada correctamente");
 
 			} else {
-				LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros nulos");
+				LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error(
 					"PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
@@ -377,6 +324,110 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 
 		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
 
+	}
+
+	/**
+	 * Recupera todas las publicaciones activas ordenadas por año de publicación y
+	 * agrupadas por año
+	 * 
+	 * @param ascendente
+	 * @return List<PublicationsYearsDto>
+	 * @throws Exception
+	 */
+	@Override
+	public List<PublicationsYearsDto> getAllPublicationsActiveOrdered(Boolean ascendente) throws Exception {
+
+		LOGGER.info("PublicationsServiceImpl getAllPublicationsActiveOrdered .- Inicio");
+
+		List<PublicationsYearsDto> listaPublicationsYearsDto = null;
+
+		try {
+
+			List<Integer> listaYears = null;
+
+			if (ascendente != null) {
+
+				listaYears = publicationDao.getYearsPublicationsActiveOrdered(Boolean.TRUE, ascendente);
+
+				if (listaYears != null && !listaYears.isEmpty()) {
+
+					listaPublicationsYearsDto = new ArrayList<PublicationsYearsDto>();
+
+					for (Integer year : listaYears) {
+
+						PublicationsYearsDto publicationsYearsDto = new PublicationsYearsDto();
+						publicationsYearsDto.setYearPublication(year);
+
+						List<Publication> listaPublications = publicationDao.findByYearPublicationAndActive(year,
+								Boolean.TRUE);
+
+						if (listaPublications != null && !listaPublications.isEmpty()) {
+
+							List<PublicationsDto> listaPublicationsDto = new ArrayList<PublicationsDto>();
+
+							for (Publication p : listaPublications) {
+
+								PublicationsDto publicationsDto = new PublicationsDto();
+								publicationsDto.setYearPublication(p.getYearPublication());
+								publicationsDto.setTitlePublication(p.getTitlePublication());
+								publicationsDto.setJournalPublication(p.getJournalPublication());
+								publicationsDto.setDoiPublication(p.getDoiPublication());
+
+								List<AuthorDto> listaAuthorDto = new ArrayList<AuthorDto>();
+
+								for (AuthorsPublication authorPublication : p.getAuthorsPublication()) {
+
+									AuthorDto authorDto = new AuthorDto();
+									authorDto.setNameAuthor(authorPublication.getNameAuthor());
+									authorDto.setShortNameAuthor(authorPublication.getShortNameAuthor());
+									Member member = memberDao.findByIdMemberAndActive(authorPublication.getIdMember(),
+											Boolean.TRUE);
+
+									if (member != null) {
+										authorDto.setIsMember(Boolean.TRUE);
+										authorDto.setIdMember(String.valueOf(member.getIdMember()));
+									} else {
+										authorDto.setIsMember(Boolean.FALSE);
+									}
+
+									listaAuthorDto.add(authorDto);
+								}
+
+								publicationsDto.setAuthorsPublication(listaAuthorDto);
+								publicationsDto.setNumAuthors(listaAuthorDto.size());
+
+								listaPublicationsDto.add(publicationsDto);
+
+							}
+
+							publicationsYearsDto.setListaPublicationsDto(listaPublicationsDto);
+							listaPublicationsYearsDto.add(publicationsYearsDto);
+
+						} else {
+							LOGGER.error(
+									"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: No existen publicaciones activas registradas en este año");
+						}
+					}
+
+				} else {
+					LOGGER.error(
+							"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: No existen publicaciones activos registradas");
+				}
+
+			} else {
+				LOGGER.error(
+						"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error: Parámetros de entrada nulos");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"PublicationsServiceImpl getAllPublicationsActiveOrdered .- Error no controlado al recuperar las publicaciones");
+			throw e;
+		}
+
+		LOGGER.info("PublicationsServiceImpl getAllPublicationsActiveOrdered .- Fin");
+
+		return listaPublicationsYearsDto;
 	}
 
 }

@@ -1,50 +1,53 @@
-<div id="response"></div>
 
-<div>
-	<button type="button" id="formAddNewsBtn" class="btn btn-secondary">
-		<a href="javascript: mostrarModalAddNews();">Añadir nueva noticia</a>
+<div class="response" id="response"></div>
+
+<div id="buttonContainer">
+	<button type="button" id="formAddNewsBtn" class="btn btn-light">
+		<a th:text="#{datatable.btn.nuevoregistro}"
+			href="javascript: mostrarModalAddNews();"></a>
 	</button>
-	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/news}">Generar Excel</a></button>
+	<button type="button" th:text="#{datatable.btn.generarexcel}"
+		class="btn btn-light">
+		<a th:href="@{/management/generateExcel/news}"></a>
+	</button>
 </div>
-
-
 
 
 <!-- DATATABLE -->
 
-<table id="newsDatatable" class="table datatableAdmin display nowrap"
-	style="text-align: center;">
-	<thead>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Titulo</th>
-			<th class="atri" scope="col">Imagen</th>
-			<th class="atri" scope="col">Abstract</th>
-			<th class="atri" scope="col">Contenido</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</thead>
-	<tbody>
-
-	</tbody>
-	<tfoot>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Titulo</th>
-			<th class="atri" scope="col">Imagen</th>
-			<th class="atri" scope="col">Abstract</th>
-			<th class="atri" scope="col">Contenido</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</tfoot>
-
-</table>
+<div class="container" id="datatableNewsContainer">
+	<table id="newsDatatable" class="table datatableAdmin display nowrap ">
+		<thead>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.news.titulo}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.news.imagen}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.news.abstract}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.news.contenido}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.news.titulo}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.news.imagen}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.news.abstract}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.news.contenido}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
 <input class="selectedCat" type="hidden" value="1">
 
 
@@ -52,36 +55,43 @@
 
 <div class="modal" tabindex="-1" id="modalNewsImage">
 	<div class="modal-dialog">
-		<div class="modal-content">
+		<div class="modal-content ">
+			<div class="modal-header containerTitles">
+				<h5 id="headerModalImage" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
 			<div class="modal-body">
-				<img id="bodyModalImageNews"></img>
+				<img class="modalImage" id="bodyModalImageNews"></img>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - ABSTRACT -->
 
 <div class="modal" tabindex="-1" id="modalNewsAbstract">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header containerTitles ">
 				<h5 id="headerModalAbstract" class="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
+			<div class="apartado">
+				<h5 th:text="#{datatable.news.modal.abstract}"></h5>
+			</div>
+			<div class="modal-body modalTexto">
 				<p id="bodyModalAbstract"></p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
@@ -93,107 +103,113 @@
 <div class="modal" tabindex="-1" id="modalNewsContent">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header containerTitles">
 				<h5 id="headerModalContent" class="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
+			<div class="apartado">
+				<h5 th:text="#{datatable.news.modal.contenido}"></h5>
+			</div>
+			<div class="modal-body modalTexto">
 				<p id="bodyModalContent"></p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - AÑADIR NOTICIA -->
 
 <div class="modal" tabindex="-1" id="modalAddNews">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalAddNews" class="modal-title">Añadir nueva
-					noticia</h5>
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.modal.add.header}" id="headerModalAddNews"
+					class="modal-title"></h5>
 				<button id="btnCloseAddNews" type="button" class="btn-close"
 					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+
 				<form id="formAddNews" class="row g-3 needs-validation">
 
 					<!-- TÍTULO -->
 
 					<div class="form-group has-validation">
-						<label for="titleNews">Título</label>
-						<textarea class="form-control" id="titleNews"
-							style="height: 100px" required></textarea>
-						<div class="invalid-feedback">Please choose a username.</div>
-
+						<label th:text="#{datatable.news.titulo}" for="titleNews"></label>
+						<textarea class="form-control" id="titleNews" required></textarea>
+						<div th:text="#{datatable.news.modal.validacion.titulo}"
+							class="invalid-feedback"></div>
 					</div>
 
 					<!-- ABSTRACT -->
 
 					<div class="form-group ">
-						<label for="abstractNews">Abstract</label>
-						<textarea class="form-control" id="abstractNews"
-							style="height: 100px"></textarea>
-						
-
+						<label th:text="#{datatable.news.abstract}" for="abstractNews"></label>
+						<textarea class="form-control" id="abstractNews"></textarea>
+						<small th:text="#{datatable.modal.maximo.abstract}"></small>
 					</div>
 
 					<!-- CONTENIDO -->
 
 					<div class="form-group has-validation">
-						<label for="contentNews">Contenido</label>
-						<textarea class="form-control" id="contentNews"
-							style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.news.contenido}" for="contentNews"></label>
+						<textarea class="form-control" id="contentNews" required></textarea>
+						<small th:text="#{datatable.modal.maximo}"></small>
+						<div th:text="#{datatable.news.modal.validacion.contenido}"
+							class="invalid-feedback"></div>
 
-					</div>
-
-					<!-- ACTIVO -->
-
-					<div class="form-group">
-						<label for="active">Activo</label> <select class="form-select"
-							id="active" aria-label="Floating label select example" required>
-							<option value="1">Si</option>
-							<option value="0">No</option>
-						</select>
 					</div>
 
 					<!-- IMAGEN -->
 
 					<div class="form-group has-validation">
-						<label for="imageNews">Imagen</label> <input type="file"
-							name="file" class="form-control form-control-sm" id="imageNews"
-							required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.news.imagen}" for="imageNews"></label>
+						<input type="file" name="file"
+							class="form-control form-control-sm" id="imageNews" required>
+						<div th:text="#{datatable.news.modal.validacion.imagen}"
+							class="invalid-feedback"></div>
+					</div>
 
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="active"></label> <select
+							class="form-select" id="active"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
 					</div>
 
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarAddNews">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarAddNews">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarAddNews"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarAddNews"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR NOTICIA -->
 
 <div class="modal" tabindex="-1" id="modalUpdateNews">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateNews" class="modal-title">Editar
-					noticia</h5>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.header}"
+					id="headerModalUpdateNews" class="modal-title"></h5>
 				<button id="btnCloseUpdateNews" type="button" class="btn-close"
 					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
@@ -203,67 +219,66 @@
 					<!-- TÍTULO -->
 
 					<div class="form-group has-validation">
-						<label for="titleNewsEdit">Título</label>
-						<textarea class="form-control" id="titleNewsEdit"
-							style="height: 100px" required></textarea>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.news.titulo}" for="titleNewsEdit"></label>
+						<textarea class="form-control" id="titleNewsEdit" required></textarea>
+						<div th:text="#{datatable.news.modal.validacion.titulo}"
+							class="invalid-feedback"></div>
 					</div>
-
-
 
 					<!-- ABSTRACT -->
 
 					<div class="form-group ">
-						<label for="abstractNewsEdit">Abstract</label>
-						<textarea class="form-control" id="abstractNewsEdit"
-							style="height: 100px" ></textarea>
-						
+						<label th:text="#{datatable.news.abstract}" for="abstractNewsEdit"></label>
+						<textarea class="form-control" id="abstractNewsEdit"></textarea>
+						<small th:text="#{datatable.modal.maximo.abstract}"></small>
 					</div>
-
-
 
 					<!-- CONTENIDO -->
 
 					<div class="form-group has-validation">
-						<label for="contentNewsEdit">Contenido</label>
-						<textarea class="form-control" id="contentNewsEdit"
-							style="height: 100px"required></textarea><div class="invalid-feedback">Please choose a username.</div>
-
+						<label th:text="#{datatable.news.contenido}" for="contentNewsEdit"></label>
+						<textarea class="form-control" id="contentNewsEdit" required></textarea>
+						<small th:text="#{datatable.modal.maximo}"></small>
+						<div th:text="#{datatable.news.modal.validacion.contenido}"
+							class="invalid-feedback"></div>
 					</div>
 
 					<!-- ACTIVO -->
 
 					<div class="form-group">
-						<label for="activeEdit">Activo</label> <select class="form-select"
-							id="activeEdit" aria-label="Floating label select example"
-							required>
-							<option value="1">Si</option>
-							<option value="0">No</option>
+						<label th:text="#{datatable.table.activo}" for="activeEdit"></label>
+						<select class="form-select" id="activeEdit"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
 						</select>
 					</div>
 
-
 					<input type="hidden" id="idNewsUpdate">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateNews">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateNews">Cancelar</button>
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateNews"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateNews"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR FOTO NOTICIA -->
 
 <div class="modal" tabindex="-1" id="modalUpdateImageNews">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateImageNews" class="modal-title">Editar
-					noticia</h5>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.photo.header}"
+					id="headerModalUpdateImageNews" class="modal-title"></h5>
 				<button id="btnCloseUpdateImageNews" type="button" class="btn-close"
 					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
@@ -273,21 +288,24 @@
 					<!-- IMAGEN -->
 
 					<div class="form-group has-validation">
-						<label for="imageNewsEdit">Imagen</label> <input type="file"
-							name="file" class="form-control form-control-sm"
-							id="imageNewsEdit" required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<label th:text="#{datatable.news.imagen}" for="imageNewsEdit"></label>
+						<input type="file" name="file"
+							class="form-control form-control-sm" id="imageNewsEdit" required>
+						<div th:text="#{datatable.news.modal.validacion.imagen}"
+							class="invalid-feedback"></div>
 					</div>
 
-
 					<input type="hidden" id="idNewsUpdateImage">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateImageNews">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateImageNews">Cancelar</button>
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateImageNews"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateImageNews"></button>
 			</div>
 		</div>
 	</div>
@@ -296,25 +314,26 @@
 
 <!-- MODAL - ELIMINAR NOTICIA -->
 
-<div class="modal" tabindex="-1" id="modalDeleteNews">
+<div class="modal modalDelete" tabindex="-1" id="modalDeleteNews">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalDeleteNews" class="modal-title">Eliminar
-					Noticia</h5>
+			<div class="modal-header containerTitles ">
+				<h5 th:text="#{datatable.modal.delete.header}"
+					id="headerModalDeleteNews" class="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<label>¿Estás seguro de querer eliminar esta noticia?</label> <input
+				<label th:text="#{datatable.news.modal.delete.label}"></label> <input
 					type="hidden" id="idNewsDelete">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarDeleteNews">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarDeleteNews">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarDeleteNews"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarDeleteNews"></button>
 			</div>
 		</div>
 	</div>

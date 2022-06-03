@@ -1,31 +1,23 @@
 function getDatatableMembers() {
 
-
-
 	let table = $('#membersDatatable').DataTable({
 		"sAjaxSource": "/management/getMembersData",
 		"sAjaxDataProp": "",
-
-		//		"scrollX": 500,
-		//		"deferRender": true,
-		//		"scroller": true,
-		"sDom": "ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
-
+		"bAutoWidth": false,
 		"language": {
-			"lengthMenu": "Mostrando _MENU_ entradas",
-			"emptyTable": "Sin datos en esta tabla",
-			"zeroRecords": "No se han encontrado coincidencias",
-			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-			"infoFiltered": "(filtrado de _MAX_ entradas)",
-			"loadingRecords": "Cargando...",
+			"lengthMenu": $('#labelMostrando').val() + ' _MENU_ ' + $('#labelEntradas').val(),
+			"emptyTable": $('#labelTablaVacia').val(),
+			"search": $('#labelBuscador').val(),
+			"zeroRecords": $('#labelNoCoincidencias').val(),
+			"info": $('#labelMostrando').val() + ' _START_ ' + $('#labelA').val() + ' _END_ ' + $('#labelDe').val() + ' _TOTAL_ ' + $('#labelEntradas').val(),
+			"infoEmpty": $('#labelMostrando').val() + " 0 " + $('#labelA').val() + ' 0 ' + $('#labelDe').val() + ' 0 ' + $('#labelEntradas').val(),
+			"infoFiltered": '(' + $('#labelFiltrado').val() + ' _MAX_ ' + $('#labelEntradas').val() + ')',
+			"loadingRecords": $('#labelCargando').val(),
 			"paginate": {
-				"first": "Primero",
-				"last": "Ultimo",
-				"next": "Siguiente",
-				"previous": "Anterior"
+				"next": $('#labelSiguiente').val(),
+				"previous": $('#labelAnterior').val()
 			},
 		},
 		"order": [[0, "desc"]],
@@ -46,20 +38,11 @@ function getDatatableMembers() {
 				"bSortable": true,
 			},
 			{
-				"mData": "dniMember",
 				"mRender": function(data, type, row) {
-					return data;
-				},
-				"bSortable": false,
-			},
-			{
-				//"mData": ["shortNameMember", "emailMember", "phoneMember", "reseachIdMember", "scopusIdMember", "orcIdMember"]
-				"mRender": function(data, type, row) {
-					return row.shortNameMember + row.emailMember + row.phoneMember + row.reseachIdMember + row.scopusIdMember + row.orcIdMember;
+					return row.dniMember + row.shortNameMember + row.emailMember + row.phoneMember + row.reseachIdMember + row.scopusIdMember + row.orcIdMember;
 				},
 				"bSortable": false
 			},
-
 			{
 				"mData": "idProCat",
 				"mRender": function(data, type, row) {
@@ -112,35 +95,41 @@ function getDatatableMembers() {
 
 			// Datos personales 
 			var verDatos = $('<a/>', {
-				text: 'Datos Personales',
+				text: $('#dataMemberLabel').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
-					mostrarModalMembersData(data.nameMember, data.shortNameMember, data.emailMember, data.phoneMember, data.reseachIdMember, data.scopusIdMember, data.orcIdMember);
+					mostrarModalMembersData(data.nameMember, data.dniMember, data.shortNameMember, data.emailMember, data.phoneMember, data.reseachIdMember, data.scopusIdMember, data.orcIdMember);
 				}
 			});
-			$('td:eq(3)', row).html(verDatos);
+
+			$('td:eq(2)', row).html(verDatos);
+
 
 			// Categorias
 			var nameProCat = $('<p/>', {
 				text: data.nameProCat
 			});
-			$('td:eq(4)', row).html(nameProCat);
+
+			$('td:eq(3)', row).html(nameProCat);
+
 
 			// Imagen 					  	
 			var verFoto = $('<a/>', {
-				text: 'Foto',
+				text: $('#photoMemberLabel').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
-					mostrarModalMembersPhoto(data.photoMember);
+					mostrarModalMembersPhoto(data.nameMember, data.photoMember);
 				}
 			});
-			$('td:eq(5)', row).html(verFoto);
+
+			$('td:eq(4)', row).html(verFoto);
+
 
 			// Trayectoria
 			var verTrayectoria = $('<a/>', {
-				text: "Trayectoria",
+				text: $('#trajectoryMemberLabel').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
@@ -148,52 +137,57 @@ function getDatatableMembers() {
 
 				}
 			});
-			$('td:eq(6)', row).html(verTrayectoria);
+
+			$('td:eq(5)', row).html(verTrayectoria);
+
 
 			// Activo 
+			var activo;
 			if (data.active == 'true') {
-				var activo = $('<a/>', {
-					text: "Si"
+				activo = $('<a/>', {
+					text: $('#activoSi').val()
 				});
 			} else {
-				var activo = $('<a/>', {
-					text: "No"
+				activo = $('<a/>', {
+					text: $('#activoNo').val()
 				});
 			}
-			$('td:eq(9)', row).html(activo);
+			$('td:eq(8)', row).html(activo);
+
 
 			// Acciones 
-			var liAccion1 = $('<li/>');
 
+			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
-				text: 'Editar',
+				text: $('#linkEditar').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
 					mostrarModalUpdateMembers(data.idMember, data.nameMember, data.shortNameMember, data.dniMember, data.idProCat, data.activeProCat, data.emailMember, data.phoneMember, data.reseachIdMember, data.scopusIdMember, data.orcIdMember, data.trajectoryMember, data.active);
 				}
 			});
+
 			accion1.addClass('dropdown-item').attr('href', '#');
 			liAccion1.append(accion1);
 
+
 			var liAccion2 = $('<li/>');
 			var accion2 = $('<a/>', {
-				text: 'Cambiar foto',
+				text: $('#linkCambiarFoto').val(),
 				href: '',
 				click: function(e) {
-
 					e.preventDefault();
 					mostrarModalUpdatePhotoMembers(data.idMember);
 				}
-
 			});
+
 			accion2.addClass('dropdown-item').attr('href', '#');
 			liAccion2.append(accion2);
 
 
 			var liAccion3 = $('<li/>');
 			var accion3 = $('<a/>', {
-				text: 'Eliminar',
+				text: $('#linkEliminar').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
@@ -209,7 +203,7 @@ function getDatatableMembers() {
 			divAcciones.addClass("text-end");
 
 			var liPrincipal = $('<li/>').css('list-style-type', 'none').addClass('nav-item').addClass('dropdown');
-			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Acciones');
+			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text($('#linkAcciones').val());
 			var uPrincipal = $('<u/>').addClass('dropdown-menu').attr('aria-labelledby', 'listaAcciones').css('text-decoration', 'none');
 
 			liPrincipal.append(aPrincipal);
@@ -219,12 +213,25 @@ function getDatatableMembers() {
 			uPrincipal.append(liAccion3);
 
 			divAcciones.append(liPrincipal);
-			$('td:eq(10)', row).html(divAcciones);
+			$('td:eq(9)', row).html(divAcciones);
+
+
+			$('td:eq(0)', row).attr("data-label", "ID");
+			$('td:eq(1)', row).attr("data-label", "Nombre");
+			$('td:eq(2)', row).attr("data-label", "Datos personales");
+			$('td:eq(3)', row).attr("data-label", "Categoría");
+			$('td:eq(4)', row).attr("data-label", "Foto");
+			$('td:eq(5)', row).attr("data-label", "Trayectoria");
+			$('td:eq(6)', row).attr("data-label", "Admin");
+			$('td:eq(7)', row).attr("data-label", "Fecha");
+			$('td:eq(8)', row).attr("data-label", "Activo");
+			$('td:eq(9)', row).attr("data-label", "");
 
 		}
 	});
 
 
+	// FILTROS
 
 	$('#membersDatatable thead tr').clone(true).addClass('filters').appendTo('#membersDatatable thead');
 
@@ -232,17 +239,14 @@ function getDatatableMembers() {
 		$(this).off();
 		$(this).removeClass('sorting_desc');
 		$(this).removeClass('sorting');
-
 	});
 
 	$('#membersDatatable thead tr:eq(1) th.atri').each(function(i) {
-		//let title = $(this).text();
-		$(this).html('<input style="max-width: 100px;" type="text" />');
+
+		$(this).html('<input type="text" />');
 
 		$('input', this).on('keyup change', function() {
-
 			if (table.column(i).search() != this.value) {
-
 				table.column(i).search(this.value).draw();
 			}
 		});
@@ -250,60 +254,49 @@ function getDatatableMembers() {
 
 
 	$('#membersDatatable thead tr:eq(1) th.selectCat').each(function(i) {
-		//let title = $(this).text();
-		let listaProCat = $('#idProCatSelect');
 
+		let listaProCat = $('#idProCatSelect');
 		$(this).html(listaProCat);
 
-		//$(this).html('<select class="form-select"><option value="0">Seleccione una categoría</option><option th:each="proCatDto : ${listaProCatDto}" th:text="${proCatDto.nameProCat}" th:value="${proCatDto.idProCat}"></select>');
-
 		$('select', this).on('keyup change', function() {
-			if (table.column(4).search() != this.value) {
-				//debugger;
-				table.column(4).search(this.value).draw();
+			if (table.column(3).search() != this.value) {
+				table.column(3).search(this.value).draw();
 			}
 		});
 	});
 
 	$('#membersDatatable thead tr:eq(1) th.selectActive').each(function(i) {
 
-		$(this).html('<select class="form-select"><option value=""><option value="true">Si</option><option value="false">No</option></select>');
+		$(this).html('<select class="form-select"><option value=""><option value="true">' + $('#activoSi').val() + '</option><option value="false">' + $('#activoNo').val() + '</option></select>');
 
 		$('select', this).on('keyup change', function() {
-			if (table.column(9).search() !== this.value) {
-
-				table.column(9).search(this.value).draw();
+			if (table.column(8).search() !== this.value) {
+				table.column(8).search(this.value).draw();
 			}
 		});
 	});
 
 
-
+	// BOTONES
 
 	$(document).on("click", "#btnAceptarAddMembers", function(e) {
 
 		$('#modalAddMembers').modal('show');
-
 		var form = $("#formAddMembers");
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
 		} else {
-
 			anyadirNuevoMiembro();
 			$('#modalAddMembers').modal('hide');
-
 		}
 		form.addClass('was-validated');
-
 
 	});
 
 	$(document).on("click", "#btnCancelarAddMembers", function() {
 		$("#formAddMembers").removeClass('was-validated');
-
 		$("#nameMember").val('');
 		$("#shortNameMember").val('');
 		$("#dniMember").val('');
@@ -321,7 +314,6 @@ function getDatatableMembers() {
 
 	$(document).on("click", "#btnCloseAddMembers", function() {
 		$("#formAddMembers").removeClass('was-validated');
-
 		$("#nameMember").val('');
 		$("#shortNameMember").val('');
 		$("#dniMember").val('');
@@ -335,28 +327,22 @@ function getDatatableMembers() {
 		$("#trajectoryMember").val('');
 		$("#active").val('1');
 		$('#imageMembers').val('');
-
 	});
 
 
 	$(document).on("click", "#btnAceptarUpdateMembers", function(e) {
 
 		$('#modalUpdateMembers').modal('show');
-
 		var form = $("#formUpdateMember");
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
 		} else {
-
 			editarMiembro();
 			$('#modalUpdateMembers').modal('hide');
-
 		}
 		form.addClass('was-validated');
-
 
 	});
 
@@ -372,50 +358,44 @@ function getDatatableMembers() {
 
 
 	$(document).on("click", "#btnAceptarUpdatePhotoMembers", function(e) {
-		$('#modalUpdatePhotoMembers').modal('show');
 
+		$('#modalUpdatePhotoMembers').modal('show');
 		var form = $("#formUpdatePhotoMembers");
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
 		} else {
-
 			editarFotoMiembro();
 			$('#modalUpdatePhotoMembers').modal('hide');
-
 		}
 		form.addClass('was-validated');
-
 
 	});
 
 	$(document).on("click", "#btnCancelarUpdatePhotoMembers", function() {
 		$("#formUpdatePhotoMembers").removeClass('was-validated');
 		$("#imageMembersEdit").val('');
-
 	});
 
 	$(document).on("click", "#btnCloseUpdatePhotoMembers", function() {
 		$("#formUpdatePhotoMembers").removeClass('was-validated');
 		$("#imageMembersEdit").val('');
-
 	});
 
 	$(document).on("click", "#btnAceptarDeleteMembers", function(e) {
 		e.preventDefault();
 		eliminarMiembro();
-
 	});
-
 
 }
 
 
-function mostrarModalMembersData(name, shortName, email, phone, researchId, scopusId, orcId) {
+// MODALES
 
+function mostrarModalMembersData(name, dni, shortName, email, phone, researchId, scopusId, orcId) {
 	$("#headerMembersData").text(name);
+	$("#modalDniMember").text(dni);
 	$("#modalShortNameMember").text(shortName);
 	$("#modalEmailMember").text(email);
 	$("#modalPhoneMember").text(phone);
@@ -425,7 +405,8 @@ function mostrarModalMembersData(name, shortName, email, phone, researchId, scop
 	$("#modalMembersData").modal('toggle');
 }
 
-function mostrarModalMembersPhoto(imagen) {
+function mostrarModalMembersPhoto(nameMember, imagen) {
+	$("#headerMembersPhoto").text(nameMember);
 	$('#bodyModalMembersPhoto').attr('src', 'images/' + imagen);
 	$('#modalMembersPhoto').modal('toggle');
 }
@@ -455,7 +436,6 @@ function mostrarModalUpdateMembers(idMember, nameMember, shortNameMember, dniMem
 
 	$('#emailMemberEdit').val(emailMember);
 	$('#phoneMemberEdit').val(phoneMember);
-
 	$('#reseachIdMemberEdit').val(reseachIdMember);
 	$('#scopusIdMemberEdit').val(scopusIdMember);
 	$('#orcIdMemberEdit').val(orcIdMember);
@@ -466,10 +446,9 @@ function mostrarModalUpdateMembers(idMember, nameMember, shortNameMember, dniMem
 		$('#activeEdit').val('1');
 	} else {
 		$('#activeEdit').val('0');
-
 	}
-
 	$("#modalUpdateMembers").modal('toggle');
+
 }
 
 function mostrarModalUpdatePhotoMembers(idMember) {
@@ -482,9 +461,13 @@ function mostrarModalDeleteMembers(idMember) {
 	$("#modalDeleteMembers").modal('toggle');
 }
 
+
+// FUNCIONES CRUD
+
 function anyadirNuevoMiembro() {
 
 	let form = new FormData();
+
 	form.append("file", $('#imageMembers')[0].files[0]);
 	form.append("nameMember", $("#nameMember").val());
 	form.append("shortNameMember", $("#shortNameMember").val());
@@ -506,21 +489,19 @@ function anyadirNuevoMiembro() {
 		data: form,
 		success: function(data) {
 			if (data == '') {
-				
+				$('#membersDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#addOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#addErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#addErrorMensaje").val());
 		}
 	}).done(function() {
-		
 		$("#formAddMembers").removeClass('was-validated');
 		$("#nameMember").val('');
 		$("#shortNameMember").val('');
@@ -535,17 +516,13 @@ function anyadirNuevoMiembro() {
 		$("#trajectoryMember").val('');
 		$("#active").val('1');
 		$('#imageMembers').val('');
-	}).always(function() {
-		$('#membersDatatable').DataTable().ajax.reload();
 	});
 }
-
 
 
 function editarMiembro() {
 
 	let form = new FormData();
-
 
 	form.append("nameMember", $("#nameMemberEdit").val());
 	form.append("shortNameMember", $("#shortNameMemberEdit").val());
@@ -568,25 +545,21 @@ function editarMiembro() {
 		data: form,
 		success: function(data) {
 			if (data == '') {
-				
+				$('#membersDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#updateOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#updateErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#updateErrorMensaje").val());
 		}
 	}).done(function() {
-
 		$('#imageMembersEdit').val('');
 		$("#formUpdateMembers").removeClass('was-validated');
-	}).always(function() {
-		$('#membersDatatable').DataTable().ajax.reload();
 	});
 }
 
@@ -605,32 +578,28 @@ function editarFotoMiembro() {
 		data: form,
 		success: function(data) {
 			if (data == '') {
-						okMessage();
-				$(".alert").text('Bieeen');
+				$('#membersDatatable').DataTable().ajax.reload();
+				okMessage();
+				$(".alert").text($("#updateOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#updateErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#updateErrorMensaje").val());
 		}
 	}).done(function() {
 		$("#formUpdatePhotoMembers").removeClass('was-validated');
 		$("#imageMembersEdit").val('');
-	}).always(function() {
-		$('#membersDatatable').DataTable().ajax.reload();
 	});
 }
-
 
 
 function eliminarMiembro() {
 
 	let form = new FormData();
-
 
 	form.append("idMembers", $("#idMembersDelete").val());
 
@@ -642,20 +611,18 @@ function eliminarMiembro() {
 		data: form,
 		success: function(data) {
 			if (data == '') {
+				$('#membersDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#deleteOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#deleteErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#deleteErrorMensaje").val());
 		}
-	}).always(function() {
-		$('#membersDatatable').DataTable().ajax.reload();
-	});;
+	});
 }
 

@@ -1,7 +1,5 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatDto;
-
 public class MembersDatatableDto {
 
 	private String idMember;

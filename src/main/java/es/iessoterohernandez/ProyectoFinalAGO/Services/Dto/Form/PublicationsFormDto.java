@@ -20,7 +20,6 @@ public class PublicationsFormDto {
 
 	private String active;
 
-
 	public String getIdPublication() {
 		return idPublication;
 	}

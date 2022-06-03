@@ -4,82 +4,40 @@
 <body>
 	<header th:replace="views/common/header :: header"></header>
 
-	<!-- 	<form th:object="${techCatFormDto}" method="POST"> -->
-	<!-- 		<div class="form-group"> -->
-	<!-- 			<!-- DNI -->
-
-	<!-- 			<label for="idTechCat">Categoría</label> <select -->
-	<!-- 				th:field="*{idTechCat}"> -->
-	<!-- 				<option value="0">Seleccione una categoría</option> -->
-	<!-- 				<option th:each="techCatDto : ${listaTechCatDto}" -->
-	<!-- 					th:text="${techCatDto.nameTechCat}" -->
-	<!-- 					th:value="${techCatDto.idTechCat}"> -->
-	<!-- 			</select></br> -->
-
-	<!-- 		</div> -->
-	<!-- 		</br> -->
-	<!-- 		<button id="filtrarBtn" type="button" class="btn btn-success">Filtrar</button> -->
-	<!-- 	</form> -->
-
-	<!-- 	<div id="listFacilitiesContainer" class="container "> -->
-	<!-- 		<div th:each="techCatFacilitiesDto:${listaTechCatFacilitiesDto}" -->
-	<!-- 			style="margin: 20px;"> -->
-	<!-- 			<div class="row border"> -->
-	<!-- 				<div class="col text-center border"> -->
-	<!-- 					<h3 th:text="${techCatFacilitiesDto.nameTechCat}" class="mb-3"></h3> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-	<!-- 			<div th:each="facilitiesDto:${techCatFacilitiesDto.facilitiesDto}" -->
-	<!-- 				class="row border"> -->
-	<!-- 				<div class="col-3 border"> -->
-	<!-- 					<img src="/images/flamenca.png" alt="..." -->
-	<!-- 						style="width: 250px; height: 250px;" /> -->
-	<!-- 				</div> -->
-	<!-- 				<div class="col-9 border"> -->
-	<!-- 					<div class="row"> -->
-	<!-- 						<h3 th:text="${facilitiesDto.nameFacilitie}" class="mb-3"></h3> -->
-	<!-- 					</div> -->
-	<!-- 					<div class="row"> -->
-	<!-- 						<p th:text="${facilitiesDto.featuresFacilitie}"></p> -->
-	<!-- 					</div> -->
-	<!-- 				</div> -->
-	<!-- 			</div> -->
-	<!-- 		</div> -->
-	<!-- 	</div> -->
-
-
-	<div class="container" >
-	<div id="listFacilitiesContainer" class="dataCompleteContainer listDataContainer">
-		<div class="accordion" id="accordionExample">
-			<div class="accordion-item"
-				th:each="techCatFacilitiesDto:${listaTechCatFacilitiesDto}">
-				<div class="containerAccordionHeaders">
-				<h5 class="accordion-header"
-					th:id="'heading'+ ${techCatFacilitiesDto.idTechCat}">
-					<button th:text="${techCatFacilitiesDto.nameTechCat}"
-						class="accordion-button" type="button" data-bs-toggle="collapse"
-						th:data-bs-target="'#collapse'+${techCatFacilitiesDto.idTechCat}"
-						aria-expanded="true"
-						th:aria-controls="'collapse'+${techCatFacilitiesDto.idTechCat}"></button>
-				</h5>
-				</div>
-				<div th:each="facilitiesDto:${techCatFacilitiesDto.facilitiesDto}"
-					th:id="'collapse'+${techCatFacilitiesDto.idTechCat}"
-					class="accordion-collapse collapse show"
-					th:aria-labelledby="'heading'+${techCatFacilitiesDto.idTechCat}">
-					<div class="accordion-body">
-
-						<div class="card ">
-							<div >
-								<div class="contentImage" >
-									<img style="float:left;" th:src="@{/images/}+${facilitiesDto.photoFacility}"
-										class="img-fluid " alt="...">
-								</div>
-								<div >
-									<div class="card-body">
-										<b><h5 th:text="${facilitiesDto.nameFacility}"
-											class="card-title"></h5></b>
-										<p th:text="${facilitiesDto.featuresFacility}"></p>
+	<div class="container">
+		<div id="listFacilitiesContainer"
+			class="dataCompleteContainer listDataContainer">
+			<div class="accordion" id="accordionExample">
+				<div class="accordion-item"
+					th:each="techCatFacilitiesDto:${listaTechCatFacilitiesDto}">
+					<div class="containerAccordionHeaders">
+						<h5 class="accordion-header"
+							th:id="'heading'+ ${techCatFacilitiesDto.idTechCat}">
+							<button th:text="${techCatFacilitiesDto.nameTechCat}"
+								class="accordion-button" type="button" data-bs-toggle="collapse"
+								th:data-bs-target="'#collapse'+${techCatFacilitiesDto.idTechCat}"
+								aria-expanded="true"
+								th:aria-controls="'collapse'+${techCatFacilitiesDto.idTechCat}"></button>
+						</h5>
+					</div>
+					<div th:each="facilitiesDto:${techCatFacilitiesDto.facilitiesDto}"
+						th:id="'collapse'+${techCatFacilitiesDto.idTechCat}"
+						class="accordion-collapse collapse show"
+						th:aria-labelledby="'heading'+${techCatFacilitiesDto.idTechCat}">
+						<div class="accordion-body">
+							<div class="card ">
+								<div>
+									<div class="contentImage">
+										<img style="float: left;"
+											th:src="@{/images/}+${facilitiesDto.photoFacility}"
+											class="img-fluid " alt="...">
+									</div>
+									<div>
+										<div class="card-body">
+											<b><h5 th:text="${facilitiesDto.nameFacility}"
+													class="card-title"></h5></b>
+											<p th:text="${facilitiesDto.featuresFacility}"></p>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -88,9 +46,7 @@
 				</div>
 			</div>
 		</div>
-		</div>
 	</div>
-
 
 	<footer th:replace="views/common/footer :: footer"></footer>
 

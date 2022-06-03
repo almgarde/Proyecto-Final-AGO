@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.ThesisDaoI;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Link;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Thesis;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.LinksDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ThesisDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ThesisDatatableDto;
 
@@ -27,21 +25,21 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ThesisData
  */
 @Service
 public class ThesisServiceImpl implements ThesisServiceI {
-	
-	/** Logger */
+
 	final static Logger LOGGER = LoggerFactory.getLogger(ThesisServiceImpl.class);
-	
+
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Autowired
 	ThesisDaoI thesisDao;
-	
+
 	/**
-	 * Recupera todos las tesis almacenadas en BDD
+	 * Recupera todos los datos de las tesis almacenados en BDD
 	 * 
-	 * @return
+	 * @return List<ThesisDatatableDto>
 	 * @throws Exception
 	 */
+	@Override
 	public List<ThesisDatatableDto> getAllThesisData() throws Exception {
 
 		LOGGER.info("ThesisServiceImpl getAllThesisData .- Inicio");
@@ -49,13 +47,15 @@ public class ThesisServiceImpl implements ThesisServiceI {
 		List<ThesisDatatableDto> listaThesisDatatableDto = new ArrayList<ThesisDatatableDto>();
 
 		try {
+
 			List<Thesis> listThesis = thesisDao.findAll();
 
 			if (listThesis != null && !listThesis.isEmpty()) {
 
 				for (Thesis t : listThesis) {
+
 					ThesisDatatableDto thesisDatatableDto = new ThesisDatatableDto();
-					
+
 					thesisDatatableDto.setIdThesis(String.valueOf(t.getIdThesis()));
 					thesisDatatableDto.setDoctorThesis(t.getDoctorThesis());
 					thesisDatatableDto.setTitleThesis(t.getTitleThesis());
@@ -64,6 +64,7 @@ public class ThesisServiceImpl implements ThesisServiceI {
 					thesisDatatableDto.setDirectorThesis(t.getDirectorThesis());
 					thesisDatatableDto.setCoDirectorThesis(t.getCoDirectorThesis());
 					thesisDatatableDto.setUrlThesis(t.getUrlThesis());
+
 					if (t.getActive()) {
 						thesisDatatableDto.setActive("true");
 					} else {
@@ -76,8 +77,9 @@ public class ThesisServiceImpl implements ThesisServiceI {
 				}
 
 			} else {
-				LOGGER.error("ThesisServiceImpl getAllThesisData .- Error: Parámetros nulos");
+				LOGGER.error("ThesisServiceImpl getAllThesisData .- Error: No existen tesis registradas");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("ThesisServiceImpl getAllThesisData .- Error no controlado al recuperar las tesis");
 			throw e;
@@ -92,18 +94,20 @@ public class ThesisServiceImpl implements ThesisServiceI {
 	/**
 	 * Almacena una tesis en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param thesisData
+	 * @param imageThesis
+	 * @return Thesis
+	 * @throws Exception
 	 */
 	@Override
-
-	public Thesis addThesis(Map<String, String> thesisData , String imageThesis) throws Exception {
+	public Thesis addThesis(Map<String, String> thesisData, String imageThesis) throws Exception {
 
 		LOGGER.info("ThesisServiceImpl addThesis .- Inicio");
-		
+
 		Thesis thesisSaved2 = null;
 
 		try {
+
 			if (thesisData != null && !thesisData.isEmpty() && !StringUtils.isEmpty(imageThesis)) {
 
 				Thesis t = new Thesis();
@@ -114,6 +118,7 @@ public class ThesisServiceImpl implements ThesisServiceI {
 				t.setDirectorThesis(thesisData.get("directorThesis"));
 				t.setCoDirectorThesis(thesisData.get("coDirectorThesis"));
 				t.setUrlThesis(thesisData.get("urlThesis"));
+
 				if (Integer.parseInt(thesisData.get("active")) == 1) {
 					t.setActive(true);
 				} else {
@@ -123,33 +128,34 @@ public class ThesisServiceImpl implements ThesisServiceI {
 				t.setCoverPageThesis(imageThesis);
 				t.setUpdateAdmin("agadelao");
 				t.setUpdateDate(new Date());
-				
+
 				Thesis thesisSaved = thesisDao.save(t);
 				t.setCoverPageThesis(thesisSaved.getIdThesis() + imageThesis);
 				thesisSaved2 = thesisDao.save(t);
 
-				
-				LOGGER.info("ThesisServiceImpl addThesis .- Tesis almacenado correctamente");
+				LOGGER.info("ThesisServiceImpl addThesis .- Tesis almacenada correctamente");
 
 			} else {
-				LOGGER.error("ThesisServiceImpl addThesis .- Error: Parámetros nulos");
+				LOGGER.error("ThesisServiceImpl addThesis .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("ThesisServiceImpl addThesis .- Error no controlado al añadir la tesis");
 			throw e;
 		}
 
 		LOGGER.info("ThesisServiceImpl addThesis .- Fin");
-		
+
 		return thesisSaved2;
 
 	}
-	
+
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza los datos de una tesis almacenada en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param thesisData
+	 * @return Thesis
+	 * @throws Exception
 	 */
 	@Override
 	public Thesis updateThesis(Map<String, String> thesisData) throws Exception {
@@ -159,39 +165,43 @@ public class ThesisServiceImpl implements ThesisServiceI {
 		Thesis thesisUpdated = null;
 
 		try {
-			if (thesisData != null && !thesisData.isEmpty() ) {
 
-				Thesis t = thesisDao
-						.findByIdThesis(Long.parseLong(thesisData.get("idThesis")));
+			if (thesisData != null && !thesisData.isEmpty()) {
+
+				Thesis t = thesisDao.findByIdThesis(Long.parseLong(thesisData.get("idThesis")));
 
 				if (t != null) {
-					
+
 					t.setDoctorThesis(thesisData.get("doctorThesis"));
 					t.setTitleThesis(thesisData.get("titleThesis"));
 					t.setDateDefenseThesis(dateFormat.parse(thesisData.get("dateDefenseThesis")));
 					t.setDirectorThesis(thesisData.get("directorThesis"));
 					t.setCoDirectorThesis(thesisData.get("coDirectorThesis"));
 					t.setUrlThesis(thesisData.get("urlThesis"));
+
 					if (Integer.parseInt(thesisData.get("active")) == 1) {
 						t.setActive(true);
 					} else {
 						t.setActive(false);
 					}
-					
+
 					t.setUpdateAdmin("agadelao");
 					t.setUpdateDate(new Date());
 
 					thesisUpdated = thesisDao.save(t);
+
 				} else {
-					LOGGER.error("ThesisServiceImpl updateThesis .- Equipo no encontrado");
+					LOGGER.error("ThesisServiceImpl updateThesis .- Tesis no encontrada");
 				}
-				LOGGER.info("ThesisServiceImpl updateThesis .- Equipo actualizado correctamente");
+
+				LOGGER.info("ThesisServiceImpl updateThesis .- Tesis actualizada correctamente");
 
 			} else {
-				LOGGER.error("ThesisServiceImpl updateThesis .- Error: Parámetros nulos");
+				LOGGER.error("ThesisServiceImpl updateThesis .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("ThesisServiceImpl updateThesis .- Error no controlado al actualizar la publicación");
+			LOGGER.error("ThesisServiceImpl updateThesis .- Error no controlado al actualizar la tesis");
 			throw e;
 		}
 
@@ -200,40 +210,43 @@ public class ThesisServiceImpl implements ThesisServiceI {
 		return thesisUpdated;
 
 	}
-	
+
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza la portada de una tesis almacenada en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param thesisData
+	 * @param photoThesis
+	 * @return Thesis
+	 * @throws Exception
 	 */
 	@Override
 	public Thesis updateCoverPageThesis(Map<String, String> thesisData, String coverPageThesis) throws Exception {
 
-		LOGGER.info("ThesisServiceImpl updateThesis .- Inicio");
+		LOGGER.info("ThesisServiceImpl updateCoverPageThesis .- Inicio");
 
 		Thesis thesisPhotoUpdated = null;
 
 		try {
+
 			if (thesisData != null && !thesisData.isEmpty() && coverPageThesis != null) {
 
-				Thesis t = thesisDao
-						.findByIdThesis(Long.parseLong(thesisData.get("idThesis")));
+				Thesis t = thesisDao.findByIdThesis(Long.parseLong(thesisData.get("idThesis")));
 
 				if (t != null) {
-
 					t.setCoverPageThesis(t.getIdThesis() + coverPageThesis);
 					thesisPhotoUpdated = thesisDao.save(t);
 				} else {
-					LOGGER.error("ThesisServiceImpl updateThesis .- Equipo no encontrado");
+					LOGGER.error("ThesisServiceImpl updateCoverPageThesis .- Tesis no encontrada");
 				}
-				LOGGER.info("ThesisServiceImpl updateThesis .- Equipo actualizado correctamente");
+
+				LOGGER.info("ThesisServiceImpl updateCoverPageThesis .- Tesis actualizada correctamente");
 
 			} else {
-				LOGGER.error("ThesisServiceImpl updateThesis .- Error: Parámetros nulos");
+				LOGGER.error("ThesisServiceImpl updateCoverPageThesis .- Error: Parámetros nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("ThesisServiceImpl updateThesis .- Error no controlado al actualizar la publicación");
+			LOGGER.error("ThesisServiceImpl updateCoverPageThesis .- Error no controlado al actualizar la tesis");
 			throw e;
 		}
 
@@ -242,58 +255,66 @@ public class ThesisServiceImpl implements ThesisServiceI {
 		return thesisPhotoUpdated;
 
 	}
-	
+
+	/**
+	 * Elimina una tesis almacenada en BDD
+	 * 
+	 * @param thesisData
+	 * @throws Exception
+	 */
 	@Override
 	public void deleteThesis(Map<String, String> thesisData) throws Exception {
 
-		LOGGER.info("PublicationsServiceImpl deletePublications .- Inicio");
-
+		LOGGER.info("ThesisServiceImpl deleteThesis .- Inicio");
 
 		try {
+
 			if (thesisData != null && !thesisData.isEmpty()) {
 
-				Thesis f = thesisDao
-						.findByIdThesis(Long.parseLong(thesisData.get("idThesis")));
+				Thesis f = thesisDao.findByIdThesis(Long.parseLong(thesisData.get("idThesis")));
 
 				if (f != null) {
-
 					thesisDao.delete(f);
-
 				}
-				LOGGER.info("PublicationsServiceImpl deletePublications .- Publicación eliminada correctamente");
+
+				LOGGER.info("ThesisServiceImpl deleteThesis .- Tesis eliminada correctamente");
 
 			} else {
-				LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros nulos");
+				LOGGER.error("ThesisServiceImpl deleteThesis .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
+			LOGGER.error("ThesisServiceImpl deleteThesis .- Error no controlado al eliminar la tesis");
 			throw e;
 		}
 
-		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
-
+		LOGGER.info("ThesisServiceImpl deletePublications .- Fin");
 
 	}
-	
-	
+
 	/**
-	 * Muestra las cuatro noticias más recientes
+	 * Recupera las tesis activas
 	 * 
-	 * @return List<NewsDto>
+	 * @return List<ThesisDto>
+	 * @throws Exception
 	 */
 	@Override
 	public List<ThesisDto> getAllThesisActive() throws Exception {
 
-		LOGGER.info("LinksServiceImpl getAllLinksActive .- Inicio");
+		LOGGER.info("ThesisServiceImpl getAllThesisActive .- Inicio");
 
 		List<ThesisDto> listaThesisDto = null;
 
 		try {
+
 			List<Thesis> listThesis = thesisDao.findByActive(Boolean.TRUE);
 
 			if (listThesis != null && !listThesis.isEmpty()) {
+
 				listaThesisDto = new ArrayList<ThesisDto>();
+
 				for (Thesis t : listThesis) {
+
 					ThesisDto thesisDto = new ThesisDto();
 					thesisDto.setDoctorThesis(t.getDoctorThesis());
 					thesisDto.setTitleThesis(t.getTitleThesis());
@@ -307,14 +328,15 @@ public class ThesisServiceImpl implements ThesisServiceI {
 				}
 
 			} else {
-				LOGGER.error("LinksServiceImpl getAllLinksActive .- Error: Parámetros nulos");
+				LOGGER.error("ThesisServiceImpl getAllThesisActive .- Error: No existen tesis activas registrados");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("LinksServiceImpl getAllLinksActive .- Error no controlado al recuperar las noticias");
+			LOGGER.error("ThesisServiceImpl getAllThesisActive .- Error no controlado al recuperar las tesis");
 			throw e;
 		}
 
-		LOGGER.info("LinksServiceImpl getAllLinksActive .- Fin");
+		LOGGER.info("ThesisServiceImpl getAllThesisActive .- Fin");
 
 		return listaThesisDto;
 

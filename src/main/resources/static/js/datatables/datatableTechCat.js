@@ -1,23 +1,23 @@
 function getDatatableTechCat() {
+
 	let table = $('#techCatDatatable').DataTable({
 		"sAjaxSource": "/management/getTechCatData",
 		"sAjaxDataProp": "",
-		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"bAutoWidth": false,
 		"language": {
-			"lengthMenu": "Mostrando _MENU_ entradas",
-			"emptyTable": "Sin datos en esta tabla",
-			"zeroRecords": "No se han encontrado coincidencias",
-			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-			"infoFiltered": "(filtrado de _MAX_ entradas)",
-			"loadingRecords": "Cargando...",
+			"lengthMenu": $('#labelMostrando').val() + ' _MENU_ ' + $('#labelEntradas').val(),
+			"emptyTable": $('#labelTablaVacia').val(),
+			"search": $('#labelBuscador').val(),
+			"zeroRecords": $('#labelNoCoincidencias').val(),
+			"info": $('#labelMostrando').val() + ' _START_ ' + $('#labelA').val() + ' _END_ ' + $('#labelDe').val() + ' _TOTAL_ ' + $('#labelEntradas').val(),
+			"infoEmpty": $('#labelMostrando').val() + " 0 " + $('#labelA').val() + ' 0 ' + $('#labelDe').val() + ' 0 ' + $('#labelEntradas').val(),
+			"infoFiltered": '(' + $('#labelFiltrado').val() + ' _MAX_ ' + $('#labelEntradas').val() + ')',
+			"loadingRecords": $('#labelCargando').val(),
 			"paginate": {
-				"first": "Primero",
-				"last": "Ultimo",
-				"next": "Siguiente",
-				"previous": "Anterior"
+				"next": $('#labelSiguiente').val(),
+				"previous": $('#labelAnterior').val()
 			},
 		},
 		"order": [[0, "desc"]],
@@ -66,22 +66,25 @@ function getDatatableTechCat() {
 		"fnCreatedRow": function(row, data, index) {
 
 			// Activo 
-
+			var activo;
 			if (data.active == 'true') {
-				var activo = $('<a/>', {
-					text: "Si"
+				activo = $('<a/>', {
+					text: $('#activoSi').val()
 				});
 			} else {
-				var activo = $('<a/>', {
-					text: "No"
+				activo = $('<a/>', {
+					text: $('#activoNo').val()
 				});
 			}
+
 			$('td:eq(4)', row).html(activo);
-			
-			// Acciones 	 	
+
+
+			// Acciones
+
 			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
-				text: 'Editar',
+				text: $('#linkEditar').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
@@ -92,9 +95,10 @@ function getDatatableTechCat() {
 			accion1.addClass('dropdown-item').attr('href', '#');
 			liAccion1.append(accion1);
 
+
 			var liAccion2 = $('<li/>');
 			var accion2 = $('<a/>', {
-				text: 'Eliminar',
+				text: $('#linkEliminar').val(),
 				href: '',
 				click: function(e) {
 
@@ -103,15 +107,15 @@ function getDatatableTechCat() {
 				}
 			});
 
-
 			accion2.addClass('dropdown-item').attr('href', '#');
 			liAccion2.append(accion2);
+
 
 			var divAcciones = $('<div/>');
 			divAcciones.addClass("text-end");
 
 			var liPrincipal = $('<li/>').css('list-style-type', 'none').addClass('nav-item').addClass('dropdown');
-			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Acciones');
+			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text($('#linkAcciones').val());
 			var uPrincipal = $('<u/>').addClass('dropdown-menu').attr('aria-labelledby', 'listaAcciones').css('text-decoration', 'none');
 
 			liPrincipal.append(aPrincipal);
@@ -119,31 +123,38 @@ function getDatatableTechCat() {
 			uPrincipal.append(liAccion1);
 			uPrincipal.append(liAccion2);
 
-
 			divAcciones.append(liPrincipal);
 
 			$('td:eq(5)', row).html(divAcciones);
+
+
+			$('td:eq(0)', row).attr("data-label", "ID");
+			$('td:eq(1)', row).attr("data-label", "Categoría técnica");
+			$('td:eq(2)', row).attr("data-label", "Admin");
+			$('td:eq(3)', row).attr("data-label", "Fecha");
+			$('td:eq(4)', row).attr("data-label", "Activo");
+			$('td:eq(5)', row).attr("data-label", "");
+
 		}
 	});
 
 
+	// FILTROS
+
 	$('#techCatDatatable thead tr').clone(true).addClass('filters').appendTo('#techCatDatatable thead');
-	
+
 	$('#techCatDatatable thead tr.filters th').each(function() {
 		$(this).off();
 		$(this).removeClass('sorting_desc');
 		$(this).removeClass('sorting');
-
 	});
 
 	$('#techCatDatatable thead tr:eq(1) th.atri').each(function(i) {
-		//let title = $(this).text();
-		$(this).html('<input style="max-width: 100px;" type="text" />');
+
+		$(this).html('<input type="text" />');
 
 		$('input', this).on('keyup change', function() {
-
 			if (table.column(i).search() != this.value) {
-
 				table.column(i).search(this.value).draw();
 			}
 		});
@@ -151,84 +162,75 @@ function getDatatableTechCat() {
 
 	$('#techCatDatatable thead tr:eq(1) th.selectActive').each(function(i) {
 
-		$(this).html('<select class="form-select"><option value=""><option value="true">Si</option><option value="false">No</option></select>');
+		$(this).html('<select class="form-select"><option value=""><option value="true">' + $('#activoSi').val() + '</option><option value="false">' + $('#activoNo').val() + '</option></select>');
 
 		$('select', this).on('keyup change', function() {
 			if (table.column(4).search() !== this.value) {
-
 				table.column(4).search(this.value).draw();
 			}
 		});
 	});
 
-	$(document).on("click", "#btnAceptarAddTechCat", function(e) {
-	
-	$('#modalAddTechCat').modal('show');
 
+	// BOTONES
+
+	$(document).on("click", "#btnAceptarAddTechCat", function(e) {
+
+		$('#modalAddTechCat').modal('show');
 		var form = $("#formAddTechCat");
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
 		} else {
-
 			anyadirNuevaTechCat();
 			$('#modalAddTechCat').modal('hide');
-
 		}
 		form.addClass('was-validated');
-		
 
 	});
-	
+
 	$(document).on("click", "#btnCancelarAddTechCat", function() {
-$("#formAddTechCat").removeClass('was-validated');
-});
-
-		$(document).on("click", "#btnCloseAddTechCat", function() {
-$("#formAddTechCat").removeClass('was-validated');
-
+		$("#formAddTechCat").removeClass('was-validated');
 	});
-	
-	$(document).on("click", "#btnAceptarUpdateTechCat", function(e) {
-	
-		$('#modalUpdateTechCat').modal('show');
 
+	$(document).on("click", "#btnCloseAddTechCat", function() {
+		$("#formAddTechCat").removeClass('was-validated');
+	});
+
+	$(document).on("click", "#btnAceptarUpdateTechCat", function(e) {
+
+		$('#modalUpdateTechCat').modal('show');
 		var form = $("#formUpdateTechCat");
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
 		} else {
-
 			editarTechCat();
 			$('#modalUpdateTechCat').modal('hide');
-
 		}
 		form.addClass('was-validated');
-		
 
 	});
-	
+
 	$(document).on("click", "#btnCancelarUpdateTechCat", function(e) {
-$("#formUpdateTechCat").removeClass('was-validated');
-
+		$("#formUpdateTechCat").removeClass('was-validated');
 	});
-	
-		$(document).on("click", "#btnCloseUpdateTechCat", function(e) {
-$("#formUpdateTechCat").removeClass('was-validated');
 
+	$(document).on("click", "#btnCloseUpdateTechCat", function(e) {
+		$("#formUpdateTechCat").removeClass('was-validated');
 	});
 
 	$(document).on("click", "#btnAceptarDeleteTechCat", function(e) {
 		e.preventDefault();
 		eliminarTechCat();
-
 	});
 
 }
+
+
+// MODALES
 
 function mostrarModalAddTechCat() {
 	$("#modalAddTechCat").modal('toggle');
@@ -237,32 +239,32 @@ function mostrarModalAddTechCat() {
 function mostrarModalUpdateTechCat(idTechCat, nameTechCat, active) {
 
 	$('#nameTechCatEdit').val(nameTechCat);
-
 	$('#idTechCatUpdate').val(idTechCat);
+
 	if (active == 'true') {
 		$('#activeEdit').val('1');
 	} else {
 		$('#activeEdit').val('0');
-		
 	}
-	
+
 	$("#modalUpdateTechCat").modal('toggle');
 }
 
 
 function mostrarModalDeleteTechCat(idTechCat) {
-		$('#idTechCatDelete').val(idTechCat);
+	$('#idTechCatDelete').val(idTechCat);
 	$("#modalDeleteTechCat").modal('toggle');
 }
+
+
+// FUNCIONES CRUD
 
 function anyadirNuevaTechCat() {
 
 	let form = new FormData();
 
-
 	form.append("nameTechCat", $("#nameTechCat").val());
 	form.append("active", $("#active").val());
-
 
 	$.ajax({
 		url: '/management/addTechCatData',
@@ -270,28 +272,24 @@ function anyadirNuevaTechCat() {
 		processData: false,
 		contentType: false,
 		data: form,
-
 		success: function(data) {
 			if (data == '') {
 				$('#techCatDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#addOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#addErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#addErrorMensaje').val());
 		}
 	}).done(function() {
-		
 		$("#formAddTechCat").removeClass('was-validated');
 		$("#nameTechCat").val('');
 		$("#active").val('1');
-
 	});
 }
 
@@ -300,7 +298,7 @@ function editarTechCat() {
 
 	let form = new FormData();
 
-form.append("idTechCat", $("#idTechCatUpdate").val());
+	form.append("idTechCat", $("#idTechCatUpdate").val());
 	form.append("nameTechCat", $("#nameTechCatEdit").val());
 	form.append("active", $("#activeEdit").val());
 
@@ -314,21 +312,18 @@ form.append("idTechCat", $("#idTechCatUpdate").val());
 			if (data == '') {
 				$('#techCatDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#updateOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#updateErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#updateErrorMensaje').val());
 		}
 	}).done(function() {
-		
-$("#formUpdateTechCat").removeClass('was-validated');
-
+		$("#formUpdateTechCat").removeClass('was-validated');
 	});
 }
 
@@ -336,8 +331,7 @@ function eliminarTechCat() {
 
 	let form = new FormData();
 
-form.append("idTechCat", $("#idTechCatDelete").val());
-
+	form.append("idTechCat", $("#idTechCatDelete").val());
 
 	$.ajax({
 		url: '/management/deleteTechCatData',
@@ -349,20 +343,15 @@ form.append("idTechCat", $("#idTechCatDelete").val());
 			if (data == '') {
 				$('#techCatDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#deleteOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#deleteErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#deleteErrorMensaje').val());
 		}
-	}).done(function() {
-		
-
-
 	});
 }

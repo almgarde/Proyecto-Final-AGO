@@ -1,7 +1,5 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables;
 
-import java.util.Date;
-
 public class ThesisDatatableDto {
 
 	private String idThesis;
@@ -19,7 +17,7 @@ public class ThesisDatatableDto {
 	private String coDirectorThesis;
 
 	private String urlThesis;
-	
+
 	private String active;
 
 	private String admin;
@@ -113,7 +111,5 @@ public class ThesisDatatableDto {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
-	
 
 }

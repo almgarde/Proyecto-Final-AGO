@@ -3,22 +3,21 @@ function getDatatableFacilities() {
 	let table = $('#facilitiesDatatable').DataTable({
 		"sAjaxSource": "/management/getFacilitiesData",
 		"sAjaxDataProp": "",
-		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"bAutoWidth": false,
 		"language": {
-			"lengthMenu": "Mostrando _MENU_ entradas",
-			"emptyTable": "Sin datos en esta tabla",
-			"zeroRecords": "No se han encontrado coincidencias",
-			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-			"infoFiltered": "(filtrado de _MAX_ entradas)",
-			"loadingRecords": "Cargando...",
+			"lengthMenu": $('#labelMostrando').val() + ' _MENU_ ' + $('#labelEntradas').val(),
+			"emptyTable": $('#labelTablaVacia').val(),
+			"search": $('#labelBuscador').val(),
+			"zeroRecords": $('#labelNoCoincidencias').val(),
+			"info": $('#labelMostrando').val() + ' _START_ ' + $('#labelA').val() + ' _END_ ' + $('#labelDe').val() + ' _TOTAL_ ' + $('#labelEntradas').val(),
+			"infoEmpty": $('#labelMostrando').val() + " 0 " + $('#labelA').val() + ' 0 ' + $('#labelDe').val() + ' 0 ' + $('#labelEntradas').val(),
+			"infoFiltered": '(' + $('#labelFiltrado').val() + ' _MAX_ ' + $('#labelEntradas').val() + ')',
+			"loadingRecords": $('#labelCargando').val(),
 			"paginate": {
-				"first": "Primero",
-				"last": "Ultimo",
-				"next": "Siguiente",
-				"previous": "Anterior"
+				"next": $('#labelSiguiente').val(),
+				"previous": $('#labelAnterior').val()
 			},
 		},
 		"order": [[0, "desc"]],
@@ -88,55 +87,60 @@ function getDatatableFacilities() {
 		],
 		"fnCreatedRow": function(row, data, index) {
 
-
 			// Categorias
 			var nameTechCat = $('<p/>', {
 				text: data.nameTechCat
 			});
+
 			$('td:eq(2)', row).html(nameTechCat);
+
 
 			// Imagen 					  	
 			var verFoto = $('<a/>', {
-				text: 'Foto',
+				text: $('#photoFacilityLabel').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
-					mostrarModalFacilitiesPhoto(data.photoFacility);
+					mostrarModalFacilitiesPhoto(data.nameFacility, data.photoFacility);
 				}
 			});
-			$('#photoFacilitiesActual').append(verFoto);
-
+			
 			$('td:eq(3)', row).html(verFoto);
+
 
 			// Características
 			var verCaracterísticas = $('<a/>', {
-				text: "Características",
+				text: $('#featuresFacilityLabel').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
 					mostrarModalFeaturesFacility(data.nameFacility, data.featuresFacility);
-
 				}
 			});
+
 			$('td:eq(4)', row).html(verCaracterísticas);
 
-			// Activo 
+
+			// Activo
+			var activo;
 			if (data.active == 'true') {
-				var activo = $('<a/>', {
-					text: "Si"
+				activo = $('<a/>', {
+					text: $('#activoSi').val()
 				});
 			} else {
-				var activo = $('<a/>', {
-					text: "No"
+				activo = $('<a/>', {
+					text: $('#activoNo').val()
 				});
 			}
+
 			$('td:eq(7)', row).html(activo);
+
 
 			// Acciones 	
 
 			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
-				text: 'Editar',
+				text: $('#linkEditar').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
@@ -147,12 +151,12 @@ function getDatatableFacilities() {
 			accion1.addClass('dropdown-item').attr('href', '#');
 			liAccion1.append(accion1);
 
+
 			var liAccion2 = $('<li/>');
 			var accion2 = $('<a/>', {
-				text: 'Cambiar foto',
+				text: $('#linkCambiarFoto').val(),
 				href: '',
 				click: function(e) {
-
 					e.preventDefault();
 					mostrarModalUpdatePhotoFacilities(data.idFacility);
 				}
@@ -161,9 +165,10 @@ function getDatatableFacilities() {
 			accion2.addClass('dropdown-item').attr('href', '#');
 			liAccion2.append(accion2);
 
+
 			var liAccion3 = $('<li/>');
 			var accion3 = $('<a/>', {
-				text: 'Eliminar',
+				text: $('#linkEliminar').val(),
 				href: '',
 				click: function(e) {
 
@@ -172,6 +177,7 @@ function getDatatableFacilities() {
 				}
 			});
 
+
 			accion3.addClass('dropdown-item').attr('href', '#');
 			liAccion3.append(accion3);
 
@@ -179,7 +185,7 @@ function getDatatableFacilities() {
 			divAcciones.addClass("text-end");
 
 			var liPrincipal = $('<li/>').css('list-style-type', 'none').addClass('nav-item').addClass('dropdown');
-			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Acciones');
+			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text($('#linkAcciones').val());
 			var uPrincipal = $('<u/>').addClass('dropdown-menu').attr('aria-labelledby', 'listaAcciones').css('text-decoration', 'none');
 
 			liPrincipal.append(aPrincipal);
@@ -191,9 +197,22 @@ function getDatatableFacilities() {
 			divAcciones.append(liPrincipal);
 
 			$('td:eq(8)', row).html(divAcciones);
+
+
+			$('td:eq(0)', row).attr("data-label", "ID");
+			$('td:eq(1)', row).attr("data-label", "Nombre");
+			$('td:eq(2)', row).attr("data-label", "Categoría");
+			$('td:eq(3)', row).attr("data-label", "Foto");
+			$('td:eq(4)', row).attr("data-label", "Características");
+			$('td:eq(5)', row).attr("data-label", "Admin");
+			$('td:eq(6)', row).attr("data-label", "Fecha");
+			$('td:eq(7)', row).attr("data-label", "Activo");
+			$('td:eq(8)', row).attr("data-label", "");
 		}
 	});
 
+
+	// FILTROS
 
 	$('#facilitiesDatatable thead tr').clone(true).addClass('filters').appendTo('#facilitiesDatatable thead');
 
@@ -201,17 +220,14 @@ function getDatatableFacilities() {
 		$(this).off();
 		$(this).removeClass('sorting_desc');
 		$(this).removeClass('sorting');
-
 	});
 
 	$('#facilitiesDatatable thead tr:eq(1) th.atri').each(function(i) {
-		//let title = $(this).text();
-		$(this).html('<input style="max-width: 100px;" type="text" />');
+
+		$(this).html('<input type="text" />');
 
 		$('input', this).on('keyup change', function() {
-
 			if (table.column(i).search() != this.value) {
-
 				table.column(i).search(this.value).draw();
 			}
 		});
@@ -219,15 +235,12 @@ function getDatatableFacilities() {
 
 
 	$('#facilitiesDatatable thead tr:eq(1) th.selectCat').each(function(i) {
-		//let title = $(this).text();
+
 		let listaTechCat = $('#idTechCatSelect');
-
 		$(this).html(listaTechCat);
-
 
 		$('select', this).on('keyup change', function() {
 			if (table.column(2).search() != this.value) {
-				//debugger;
 				table.column(2).search(this.value).draw();
 			}
 		});
@@ -235,35 +248,31 @@ function getDatatableFacilities() {
 
 	$('#facilitiesDatatable thead tr:eq(1) th.selectActive').each(function(i) {
 
-		$(this).html('<select class="form-select"><option value=""><option value="true">Si</option><option value="false">No</option></select>');
+		$(this).html('<select class="form-select"><option value=""><option value="true">' + $('#activoSi').val() + '</option><option value="false">' + $('#activoNo').val() + '</option></select>');
 
 		$('select', this).on('keyup change', function() {
 			if (table.column(7).search() !== this.value) {
-
 				table.column(7).search(this.value).draw();
 			}
 		});
 	});
 
 
+	// BOTONES
 
 	$(document).on("click", "#btnAceptarAddFacilities", function(e) {
-		$('#modalAddFacilities').modal('show');
 
+		$('#modalAddFacilities').modal('show');
 		var form = $("#formAddFacilities");
 
 		if (form[0].checkValidity() === false) {
-			e.preventDefault()
-			e.stopPropagation()
-
+			e.preventDefault();
+			e.stopPropagation();
 		} else {
-
 			anyadirNuevoEquipo();
 			$('#modalAddFacilities').modal('hide');
-
 		}
-		form.addClass('was-validated')
-
+		form.addClass('was-validated');
 
 	});
 
@@ -286,81 +295,67 @@ function getDatatableFacilities() {
 	});
 
 	$(document).on("click", "#btnAceptarUpdateFacilities", function(e) {
-		$('#modalUpdateFacilities').modal('show');
 
+		$('#modalUpdateFacilities').modal('show');
 		var form = $("#formUpdateFacilities");
 
 		if (form[0].checkValidity() === false) {
-			e.preventDefault()
-			e.stopPropagation()
-
+			e.preventDefault();
+			e.stopPropagation();
 		} else {
-
 			editarEquipo();
 			$('#modalUpdateFacilities').modal('hide');
-
 		}
 		form.addClass('was-validated')
-
 
 	});
 
 	$(document).on("click", "#btnCancelarUpdateFacilities", function(e) {
 		$("#formUpdateFacilities").removeClass('was-validated');
-
 	});
 
 	$(document).on("click", "#btnCloseUpdateFacilities", function(e) {
 		$("#formUpdateFacilities").removeClass('was-validated');
-
 	});
 
 	$(document).on("click", "#btnAceptarUpdatePhotoFacilities", function(e) {
-		$('#modalUpdatePhotoFacilities').modal('show');
 
+		$('#modalUpdatePhotoFacilities').modal('show');
 		var form = $("#formUpdatePhotoFacilities");
 
 		if (form[0].checkValidity() === false) {
-			e.preventDefault()
-			e.stopPropagation()
-
+			e.preventDefault();
+			e.stopPropagation();
 		} else {
-
 			editarFotoEquipo();
 			$('#modalUpdatePhotoFacilities').modal('hide');
-
 		}
-		form.addClass('was-validated')
-
+		form.addClass('was-validated');
 
 	});
 
 	$(document).on("click", "#btnCancelarUpdatePhotoFacilities", function(e) {
 		$("#formUpdatePhotoFacilities").removeClass('was-validated');
 		$("#photoFacilityEdit").val('');
-
 	});
 
 	$(document).on("click", "#btnCloseUpdatePhotoFacilities", function(e) {
 		$("#formUpdatePhotoFacilities").removeClass('was-validated');
 		$("#photoFacilityEdit").val('');
-
 	});
-
 
 	$(document).on("click", "#btnAceptarDeleteFacilities", function(e) {
 		e.preventDefault();
 		eliminarEquipo();
-
 	});
-
-
-
 
 }
 
 
-function mostrarModalFacilitiesPhoto(foto) {
+// MODALES
+
+function mostrarModalFacilitiesPhoto(nameFacility, foto) {
+	$("#headerImageFacility").text(nameFacility);
 	$('#bodyModalPhotoFacilities').attr('src', 'images/' + foto);
 	$('#modalPhotoFacilities').modal('toggle');
 }
@@ -379,22 +374,22 @@ function mostrarModalAddFacilities() {
 function mostrarModalUpdateFacilities(idFacility, nameFacility, idTechcat, activeTechCat, featuresFacility, active) {
 
 	$('#nameFacilityEdit').val(nameFacility);
+
 	if (activeTechCat == "true") {
 		$('#idTechCatActiveSelectEdit').val(idTechcat);
 	} else {
 		$('#idTechCatActiveSelectEdit').val('');
 	}
 
-
 	$('#featuresFacilityEdit').val(featuresFacility);
 	$('#idFacilityUpdate').val(idFacility);
+
 	if (active == 'true') {
 		$('#activeEdit').val('1');
 	} else {
 		$('#activeEdit').val('0');
 
 	}
-
 	$("#modalUpdateFacilities").modal('toggle');
 }
 
@@ -408,6 +403,9 @@ function mostrarModalDeleteFacilities(idFacility) {
 	$("#modalDeleteFacilities").modal('toggle');
 }
 
+
+// FUNCIONES CRUD
+
 function anyadirNuevoEquipo() {
 
 	let form = new FormData();
@@ -416,7 +414,6 @@ function anyadirNuevoEquipo() {
 	form.append("nameFacility", $("#nameFacility").val());
 	form.append("idTechCat", $("#idTechCatActiveSelect").val());
 	form.append("featuresFacility", $("#featuresFacility").val());
-
 	form.append("active", $("#active").val());
 
 	$.ajax({
@@ -429,16 +426,15 @@ function anyadirNuevoEquipo() {
 			if (data == '') {
 				$('#facilitiesDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#addOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#addErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#addErrorMensaje').val());
 		}
 	}).done(function() {
 		$("#formAddFacilities").removeClass('was-validated');
@@ -449,6 +445,7 @@ function anyadirNuevoEquipo() {
 		$("#active").val('1');
 	});
 }
+
 function editarEquipo() {
 
 	let form = new FormData();
@@ -469,19 +466,17 @@ function editarEquipo() {
 			if (data == '') {
 				$('#facilitiesDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#activeEdit").val($("#updateOkMensaje").val()));
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#activeEdit").val($("#updateErrorMensaje").val()));
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#activeEdit").val($("#updateErrorMensaje").val()));
 		}
 	}).done(function() {
-		
 		$("#formUpdateFacilities").removeClass('was-validated');
 		$("#nameFacilityEdit").val('');
 		$("#idTechCatEdit").val('');
@@ -508,19 +503,17 @@ function editarFotoEquipo() {
 			if (data == '') {
 				$('#facilitiesDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#updateOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#updateErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#updateErrorMensaje").val());
 		}
 	}).done(function() {
-		
 		$('#photoFacilityEdit').val('');
 		$("#formUpdatePhotoFacilities").removeClass('was-validated');
 	});
@@ -542,18 +535,15 @@ function eliminarEquipo() {
 			if (data == '') {
 				$('#facilitiesDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#deleteOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#deleteErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#deleteErrorMensaje").val());
 		}
-	}).done(function() {
-		
 	});
 }

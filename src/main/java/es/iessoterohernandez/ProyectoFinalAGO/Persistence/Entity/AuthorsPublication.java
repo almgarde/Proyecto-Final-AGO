@@ -29,11 +29,13 @@ public class AuthorsPublication implements Serializable {
 	/** Nombre */
 	private String nameAuthor;
 
-	/** Nombre corto */
+	/** Nombre de autor */
 	private String shortNameAuthor;
 
+	/** Publicacion */
 	private Publication idPublication;
-	
+
+	/** ID de Miembro */
 	private Long idMember;
 
 	@Id
@@ -83,7 +85,5 @@ public class AuthorsPublication implements Serializable {
 	public void setIdMember(Long idMember) {
 		this.idMember = idMember;
 	}
-	
-	
 
 }

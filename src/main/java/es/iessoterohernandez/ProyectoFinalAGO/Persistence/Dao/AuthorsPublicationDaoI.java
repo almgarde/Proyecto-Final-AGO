@@ -16,15 +16,13 @@ import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Publication;
  */
 @Repository
 public interface AuthorsPublicationDaoI extends JpaRepository<AuthorsPublication, Long> {
-	
+
 	/**
-	 * Recupera los autores por el Id de la publicación
+	 * Recupera los autores por el Id de una publicación
 	 * 
-	 * @param techCat
-	 * @param activo
-	 * @return List<Facility>
+	 * @param p
+	 * @return List<AuthorsPublication>
 	 */
 	public List<AuthorsPublication> findByIdPublication(Publication p);
-
 
 }

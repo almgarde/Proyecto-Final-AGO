@@ -20,16 +20,16 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ThesisDto;
  */
 @Controller
 public class ThesisController {
-	
-	/** Logger */
-	final static Logger LOGGER = LoggerFactory.getLogger(LinksController.class);
+
+	final static Logger LOGGER = LoggerFactory.getLogger(ThesisController.class);
 
 	@Autowired
 	ThesisServiceI thesisService;
 
 	@GetMapping("/thesis")
 	public String getThesis(Model model) throws Exception {
-		LOGGER.info("LinksController getLinks .- Inicio");
+
+		LOGGER.info("ThesisController getThesis .- Inicio");
 
 		String viewResult = "/views/common/Errors";
 
@@ -41,14 +41,15 @@ public class ThesisController {
 				model.addAttribute("listaThesisDto", listaThesisDto);
 				viewResult = "/views/public/thesis";
 			} else {
-				LOGGER.error("LinksController getLinks .- Parámetros nulos");
+				LOGGER.error("ThesisController getThesis .- Error: No existen tesis activas registradas");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("LinksController getLinks .- Error no controlado al redireccionar a la pantalla links");
+			LOGGER.error("ThesisController getThesis .- Error no controlado al redireccionar a la pantalla thesis");
 			throw e;
 		}
 
-		LOGGER.info("LinksController getLinks .- Fin");
+		LOGGER.info("ThesisController getThesis .- Fin");
 
 		return viewResult;
 

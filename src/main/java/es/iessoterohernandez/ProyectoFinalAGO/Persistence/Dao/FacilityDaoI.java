@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.TechnicalCategory;
 
 /**
@@ -27,24 +25,21 @@ public interface FacilityDaoI extends JpaRepository<Facility, Long> {
 	 * @return List<Facility>
 	 */
 	public List<Facility> findByIdTechCatAndActive(TechnicalCategory techCat, Boolean activo);
-	
+
 	/**
-	 * Recupera los equipos por su Id
+	 * Recupera un equipo por su Id
 	 * 
-	 * @param techCat
-	 * @param activo
-	 * @return List<Facility>
+	 * @param Id
+	 * @return Facility
 	 */
 	public Facility findByIdFacility(Long Id);
-	
+
 	/**
-	 * Recupera las miembros s/n activos por su categoría profesional 
+	 * Recupera las equipos asociados a una categoría técnica
 	 * 
-	 * @param proCat
-	 * @param activo
-	 * @return List<Member>
+	 * @param techCat
+	 * @return List<Facility>
 	 */
 	public List<Facility> findByIdTechCat(TechnicalCategory techCat);
-	
-	
+
 }

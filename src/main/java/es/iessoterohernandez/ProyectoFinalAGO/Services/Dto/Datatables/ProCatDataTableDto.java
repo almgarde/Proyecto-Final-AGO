@@ -5,7 +5,7 @@ public class ProCatDatatableDto {
 	private String idProCat;
 
 	private String nameProCat;
-	
+
 	private String active;
 
 	private String admin;
@@ -52,5 +52,4 @@ public class ProCatDatatableDto {
 		this.date = date;
 	}
 
-	
 }

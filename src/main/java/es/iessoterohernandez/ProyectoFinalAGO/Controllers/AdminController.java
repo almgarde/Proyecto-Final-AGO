@@ -57,7 +57,6 @@ import es.iessoterohernandez.ProyectoFinalAGO.Utils.GeneratorExcels;
 @RequestMapping("/management")
 public class AdminController {
 
-	/** Logger */
 	final static Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 
 	@Autowired
@@ -89,26 +88,74 @@ public class AdminController {
 
 	@GetMapping
 	public String getManagementPanel(Model model) throws Exception {
-
 		String viewResult = "/views/private/gestionPanel";
+		return viewResult;
+	}
+
+	@PostMapping("/updateCarouselImages")
+	@ResponseBody
+	public String updateCarouselImages(Model model, @RequestParam Map<String, String> params,
+			@RequestParam("file") MultipartFile imageEditCarousel) throws Exception {
+
+		LOGGER.info("AdminController updateCarouselImages .- Inicio");
+
+		String viewResult = "/views/common/ErrorAjax";
+
+		try {
+
+			if (imageEditCarousel != null && !imageEditCarousel.isEmpty() && params != null && !params.isEmpty()) {
+
+				Path dirImages = Paths.get("src//main//resources//static//images");
+				String rutaAbsoluta = dirImages.toFile().getAbsolutePath();
+
+				byte[] bytesImg = imageEditCarousel.getBytes();
+				int numImage = Integer.parseInt(params.get("numImageCarousel"));
+
+				if (numImage == 1) {
+					Path rutaCompleta = Paths.get(rutaAbsoluta + "//image1Carousel.png");
+					Files.write(rutaCompleta, bytesImg);
+				} else if (numImage == 2) {
+					Path rutaCompleta = Paths.get(rutaAbsoluta + "//image2Carousel.png");
+					Files.write(rutaCompleta, bytesImg);
+				} else {
+					Path rutaCompleta = Paths.get(rutaAbsoluta + "//image3Carousel.png");
+					Files.write(rutaCompleta, bytesImg);
+				}
+
+				viewResult = "/views/private/gestionHome";
+
+			} else {
+				LOGGER.error("AdminController updateCarouselImages .- Error: Parámetros de entrada nulos");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController updateCarouselImages .- Error no controlado al guardar la image");
+			throw e;
+		}
+
+		LOGGER.info("AdminController updateCarouselImages .- Fin");
 
 		return viewResult;
-
 	}
 
 	@PostMapping("/getDatatableCategory/")
 	public String getDatatableCategory(Model model, String numCat) throws Exception {
 
+		LOGGER.info("AdminController getDatatableCategory .- Inicio");
+
+		String viewResult = "/views/common/ErrorAjax";
+
 		if (numCat == null) {
 			numCat = (String) model.getAttribute("catPublication");
 		}
-		String viewResult = "/views/common/Errors";
 
 		try {
+
 			if (numCat != null) {
 				switch (numCat) {
-				case "0":
 
+				case "0":
+					viewResult = "/views/private/gestionHome";
 					break;
 
 				case "1":
@@ -172,16 +219,21 @@ public class AdminController {
 					break;
 
 				default:
+					viewResult = "/views/common/ErrorAjax";
 					break;
 				}
+
 			} else {
 				LOGGER.error("AdminController getDataTableCategory .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error(
 					"AdminController getDataTableCategory .- Error no controlado al redirigir a la vista seleccionada");
 			throw e;
 		}
+
+		LOGGER.info("AdminController getDatatableCategory .- Fin");
 
 		return viewResult;
 
@@ -233,8 +285,7 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addNewsData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController addNewsData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
@@ -250,25 +301,22 @@ public class AdminController {
 	@ResponseBody
 	public void updateNewsData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateNewsData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				newsService.updateNews(params);
-
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateNewsData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateNewsData .- Error no controlado al actualizar la noticia");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateNewsData .- Fin");
 	}
 
 	@PostMapping("/updateImageNewsData")
@@ -276,7 +324,7 @@ public class AdminController {
 	public void updateImageNewsData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile imageNews) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateImageNewsData .- Inicio");
 
 		try {
 
@@ -292,65 +340,66 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+				LOGGER.error("AdminController updateImageNewsData .- Error: Parámetros de entrada nulos");
 
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateImageNewsData .- Error no controlado al actualizar la noticia");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateImageNewsData .- Fin");
 	}
 
 	@PostMapping("/deleteNewsData")
 	@ResponseBody
 	public void deleteNewsData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController deleteMembersData .- Inicio");
+		LOGGER.info("AdminController deleteNewsData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				newsService.deleteNews(params);
-
 			} else {
-				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController deleteNewsData .- Error: Parámetros nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deleteNewsData .- Error no controlado al eliminar la noticia");
 			throw e;
 		}
 
-		LOGGER.info("AdminController deleteMembersData .- Fin");
+		LOGGER.info("AdminController deleteNewsData .- Fin");
 	}
-	
+
 	@GetMapping("/generateExcel/news")
 	public void exportToExcelNews(HttpServletResponse response) throws Exception {
+
+		LOGGER.info("AdminController exportToExcelNews .- Inicio");
+
 		List<NewsDatatableDto> listaNews = null;
+
 		try {
+
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataNews.xlsx\"");
 
 			listaNews = newsService.getAllNewsData();
 
 			if (listaNews != null && !listaNews.isEmpty()) {
 				GeneratorExcels generatorExcel = new GeneratorExcels();
-
 				generatorExcel.exportExcelNews(response, listaNews);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+				LOGGER.error("AdminController exportToExcelNews .- Error: No existen noticias registradas");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+			LOGGER.error("AdminController exportToExcelNews .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelNews .- Fin");
 	}
 
 	// CATEGORÍAS PROFESIONALES
@@ -364,9 +413,9 @@ public class AdminController {
 		List<ProCatDatatableDto> listaProCatDataTableDto = null;
 
 		try {
-
+			
 			listaProCatDataTableDto = proCatService.getAllProCatData();
-
+			
 		} catch (Exception e) {
 			LOGGER.error(
 					"AdminController getProCatData .- Error no controlado al recuperar los datos de las categorías profesionales");
@@ -388,12 +437,9 @@ public class AdminController {
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				proCatService.addProCat(params);
-
 			} else {
-				LOGGER.error("AdminController addProCatData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController addProCatData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
@@ -410,74 +456,73 @@ public class AdminController {
 	@ResponseBody
 	public void updateProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateProCatData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				proCatService.updateProCat(params);
-
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateProCatData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateProCatData .- Error no controlado al actualizar la categoría profesional");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateProCatData .- Fin");
 	}
 
 	@PostMapping("/deleteProCatData")
 	@ResponseBody
 	public void deleteProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController deleteMembersData .- Inicio");
+		LOGGER.info("AdminController deleteProCatData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				proCatService.deleteProCat(params);
-
 			} else {
-				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController deleteProCatData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deleteProCatData .- Error no controlado al eliminar la categoría profesional");
 			throw e;
 		}
 
-		LOGGER.info("AdminController deleteMembersData .- Fin");
+		LOGGER.info("AdminController deleteProCatData .- Fin");
 	}
 
 	@GetMapping("/generateExcel/proCat")
 	public void exportToExcelProCat(HttpServletResponse response) throws Exception {
+
+		LOGGER.info("AdminController exportToExcelProCat .- Inicio");
+
 		List<ProCatDatatableDto> listaProCat = null;
+		
 		try {
+			
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataProCat.xlsx\"");
 
 			listaProCat = proCatService.getAllProCatData();
 
 			if (listaProCat != null && !listaProCat.isEmpty()) {
 				GeneratorExcels generatorExcelProCat = new GeneratorExcels();
-
 				generatorExcelProCat.exportExcelProCat(response, listaProCat);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+				LOGGER.error("AdminController exportToExcelProCat .- Error: No existen categorías profesionales registradas");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
+			LOGGER.error("AdminController exportToExcelProCat .- Error no controlado al realizar la exportación a Excel");
 
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelProCat .- Fin");
 	}
 
 	// CATEGORÍAS TÉCNICAS
@@ -491,9 +536,7 @@ public class AdminController {
 		List<TechCatDatatableDto> listaTechCatDataTableDto = null;
 
 		try {
-
 			listaTechCatDataTableDto = techCatService.getAllTechCatData();
-
 		} catch (Exception e) {
 			LOGGER.error(
 					"AdminController getTechCatData .- Error no controlado al recuperar los datos de las categorías técnicas");
@@ -515,12 +558,9 @@ public class AdminController {
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				techCatService.addTechCat(params);
-
 			} else {
-				LOGGER.error("AdminController addTechCatData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController addTechCatData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
@@ -536,32 +576,29 @@ public class AdminController {
 	@ResponseBody
 	public void updateTchCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateTechCatData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				techCatService.updateTechCat(params);
-
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateTechCatData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateTechCatData .- Error no controlado al actualizar la categoría técnica");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateTechCatData .- Fin");
 	}
 
 	@PostMapping("/deleteTechCatData")
 	@ResponseBody
 	public void deleteTechCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController deleteMembersData .- Inicio");
+		LOGGER.info("AdminController deleteTechCatData .- Inicio");
 
 		try {
 
@@ -570,40 +607,43 @@ public class AdminController {
 				techCatService.deleteTechCat(params);
 
 			} else {
-				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
+				LOGGER.error("AdminController deleteTechCatData .- Error: Parámetros de entrada nulos");
 
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deleteTechCatData .- Error no controlado al eliminar la categoría técnica");
 			throw e;
 		}
 
-		LOGGER.info("AdminController deleteMembersData .- Fin");
+		LOGGER.info("AdminController deleteTechCatData .- Fin");
 	}
-	
+
 	@GetMapping("/generateExcel/techCat")
 	public void exportToExcelTechCat(HttpServletResponse response) throws Exception {
-		List<TechCatDatatableDto> listaTechCat = null;
-		try {
-			response.setHeader("Content-Disposition", "attachment; filename=\"dataTechCat.xlsx\"");
 
+		LOGGER.info("AdminController exportToExcelTechCat .- Inicio");
+
+		List<TechCatDatatableDto> listaTechCat = null;
+
+		try {
+			
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataTechCat.xlsx\"");
 			listaTechCat = techCatService.getAllTechCatData();
 
 			if (listaTechCat != null && !listaTechCat.isEmpty()) {
 				GeneratorExcels generatorExcel = new GeneratorExcels();
-
 				generatorExcel.exportExcelTechCat(response, listaTechCat);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+				LOGGER.error("AdminController exportToExcelTechCat .- Error: No existen categorías técnicas registradas");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+			LOGGER.error("AdminController exportToExcelTechCat .- Error no controlado al hacer la exportación a Excel");
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelTechCat .- Fin");
 	}
 
 	// MIEMBROS
@@ -617,9 +657,7 @@ public class AdminController {
 		List<MembersDatatableDto> listaMembersDataTableDto = null;
 
 		try {
-
 			listaMembersDataTableDto = membersService.getAllMembersData();
-
 		} catch (Exception e) {
 			LOGGER.error(
 					"AdminController getMembersData .- Error no controlado al recuperar los datos de los miembros");
@@ -653,7 +691,7 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+				LOGGER.error("AdminController addMembersData .- Error: Parámetros de entrada nulos");
 
 			}
 
@@ -670,25 +708,22 @@ public class AdminController {
 	@ResponseBody
 	public void updateMembersData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateMembersData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
-				Member m = membersService.updateMembers(params);
-
+				membersService.updateMembers(params);
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateMembersData .- Error: Parámetros nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateMembersData .- Error no controlado al actualizar el miembro");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateMembersData .- Fin");
 	}
 
 	@PostMapping("/updatePhotoMembersData")
@@ -696,7 +731,7 @@ public class AdminController {
 	public void updatePhotoMembersData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile photoFacility) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updatePhotoMembersData .- Inicio");
 
 		try {
 
@@ -712,16 +747,15 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updatePhotoMembersData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updatePhotoMembersData .- Error no controlado al actualizar el miembro");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updatePhotoMembersData .- Fin");
 	}
 
 	@PostMapping("/deleteMembersData")
@@ -733,24 +767,24 @@ public class AdminController {
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				membersService.deleteMembers(params);
-
 			} else {
-				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deleteMembersData .- Error no controlado al eliminar el miembro");
 			throw e;
 		}
 
 		LOGGER.info("AdminController deleteMembersData .- Fin");
 	}
-	
+
 	@GetMapping("/generateExcel/members")
 	public void exportToExcelMembers(HttpServletResponse response) throws Exception {
+
+		LOGGER.info("AdminController exportToExcelMembers .- Inicio");
+
 		List<MembersDatatableDto> listaMembers = null;
 		try {
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataMembers.xlsx\"");
@@ -762,15 +796,16 @@ public class AdminController {
 
 				generatorExcel.exportExcelMembers(response, listaMembers);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+				LOGGER.error("AdminController exportToExcelMembers .- Error: No existen miembros registrados");
 
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+			LOGGER.error("AdminController exportToExcelMembers .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelMembers .- Fin");
 	}
 
 	// EQUIPOS DE INVESTIGACIÓN
@@ -820,8 +855,7 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
@@ -837,25 +871,22 @@ public class AdminController {
 	@ResponseBody
 	public void updateFacilitiesData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+		LOGGER.info("AdminController updateFacilitiesData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
-				Facility f = facilitiesService.updateFacilities(params);
-
+				facilitiesService.updateFacilities(params);
 			} else {
-				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateFacilitiesData .- Error: Parámetros nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateFacilitiesData .- Error no controlado al actualizar el equipo");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addFacilitiesData .- Fin");
+		LOGGER.info("AdminController updateFacilitiesData .- Fin");
 	}
 
 	@PostMapping("/updatePhotoFacilitiesData")
@@ -863,7 +894,7 @@ public class AdminController {
 	public void updatePhotoFacilitiesData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile photoFacility) throws Exception {
 
-		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+		LOGGER.info("AdminController updatePhotoFacilitiesData .- Inicio");
 
 		try {
 
@@ -879,45 +910,44 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updatePhotoFacilitiesData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updatePhotoFacilitiesData .- Error no controlado al actualizar el equipo");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addFacilitiesData .- Fin");
+		LOGGER.info("AdminController updatePhotoFacilitiesData .- Fin");
 	}
 
 	@PostMapping("/deleteFacilitiesData")
 	@ResponseBody
 	public void deleteFacilitiesData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+		LOGGER.info("AdminController deleteFacilitiesData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				facilitiesService.deleteFacilities(params);
-
 			} else {
-				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController deleteFacilitiesData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deleteFacilitiesData .- Error no controlado al eliminar el equipo");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addFacilitiesData .- Fin");
+		LOGGER.info("AdminController deleteFacilitiesData .- Fin");
 	}
-	
+
 	@GetMapping("/generateExcel/facilities")
 	public void exportToExcelFacilities(HttpServletResponse response) throws Exception {
+
+		LOGGER.info("AdminController exportToExcelFacilities .- Inicio");
+
 		List<FacilitiesDatatableDto> listaFacilities = null;
 		try {
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataFacilities.xlsx\"");
@@ -926,18 +956,17 @@ public class AdminController {
 
 			if (listaFacilities != null && !listaFacilities.isEmpty()) {
 				GeneratorExcels generatorExcel = new GeneratorExcels();
-
 				generatorExcel.exportExcelFacilities(response, listaFacilities);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+				LOGGER.error("AdminController exportToExcelFacilities .- Error: No existen equipos registrados");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+			LOGGER.error("AdminController exportToExcelFacilities .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelFacilities .- Fin");
 	}
 
 	// PUBLICACIONES
@@ -975,14 +1004,11 @@ public class AdminController {
 		try {
 
 			if (publicationsFormDto != null) {
-
-				Publication p = publicationsService.addPublications(publicationsFormDto);
-
+				publicationsService.addPublications(publicationsFormDto);
 				redirectAttributes.addFlashAttribute("catPublication", true);
 
 			} else {
-				LOGGER.error("AdminController addPublicationsData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController addPublicationsData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
@@ -1004,13 +1030,10 @@ public class AdminController {
 		try {
 
 			if (publicationsFormDto != null) {
-
-				Publication p = publicationsService.updatePublications(publicationsFormDto);
-
+				publicationsService.updatePublications(publicationsFormDto);
 				redirectAttributes.addFlashAttribute("catPublication", true);
 			} else {
-				LOGGER.error("AdminController updatePublicationsData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updatePublicationsData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
@@ -1027,50 +1050,50 @@ public class AdminController {
 	@ResponseBody
 	public void deletePublicationsData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addFacilitiesData .- Inicio");
+		LOGGER.info("AdminController deletePublicationsData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				publicationsService.deletePublications(params);
-
 			} else {
-				LOGGER.error("AdminController addFacilitiesData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController deletePublicationsData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addFacilitiesData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deletePublicationsData .- Error no controlado al eliminar la publicación");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addFacilitiesData .- Fin");
+		LOGGER.info("AdminController deletePublicationsData .- Fin");
 
 	}
-	
+
 	@GetMapping("/generateExcel/publications")
 	public void exportToExcelPublications(HttpServletResponse response) throws Exception {
-		List<PublicationsDatatableDto> listaPublications = null;
-		try {
-			response.setHeader("Content-Disposition", "attachment; filename=\"dataPublications.xlsx\"");
 
+		LOGGER.info("AdminController exportToExcelPublications .- Fin");
+
+		List<PublicationsDatatableDto> listaPublications = null;
+		
+		try {
+			
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataPublications.xlsx\"");
 			listaPublications = publicationsService.getAllPublicationsData();
 
 			if (listaPublications != null && !listaPublications.isEmpty()) {
 				GeneratorExcels generatorExcel = new GeneratorExcels();
-
 				generatorExcel.exportExcelPublications(response, listaPublications);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+				LOGGER.error("AdminController exportToExcelPublications .- Error: No existen publicaciones registradas");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+			LOGGER.error("AdminController exportToExcelPublications .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelPublications .- Fin");
 	}
 
 	// PROYECTOS
@@ -1120,8 +1143,7 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addProjectsData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController addProjectsData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
@@ -1137,25 +1159,22 @@ public class AdminController {
 	@ResponseBody
 	public void updateProjectsData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateProjectsData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				projectsService.updateProjects(params);
-
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateProjectsData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateProjectsData .- Error no controlado al actualizar el proyecto");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateProjectsData .- Fin");
 	}
 
 	@PostMapping("/updateImageProjectsData")
@@ -1163,7 +1182,7 @@ public class AdminController {
 	public void updateImageProjectsData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile imageProjects) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateImageProjectsData .- Inicio");
 
 		try {
 
@@ -1179,65 +1198,64 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateImageProjectsData .- Error: Parámetros nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateImageProjectsData .- Error no controlado al actualizar el proyecto");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateImageProjectsData .- Fin");
 	}
 
 	@PostMapping("/deleteProjectsData")
 	@ResponseBody
 	public void deleteProjectsData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController deleteMembersData .- Inicio");
+		LOGGER.info("AdminController deleteProjectsData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				projectsService.deleteProjects(params);
-
 			} else {
-				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController deleteProjectsData .- Error: Parámetros nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deleteProjectsData .- Error no controlado al eliminar el proyecto");
 			throw e;
 		}
 
-		LOGGER.info("AdminController deleteMembersData .- Fin");
+		LOGGER.info("AdminController deleteProjectsData .- Fin");
 	}
-	
+
 	@GetMapping("/generateExcel/projects")
 	public void exportToExcelProjects(HttpServletResponse response) throws Exception {
-		List<ProjectsDatatableDto> listaProjects = null;
-		try {
-			response.setHeader("Content-Disposition", "attachment; filename=\"dataProjects.xlsx\"");
 
+		LOGGER.info("AdminController exportToExcelProjects .- Fin");
+
+		List<ProjectsDatatableDto> listaProjects = null;
+
+		try {
+			
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataProjects.xlsx\"");
 			listaProjects = projectsService.getAllProjectsData();
 
 			if (listaProjects != null && !listaProjects.isEmpty()) {
 				GeneratorExcels generatorExcel = new GeneratorExcels();
-
 				generatorExcel.exportExcelProjects(response, listaProjects);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+				LOGGER.error("AdminController exportToExcelProjects .- Error: No existen proyectos registrados");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+			LOGGER.error("AdminController exportToExcelProjects .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelProjects .- Fin");
 	}
 
 	// TESIS
@@ -1286,8 +1304,7 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addThesisData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController addThesisData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
@@ -1303,25 +1320,22 @@ public class AdminController {
 	@ResponseBody
 	public void updateThesisData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateThesisData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				thesisService.updateThesis(params);
-
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateThesisData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateThesisData .- Error no controlado al actualizar la tesis");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateThesisData .- Fin");
 	}
 
 	@PostMapping("/updateCoverPageThesisData")
@@ -1329,7 +1343,7 @@ public class AdminController {
 	public void updateCoverPageThesisData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile coverPageThesis) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateCoverPageThesisData .- Inicio");
 
 		try {
 
@@ -1345,65 +1359,64 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateCoverPageThesisData .- Error: Parámetros nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateCoverPageThesisData .- Error no controlado al actualizar la tesis");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateCoverPageThesisData .- Fin");
 	}
 
 	@PostMapping("/deleteThesisData")
 	@ResponseBody
 	public void deleteThesisData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController deleteMembersData .- Inicio");
+		LOGGER.info("AdminController deleteThesisData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				thesisService.deleteThesis(params);
-
 			} else {
-				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController deleteThesisData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deleteThesisData .- Error no controlado al eliminar la tesis");
 			throw e;
 		}
 
-		LOGGER.info("AdminController deleteMembersData .- Fin");
+		LOGGER.info("AdminController deleteThesisData .- Fin");
 	}
-	
+
 	@GetMapping("/generateExcel/thesis")
 	public void exportToExcelThesis(HttpServletResponse response) throws Exception {
-		List<ThesisDatatableDto> listaThesis = null;
-		try {
-			response.setHeader("Content-Disposition", "attachment; filename=\"dataThesis.xlsx\"");
 
+		LOGGER.info("AdminController exportToExcelThesis .- Fin");
+
+		List<ThesisDatatableDto> listaThesis = null;
+		
+		try {
+			
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataThesis.xlsx\"");
 			listaThesis = thesisService.getAllThesisData();
 
 			if (listaThesis != null && !listaThesis.isEmpty()) {
 				GeneratorExcels generatorExcel = new GeneratorExcels();
-
 				generatorExcel.exportExcelThesis(response, listaThesis);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+				LOGGER.error("AdminController exportToExcelThesis .- Error: No existen tesis registradas");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+			LOGGER.error("AdminController exportToExcelThesis .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelThesis .- Fin");
 	}
 
 	// LINKS
@@ -1452,7 +1465,7 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addLinksData .- Error: Parámetros nulos");
+				LOGGER.error("AdminController addLinksData .- Error: Parámetros de entrada nulos");
 
 			}
 
@@ -1469,25 +1482,22 @@ public class AdminController {
 	@ResponseBody
 	public void updateLinksData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateLinksData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				linksService.updateLinks(params);
-
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController updateLinksData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateLinksData .- Error no controlado al actualizar el link");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateLinksData .- Fin");
 	}
 
 	@PostMapping("/updateImageLinksData")
@@ -1495,7 +1505,7 @@ public class AdminController {
 	public void updateImageLinksData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile imageLinks) throws Exception {
 
-		LOGGER.info("AdminController addMembersData .- Inicio");
+		LOGGER.info("AdminController updateImageLinksData .- Inicio");
 
 		try {
 
@@ -1511,45 +1521,45 @@ public class AdminController {
 				Files.write(rutaCompleta, bytesImg);
 
 			} else {
-				LOGGER.error("AdminController addMembersData .- Error: Parámetros nulos");
+				LOGGER.error("AdminController updateImageLinksData .- Error: Parámetros de entrada nulos");
 
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController updateImageLinksData .- Error no controlado al actualizar el link");
 			throw e;
 		}
 
-		LOGGER.info("AdminController addMembersData .- Fin");
+		LOGGER.info("AdminController updateImageLinksData .- Fin");
 	}
 
 	@PostMapping("/deleteLinksData")
 	@ResponseBody
 	public void deleteLinksData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
-		LOGGER.info("AdminController deleteMembersData .- Inicio");
+		LOGGER.info("AdminController deleteLinksData .- Inicio");
 
 		try {
 
 			if (params != null && !params.isEmpty()) {
-
 				linksService.deleteLinks(params);
-
 			} else {
-				LOGGER.error("AdminController deleteMembersData .- Error: Parámetros nulos");
-
+				LOGGER.error("AdminController deleteLinksData .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController deleteMembersData .- Error no controlado al dar de alta el equipo");
+			LOGGER.error("AdminController deleteLinksData .- Error no controlado al eliminar el link");
 			throw e;
 		}
 
-		LOGGER.info("AdminController deleteMembersData .- Fin");
+		LOGGER.info("AdminController deleteLinksData .- Fin");
 	}
-	
+
 	@GetMapping("/generateExcel/links")
 	public void exportToExcelLinks(HttpServletResponse response) throws Exception {
+
+		LOGGER.info("AdminController exportToExcelLinks .- Inicio");
+
 		List<LinksDatatableDto> listaLinks = null;
 		try {
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataLinks.xlsx\"");
@@ -1561,15 +1571,16 @@ public class AdminController {
 
 				generatorExcel.exportExcelLinks(response, listaLinks);
 			} else {
-				LOGGER.error("AdminController getTechCatData .- Lista vacía");
+				LOGGER.error("AdminController exportToExcelLinks .- Error: No existen links registrados");
 
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController getTechCatData .- Lista vacía");
-
+			LOGGER.error("AdminController exportToExcelLinks .- Error no controlado al realizar la Exportación a Excel");
 			throw e;
 		}
+
+		LOGGER.info("AdminController exportToExcelLinks .- Fin");
 	}
 
 }

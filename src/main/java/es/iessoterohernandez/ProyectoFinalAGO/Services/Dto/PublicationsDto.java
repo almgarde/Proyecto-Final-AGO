@@ -3,7 +3,7 @@ package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto;
 import java.util.List;
 
 /**
- * DTO entidad: Publications
+ * DTO entidad: Publicaciones
  * 
  * @author agadelao
  *

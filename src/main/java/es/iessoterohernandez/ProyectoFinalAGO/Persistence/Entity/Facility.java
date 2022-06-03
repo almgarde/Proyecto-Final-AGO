@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * Entidad: Servicios de investigación. Tabla: FACILITyS
+ * Entidad: Servicios de investigación. Tabla: FACILITIES
  * 
  * @author agadelao
  *
@@ -29,7 +29,7 @@ public class Facility extends AbstractEntity implements Serializable {
 	/** Nombre */
 	private String nameFacility;
 
-	/** Categoría */
+	/** Categoría técnica */
 	private TechnicalCategory idTechCat;
 
 	/** Imagen */

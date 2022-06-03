@@ -25,56 +25,16 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.LinksDatat
  */
 @Service
 public class LinksServiceImpl implements LinksServiceI {
-	/** Logger */
+
 	final static Logger LOGGER = LoggerFactory.getLogger(LinksServiceImpl.class);
 
 	@Autowired
 	LinkDaoI linkDao;
 
 	/**
-	 * Muestra las cuatro noticias más recientes
+	 * Recupera todos los datos de los links almacenados en BDD
 	 * 
-	 * @return List<NewsDto>
-	 */
-	@Override
-	public List<LinksDto> getAllLinksActive() throws Exception {
-
-		LOGGER.info("LinksServiceImpl getAllLinksActive .- Inicio");
-
-		List<LinksDto> listaLinksDto = null;
-
-		try {
-			List<Link> listLinks = linkDao.findByActive(Boolean.TRUE);
-
-			if (listLinks != null && !listLinks.isEmpty()) {
-				listaLinksDto = new ArrayList<LinksDto>();
-				for (Link l : listLinks) {
-					LinksDto linksDto = new LinksDto();
-					linksDto.setTitleLink(l.getTitleLink());
-					linksDto.setImageLink(l.getImageLink());
-					linksDto.setUrlLink(l.getUrlLink());
-
-					listaLinksDto.add(linksDto);
-				}
-
-			} else {
-				LOGGER.error("LinksServiceImpl getAllLinksActive .- Error: Parámetros nulos");
-			}
-		} catch (Exception e) {
-			LOGGER.error("LinksServiceImpl getAllLinksActive .- Error no controlado al recuperar las noticias");
-			throw e;
-		}
-
-		LOGGER.info("LinksServiceImpl getAllLinksActive .- Fin");
-
-		return listaLinksDto;
-
-	}
-	
-	/**
-	 * Recupera todos los links almacenadas en BDD
-	 * 
-	 * @return
+	 * @return List<LinksDatatableDto>
 	 * @throws Exception
 	 */
 	public List<LinksDatatableDto> getAllLinksData() throws Exception {
@@ -90,7 +50,7 @@ public class LinksServiceImpl implements LinksServiceI {
 
 				for (Link l : listLinks) {
 					LinksDatatableDto linksDatatableDto = new LinksDatatableDto();
-					
+
 					linksDatatableDto.setIdLink(String.valueOf(l.getIdLink()));
 					linksDatatableDto.setTitleLink(l.getTitleLink());
 					linksDatatableDto.setImageLink(l.getImageLink());
@@ -107,8 +67,9 @@ public class LinksServiceImpl implements LinksServiceI {
 				}
 
 			} else {
-				LOGGER.error("LinksServiceImpl getAllLinksData .- Error: Parámetros nulos");
+				LOGGER.error("LinksServiceImpl getAllLinksData .- Error: No existen links registrados");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("LinksServiceImpl getAllLinksData .- Error no controlado al recuperar los links");
 			throw e;
@@ -123,15 +84,16 @@ public class LinksServiceImpl implements LinksServiceI {
 	/**
 	 * Almacena un link en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param linksData
+	 * @param imageLinks
+	 * @return Link
+	 * @throws Exception
 	 */
 	@Override
-
-	public Link addLinks(Map<String, String> linksData , String imageLinks) throws Exception {
+	public Link addLinks(Map<String, String> linksData, String imageLinks) throws Exception {
 
 		LOGGER.info("LinksServiceImpl addLinks .- Inicio");
-		
+
 		Link linksSaved2 = null;
 
 		try {
@@ -150,33 +112,34 @@ public class LinksServiceImpl implements LinksServiceI {
 				l.setImageLink(imageLinks);
 				l.setUpdateAdmin("agadelao");
 				l.setUpdateDate(new Date());
-				
+
 				Link linksSaved = linkDao.save(l);
 				l.setImageLink(linksSaved.getIdLink() + imageLinks);
 				linksSaved2 = linkDao.save(l);
 
-				
-				LOGGER.info("LinksServiceImpl addLinks .- Link almacenada correctamente");
+				LOGGER.info("LinksServiceImpl addLinks .- Link almacenado correctamente");
 
 			} else {
-				LOGGER.error("LinksServiceImpl addLinks .- Error: Parámetros nulos");
+				LOGGER.error("LinksServiceImpl addLinks .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("LinksServiceImpl addLinks .- Error no controlado al añadir el link");
 			throw e;
 		}
 
 		LOGGER.info("LinksServiceImpl addLinks .- Fin");
-		
+
 		return linksSaved2;
 
 	}
-	
+
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza los datos de link almacenado en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param linksData
+	 * @return Link
+	 * @throws Exception
 	 */
 	@Override
 	public Link updateLinks(Map<String, String> linksData) throws Exception {
@@ -186,13 +149,12 @@ public class LinksServiceImpl implements LinksServiceI {
 		Link linkUpdated = null;
 
 		try {
-			if (linksData != null && !linksData.isEmpty() ) {
+			if (linksData != null && !linksData.isEmpty()) {
 
-				Link l = linkDao
-						.findByIdLink(Long.parseLong(linksData.get("idLink")));
+				Link l = linkDao.findByIdLink(Long.parseLong(linksData.get("idLink")));
 
 				if (l != null) {
-					
+
 					l.setTitleLink(linksData.get("titleLink"));
 					l.setUrlLink(linksData.get("urlLink"));
 					if (Integer.parseInt(linksData.get("active")) == 1) {
@@ -203,19 +165,21 @@ public class LinksServiceImpl implements LinksServiceI {
 
 					l.setUpdateAdmin("agadelao");
 					l.setUpdateDate(new Date());
-					
-					 linkUpdated = linkDao.save(l);
+
+					linkUpdated = linkDao.save(l);
 
 				} else {
-					LOGGER.error("LinksServiceImpl updateLinks .- Equipo no encontrado");
+					LOGGER.error("LinksServiceImpl updateLinks .- Link no encontrado");
 				}
-				LOGGER.info("LinksServiceImpl updateLinks .- Equipo actualizado correctamente");
+
+				LOGGER.info("LinksServiceImpl updateLinks .- Link actualizado correctamente");
 
 			} else {
-				LOGGER.error("LinksServiceImpl updateLinks .- Error: Parámetros nulos");
+				LOGGER.error("LinksServiceImpl updateLinks .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("LinksServiceImpl updateLinks .- Error no controlado al actualizar la publicación");
+			LOGGER.error("LinksServiceImpl updateLinks .- Error no controlado al actualizar el link");
 			throw e;
 		}
 
@@ -224,80 +188,131 @@ public class LinksServiceImpl implements LinksServiceI {
 		return linkUpdated;
 
 	}
-	
+
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza la imagen de un link almacenado en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param linksData
+	 * @param photoLinks
+	 * @return Link
+	 * @throws Exception
 	 */
 	@Override
 	public Link updateImageLinks(Map<String, String> linksData, String photoLinks) throws Exception {
 
-		LOGGER.info("LinksServiceImpl updateLinks .- Inicio");
+		LOGGER.info("LinksServiceImpl updateImageLinks .- Inicio");
 
 		Link linkPhotoUpdated = null;
 
 		try {
+
 			if (linksData != null && !linksData.isEmpty() && photoLinks != null) {
 
-				Link l = linkDao
-						.findByIdLink(Long.parseLong(linksData.get("idLink")));
+				Link l = linkDao.findByIdLink(Long.parseLong(linksData.get("idLink")));
 
 				if (l != null) {
-
 					l.setImageLink(l.getIdLink() + photoLinks);
 					linkPhotoUpdated = linkDao.save(l);
 				} else {
-					LOGGER.error("LinksServiceImpl updateLinks .- Equipo no encontrado");
+					LOGGER.error("LinksServiceImpl updateImageLinks .- Link no encontrado");
 				}
-				LOGGER.info("LinksServiceImpl updateLinks .- Equipo actualizado correctamente");
+
+				LOGGER.info("LinksServiceImpl updateImageLinks .- Link actualizado correctamente");
 
 			} else {
-				LOGGER.error("LinksServiceImpl updateLinks .- Error: Parámetros nulos");
+				LOGGER.error("LinksServiceImpl updateImageLinks .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("LinksServiceImpl updateLinks .- Error no controlado al actualizar la publicación");
+			LOGGER.error("LinksServiceImpl updateImageLinks .- Error no controlado al actualizar el link");
 			throw e;
 		}
 
-		LOGGER.info("LinksServiceImpl updateLinks .- Fin");
+		LOGGER.info("LinksServiceImpl updateImageLinks .- Fin");
 
 		return linkPhotoUpdated;
 
 	}
-	
+
+	/**
+	 * Elimina un link almacenado en BDD
+	 * 
+	 * @param linksData
+	 * @throws Exception
+	 */
 	@Override
 	public void deleteLinks(Map<String, String> linksData) throws Exception {
 
 		LOGGER.info("LinksServiceImpl deleteLinks .- Inicio");
 
-
 		try {
+
 			if (linksData != null && !linksData.isEmpty()) {
 
-				Link f = linkDao
-						.findByIdLink(Long.parseLong(linksData.get("idLink")));
+				Link f = linkDao.findByIdLink(Long.parseLong(linksData.get("idLink")));
 
 				if (f != null) {
-
 					linkDao.delete(f);
-
 				}
-				LOGGER.info("LinksServiceImpl deleteLinks .- Publicación eliminada correctamente");
+
+				LOGGER.info("LinksServiceImpl deleteLinks .- Link eliminado correctamente");
 
 			} else {
-				LOGGER.error("LinksServiceImpl deleteLinks .- Error: Parámetros nulos");
+				LOGGER.error("LinksServiceImpl deleteLinks .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("LinksServiceImpl deleteLinks .- Error no controlado al eliminar la publicación");
+			LOGGER.error("LinksServiceImpl deleteLinks .- Error no controlado al eliminar el link");
 			throw e;
 		}
 
 		LOGGER.info("LinksServiceImpl deleteLinks .- Fin");
 
-
 	}
 
+	/**
+	 * Recupera los links activos
+	 * 
+	 * @return List<LinksDto>
+	 * @throws Exception
+	 */
+	@Override
+	public List<LinksDto> getAllLinksActive() throws Exception {
+
+		LOGGER.info("LinksServiceImpl getAllLinksActive .- Inicio");
+
+		List<LinksDto> listaLinksDto = null;
+
+		try {
+
+			List<Link> listLinks = linkDao.findByActive(Boolean.TRUE);
+
+			if (listLinks != null && !listLinks.isEmpty()) {
+				listaLinksDto = new ArrayList<LinksDto>();
+
+				for (Link l : listLinks) {
+
+					LinksDto linksDto = new LinksDto();
+					linksDto.setTitleLink(l.getTitleLink());
+					linksDto.setImageLink(l.getImageLink());
+					linksDto.setUrlLink(l.getUrlLink());
+
+					listaLinksDto.add(linksDto);
+				}
+
+			} else {
+				LOGGER.error("LinksServiceImpl getAllLinksActive .- Error: No existen links activos registrados");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("LinksServiceImpl getAllLinksActive .- Error no controlado al recuperar los links");
+			throw e;
+		}
+
+		LOGGER.info("LinksServiceImpl getAllLinksActive .- Fin");
+
+		return listaLinksDto;
+
+	}
 
 }

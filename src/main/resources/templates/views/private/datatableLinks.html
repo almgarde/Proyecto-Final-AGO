@@ -1,44 +1,51 @@
-<div id="response"></div>
 
-<div>
-	<button type="button" id="formAddLinksBtn" class="btn btn-secondary">
-		<a href="javascript: mostrarModalAddLinks();">Añadir nuevo link</a>
+<div class="response" id="response"></div>
+
+<div id="buttonContainer">
+	<button type="button" id="formAddLinksBtn" class="btn btn-light">
+		<a th:text="#{datatable.btn.nuevoregistro}"
+			href="javascript: mostrarModalAddLinks();"></a>
 	</button>
-	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/links}">Generar Excel</a></button>
+	<button type="button" th:text="#{datatable.btn.generarexcel}"
+		class="btn btn-light">
+		<a th:href="@{/management/generateExcel/links}"></a>
+	</button>
 </div>
 
 <!-- DATATABLE -->
 
-<table id="linksDatatable" class="table datatableAdmin display nowrap" style="text-align: center;">
-	<thead>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
-			<th class="atri" scope="col">Imagen</th>
-			<th class="atri" scope="col">URL</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</thead>
-	<tbody>
+<div class="container" id="datatableLinksContainer">
+	<table id="linksDatatable" class="table datatableAdmin display nowrap">
+		<thead>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.links.titulo}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.links.imagen}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.links.url}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.links.titulo}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.links.imagen}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.links.url}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</tfoot>
 
-	</tbody>
-	<tfoot>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Título</th>
-			<th class="atri" scope="col">Imagen</th>
-			<th class="atri" scope="col">URL</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</tfoot>
-
-</table>
+	</table>
+</div>
 <input class="selectedCat" type="hidden" value="9">
 
 
@@ -47,13 +54,17 @@
 <div class="modal" tabindex="-1" id="modalImageLinks">
 	<div class="modal-dialog">
 		<div class="modal-content">
+			<div class="modal-header containerTitles">
+				<h5 id="headerModalImageLinks" class="modal-title"></h5>
+				<button id="btnCloseAddLinks" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
 			<div class="modal-body">
-				<img id="bodyModalImageLinks"></img>
+				<img class="modalImage" id="bodyModalImageLinks"></img>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
@@ -65,188 +76,208 @@
 <div class="modal" tabindex="-1" id="modalAddLinks">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalAddLinks" class="modal-title">Añadir nuevo link</h5>
-				<button id="btnCloseAddLinks" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.modal.add.header}" id="headerModalAddLinks"
+					class="modal-title"></h5>
+				<button id="btnCloseAddLinks" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-<form id="formAddLinks" class="row g-3 needs-validation">
+				<form id="formAddLinks" class="row g-3 needs-validation">
 
-				<!-- TÍTULO -->
+					<!-- TÍTULO -->
 
-				<div class="form-group has-validation">
-					<label for="titleLinks">Título</label>
-					<input autocomplete="off" type="text"
-						class="form-control" id="titleLinks"
-						name="titleLinks" required><div class="invalid-feedback">Please choose a username.</div> 
-				
-				
-				</div>
-				
-				
-				<!-- IMAGEN -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.links.titulo}" for="titleLinks"></label>
+						<input autocomplete="off" type="text" class="form-control"
+							id="titleLinks" name="titleLinks" required>
+						<div th:text="#{datatable.links.modal.validacion.titulo}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<div class="form-group has-validation">
-					<label for="imageLinks">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageLinks" required><div class="invalid-feedback">Please choose a username.</div> 
-				
-				</div>
-				
-				
-				<!-- URL -->
+					<!-- IMAGEN -->
 
-				<div class="form-group has-validation">
-					<label for="urlLinks">URL</label>
-					<input autocomplete="off" type="url"
-						class="form-control" id="urlLinks"
-						name="titleLinks" required>
-				<div class="invalid-feedback">Please choose a username.</div> 
-					
-				</div>
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.links.imagen}" for="imageLinks"></label>
+						<input type="file" name="file"
+							class="form-control form-control-sm" id="imageLinks" required>
+						<div th:text="#{datatable.links.modal.validacion.imagen}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<!-- ACTIVO -->
-				<div class="form-group">
-					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
-				
+
+					<!-- URL -->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.links.url}" for="urlLinks"></label> <input
+							autocomplete="off" type="url" class="form-control" id="urlLinks"
+							name="titleLinks" required>
+						<div th:text="#{datatable.links.modal.validacion.url}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="active"></label> <select
+							class="form-select" id="active"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarAddLinks">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarAddLinks">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarAddLinks"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarAddLinks"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR LINK -->
 
 <div class="modal" tabindex="-1" id="modalUpdateLinks">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateLinks" class="modal-title">Editar link</h5>
-				<button id="btnCloseUpdateLinks" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.header}"
+					id="headerModalUpdateLinks" class="modal-title"></h5>
+				<button id="btnCloseUpdateLinks" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-<form id="formUpdateLinks" class="row g-3 needs-validation">
-				<!-- TÍTULO -->
+				<form id="formUpdateLinks" class="row g-3 needs-validation">
 
-				<div class="form-group has-validation">
-					<label for="titleLinksEdit">Título</label>
-					<input autocomplete="off" type="text"
-						class="form-control" id="titleLinksEdit"
-						name="titleLinks" required><div class="invalid-feedback">Please choose a username.</div> 
-					
-				</div>
-				
-				
-				<!-- URL -->
+					<!-- TÍTULO -->
 
-				<div class="form-group has-validation">
-					<label for="urlLinksEdit">URL</label>
-					<input autocomplete="off" type="url"
-						class="form-control" id="urlLinksEdit"
-						name="titleLinks" required><div class="invalid-feedback">Please choose a username.</div> 
-					
-				</div>
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.links.titulo}" for="titleLinksEdit"></label>
+						<input autocomplete="off" type="text" class="form-control"
+							id="titleLinksEdit" name="titleLinks" required>
+						<div th:text="#{datatable.links.modal.validacion.titulo}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<!-- ACTIVO -->
-				<div class="form-group">
-					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
-				<input
-						type="hidden" id="idLinksUpdate"> 
+
+					<!-- URL -->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.links.url}" for="urlLinksEdit"></label>
+						<input autocomplete="off" type="url" class="form-control"
+							id="urlLinksEdit" name="titleLinks" required>
+						<div th:text="#{datatable.links.modal.validacion.url}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="activeEdit"></label>
+						<select class="form-select" id="activeEdit"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
+
+					<input type="hidden" id="idLinksUpdate">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateLinks">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateLinks">Cancelar</button>
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateLinks"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateLinks"></button>
 
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR IMAGEN LINK -->
 
 <div class="modal" tabindex="-1" id="modalUpdateImageLinks">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateImageLinks" class="modal-title">Editar link</h5>
-				<button id="btnCloseUpdateImageLinks" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.photo.header}"
+					id="headerModalUpdateImageLinks" class="modal-title"></h5>
+				<button id="btnCloseUpdateImageLinks" type="button"
+					class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-
 				<form id="formUpdateImageLinks" class="row g-3 needs-validation">
-				
-				<!-- IMAGEN -->
 
-				<div class="form-group has-validation">
-					<label for="imageLinksEdit">Imagen</label> <input type="file"
-						name="file" class="form-control form-control-sm" id="imageLinksEdit" required><div class="invalid-feedback">Please choose a username.</div> 
-					
-				</div>
-				
+					<!-- IMAGEN -->
 
-				<input
-						type="hidden" id="idLinksUpdateImage"> 
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.links.imagen}" for="imageLinksEdit"></label>
+						<input type="file" name="file"
+							class="form-control form-control-sm" id="imageLinksEdit" required>
+						<div th:text="#{datatable.links.modal.validacion.imagen}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<input type="hidden" id="idLinksUpdateImage">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateImageLinks">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateImageLinks">Cancelar</button>
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateImageLinks"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateImageLinks"></button>
 
 			</div>
 		</div>
 	</div>
 </div>
 
-	<!-- MODAL - ELIMINAR LINKS -->
 
-	<div class="modal" tabindex="-1" id="modalDeleteLinks">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 id="headerModalDeleteLinks" class="modal-title">Eliminar
-						link</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<label>¿Estás seguro de querer eliminar este link?</label> <input
-						type="hidden" id="idLinksDelete"> 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarDeleteLinks">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarDeleteLinks">Cancelar</button>
+<!-- MODAL - ELIMINAR LINKS -->
 
-				</div>
+<div class="modal modalDelete" tabindex="-1" id="modalDeleteLinks">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles ">
+				<h5 th:text="#{datatable.modal.delete.header}"
+					id="headerModalDeleteLinks" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label th:text="#{datatable.links.modal.delete.label}"></label> <input
+					type="hidden" id="idLinksDelete">
+			</div>
+			<div class="modal-footer">
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarDeleteLinks"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarDeleteLinks"></button>
 			</div>
 		</div>
 	</div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+	integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+	crossorigin="anonymous"></script>

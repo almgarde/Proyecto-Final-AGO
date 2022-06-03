@@ -2,6 +2,12 @@ package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto;
 
 import java.util.Date;
 
+/**
+ * DTO entidad: Tesis
+ * 
+ * @author agadelao
+ *
+ */
 public class ThesisDto {
 
 	private String doctorThesis;

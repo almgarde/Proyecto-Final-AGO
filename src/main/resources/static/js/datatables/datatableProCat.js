@@ -1,23 +1,23 @@
 function getDatatableProCat() {
+
 	let table = $('#proCatDatatable').DataTable({
 		"sAjaxSource": "/management/getProCatData",
 		"sAjaxDataProp": "",
-		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"bAutoWidth": false,
 		"language": {
-			"lengthMenu": "Mostrando _MENU_ entradas",
-			"emptyTable": "Sin datos en esta tabla",
-			"zeroRecords": "No se han encontrado coincidencias",
-			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-			"infoFiltered": "(filtrado de _MAX_ entradas)",
-			"loadingRecords": "Cargando...",
+			"lengthMenu": $('#labelMostrando').val() + ' _MENU_ ' + $('#labelEntradas').val(),
+			"emptyTable": $('#labelTablaVacia').val(),
+			"search": $('#labelBuscador').val(),
+			"zeroRecords": $('#labelNoCoincidencias').val(),
+			"info": $('#labelMostrando').val() + ' _START_ ' + $('#labelA').val() + ' _END_ ' + $('#labelDe').val() + ' _TOTAL_ ' + $('#labelEntradas').val(),
+			"infoEmpty": $('#labelMostrando').val() + " 0 " + $('#labelA').val() + ' 0 ' + $('#labelDe').val() + ' 0 ' + $('#labelEntradas').val(),
+			"infoFiltered": '(' + $('#labelFiltrado').val() + ' _MAX_ ' + $('#labelEntradas').val() + ')',
+			"loadingRecords": $('#labelCargando').val(),
 			"paginate": {
-				"first": "Primero",
-				"last": "Ultimo",
-				"next": "Siguiente",
-				"previous": "Anterior"
+				"next": $('#labelSiguiente').val(),
+				"previous": $('#labelAnterior').val()
 			},
 		},
 		"order": [[0, "desc"]],
@@ -66,22 +66,24 @@ function getDatatableProCat() {
 		"fnCreatedRow": function(row, data, index) {
 
 			// Activo 
-			let activo;
+			var activo;
 			if (data.active == 'true') {
 				activo = $('<a/>', {
-					text: "Si"
+					text: $('#activoSi').val()
 				});
 			} else {
 				activo = $('<a/>', {
-					text: "No"
+					text: $('#activoNo').val()
 				});
 			}
+
 			$('td:eq(4)', row).html(activo);
+
 
 			// Acciones 	 	
 			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
-				text: 'Editar',
+				text: $('#linkEditar').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
@@ -92,9 +94,10 @@ function getDatatableProCat() {
 			accion1.addClass('dropdown-item').attr('href', '#');
 			liAccion1.append(accion1);
 
+
 			var liAccion2 = $('<li/>');
 			var accion2 = $('<a/>', {
-				text: 'Eliminar',
+				text: $('#linkEliminar').val(),
 				href: '',
 				click: function(e) {
 
@@ -103,15 +106,15 @@ function getDatatableProCat() {
 				}
 			});
 
-
 			accion2.addClass('dropdown-item').attr('href', '#');
 			liAccion2.append(accion2);
+
 
 			var divAcciones = $('<div/>');
 			divAcciones.addClass("text-end");
 
 			var liPrincipal = $('<li/>').css('list-style-type', 'none').addClass('nav-item').addClass('dropdown');
-			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Acciones');
+			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text($('#linkAcciones').val());
 			var uPrincipal = $('<u/>').addClass('dropdown-menu').attr('aria-labelledby', 'listaAcciones').css('text-decoration', 'none');
 
 			liPrincipal.append(aPrincipal);
@@ -123,9 +126,21 @@ function getDatatableProCat() {
 			divAcciones.append(liPrincipal);
 
 			$('td:eq(5)', row).html(divAcciones);
+
+
+			$('td:eq(0)', row).attr("data-label", "ID");
+			$('td:eq(1)', row).attr("data-label", "Categoría profesional");
+			$('td:eq(2)', row).attr("data-label", "Admin");
+			$('td:eq(3)', row).attr("data-label", "Fecha");
+			$('td:eq(4)', row).attr("data-label", "Activo");
+			$('td:eq(5)', row).attr("data-label", "");
+
 		}
 	});
 
+
+
+	// FILTROS
 
 	$('#proCatDatatable thead tr').clone(true).addClass('filters').appendTo('#proCatDatatable thead');
 
@@ -133,17 +148,14 @@ function getDatatableProCat() {
 		$(this).off();
 		$(this).removeClass('sorting_desc');
 		$(this).removeClass('sorting');
-
 	});
 
 	$('#proCatDatatable thead tr:eq(1) th.atri').each(function(i) {
-		//let title = $(this).text();
-		$(this).html('<input style="max-width: 100px;" type="text" />');
+
+		$(this).html('<input type="text" />');
 
 		$('input', this).on('keyup change', function() {
-
 			if (table.column(i).search() != this.value) {
-
 				table.column(i).search(this.value).draw();
 			}
 		});
@@ -151,100 +163,79 @@ function getDatatableProCat() {
 
 	$('#proCatDatatable thead tr:eq(1) th.selectActive').each(function(i) {
 
-		$(this).html('<select class="form-select"><option value=""><option value="true">Si</option><option value="false">No</option></select>');
+		$(this).html('<select class="form-select"><option value=""><option value="true">' + $('#activoSi').val() + '</option><option value="false">' + $('#activoNo').val() + '</option></select>');
 
 		$('select', this).on('keyup change', function() {
 			if (table.column(4).search() !== this.value) {
-
 				table.column(4).search(this.value).draw();
 			}
 		});
 	});
 
-	$(document).on("click", "#btnAceptarAddProCat", function(e) {
-		
-		$('#modalAddProCat').modal('show');
 
+	// BOTONES
+
+	$(document).on("click", "#btnAceptarAddProCat", function(e) {
+
+		$('#modalAddProCat').modal('show');
 		var form = $("#formAddProCat");
 
 		if (form[0].checkValidity() === false) {
-			e.preventDefault()
-			e.stopPropagation()
-
+			e.preventDefault();
+			e.stopPropagation();
 		} else {
-
 			anyadirNuevaProCat();
 			$('#modalAddProCat').modal('hide');
-
 		}
 		form.addClass('was-validated')
 
 	});
-	
-	$(document).on("click", "#btnCancelarAddProCat", function() {
-$("#formAddProCat").removeClass('was-validated');
-		$("#nameProCat").val('');
-		$("#active").val('1');
-});
 
-		$(document).on("click", "#btnCloseAddProCat", function() {
-$("#formAddProCat").removeClass('was-validated');
+	$(document).on("click", "#btnCancelarAddProCat", function() {
+		$("#formAddProCat").removeClass('was-validated');
 		$("#nameProCat").val('');
 		$("#active").val('1');
-});
+	});
+
+	$(document).on("click", "#btnCloseAddProCat", function() {
+		$("#formAddProCat").removeClass('was-validated');
+		$("#nameProCat").val('');
+		$("#active").val('1');
+	});
 
 	$(document).on("click", "#btnAceptarUpdateProCat", function(e) {
-		
-		$('#modalUpdateProCat').modal('show');
 
+		$('#modalUpdateProCat').modal('show');
 		var form = $("#formUpdateProCat");
 
 		if (form[0].checkValidity() === false) {
-			e.preventDefault()
-			e.stopPropagation()
-
+			e.preventDefault();
+			e.stopPropagation();
 		} else {
-
 			editarProCat();
 			$('#modalUpdateProCat').modal('hide');
-
 		}
 		form.addClass('was-validated')
 
 	});
-	
+
 	$(document).on("click", "#btnCancelarUpdateProCat", function(e) {
-$("#formUpdateProCat").removeClass('was-validated');
-
-	});
-	
-		$(document).on("click", "#btnCloseUpdateProCat", function(e) {
-$("#formUpdateProCat").removeClass('was-validated');
-
+		$("#formUpdateProCat").removeClass('was-validated');
 	});
 
-
+	$(document).on("click", "#btnCloseUpdateProCat", function(e) {
+		$("#formUpdateProCat").removeClass('was-validated');
+	});
 
 	$(document).on("click", "#btnAceptarDeleteProCat", function(e) {
 		e.preventDefault();
 		eliminarProCat();
-
 	});
-
-//	$('#modalAddProCat').on('hidden.bs.modal', function() {
-//		$("#nameProCat").val('');
-//		$("#active").val('1');
-//	})
-
-
 
 }
 
 
-
-
-
-
+// MODALES
 
 function mostrarModalAddProCat() {
 	$("#modalAddProCat").modal('toggle');
@@ -253,13 +244,12 @@ function mostrarModalAddProCat() {
 function mostrarModalUpdateProCat(idProCat, nameProCat, active) {
 
 	$('#nameProCatEdit').val(nameProCat);
-
 	$('#idProCatUpdate').val(idProCat);
+
 	if (active == 'true') {
 		$('#activeEdit').val('1');
 	} else {
 		$('#activeEdit').val('0');
-
 	}
 
 	$("#modalUpdateProCat").modal('toggle');
@@ -267,16 +257,16 @@ function mostrarModalUpdateProCat(idProCat, nameProCat, active) {
 
 
 function mostrarModalDeleteProCat(idProCat) {
-
 	$('#idProCatDelete').val(idProCat);
 	$("#modalDeleteProCat").modal('toggle');
 }
 
 
+// FUNCIONES CRUD
+
 function anyadirNuevaProCat() {
 
 	let form = new FormData();
-
 
 	form.append("nameProCat", $("#nameProCat").val());
 	form.append("active", $("#active").val());
@@ -291,23 +281,20 @@ function anyadirNuevaProCat() {
 			if (data == '') {
 				$('#proCatDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#addOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#addErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#addErrorMensaje").val());
 		}
 	}).done(function() {
-		
 		$("#formAddProCat").removeClass('was-validated');
 		$("#nameProCat").val('');
 		$("#active").val('1');
-
 	});
 }
 
@@ -329,21 +316,19 @@ function editarProCat() {
 			if (data == '') {
 				$('#proCatDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#updateOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#updateErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#updateErrorMensaje").val());
 		}
 	}).done(function() {
+		$("#formUpdateProCat").removeClass('was-validated');
 		
-$("#formUpdateProCat").removeClass('was-validated');
-
 	});
 }
 
@@ -352,7 +337,6 @@ function eliminarProCat() {
 	let form = new FormData();
 
 	form.append("idProCat", $("#idProCatDelete").val());
-
 
 	$.ajax({
 		url: '/management/deleteProCatData',
@@ -364,21 +348,16 @@ function eliminarProCat() {
 			if (data == '') {
 				$('#proCatDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($("#deleteOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($("#deleteErrorMensaje").val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($("#deleteErrorMensaje").val());
 		}
-	}).done(function() {
-		
-
-
 	});
 }
 

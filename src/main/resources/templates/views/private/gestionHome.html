@@ -1,0 +1,103 @@
+
+<div id="containerHomeGestion" class="row">
+
+	<div id="labelBienvenidaContainer" class="card ">
+		<div class="card-title">
+			<h1 th:text="#{gestion.inicio.bienvenida.titulo}"></h1>
+		</div>
+		<div class="card-body ">
+			<p th:text="#{gestion.inicio.bienvenida.texto}"></p>
+		</div>
+	</div>
+
+	<div id="imagesCarouselEditContainer" class="card ">
+		<div class="card-title">
+			<div id="carouselHomeGestion" class="carousel slide"
+				data-bs-ride="true">
+				<div class="carousel-indicators">
+					<button type="button" data-bs-target="#carouselExampleIndicators"
+						data-bs-slide-to="0" class="active" aria-current="true"
+						aria-label="Slide 1"></button>
+					<button type="button" data-bs-target="#carouselExampleIndicators"
+						data-bs-slide-to="1" aria-label="Slide 2"></button>
+					<button type="button" data-bs-target="#carouselExampleIndicators"
+						data-bs-slide-to="2" aria-label="Slide 3"></button>
+				</div>
+				<div id="carouselInnerHomeGestion" class="carousel-inner">
+					<div class="carousel-item active">
+						<img src="images/image1Carousel.png" class="imgCarousel" alt="...">
+					</div>
+					<div class="carousel-item">
+						<img src="images/image2Carousel.png" class="imgCarousel" alt="...">
+					</div>
+					<div class="carousel-item">
+						<img src="images/image3Carousel.png" class=" imgCarousel"
+							alt="...">
+					</div>
+				</div>
+				<button class="carousel-control-prev" type="button"
+					data-bs-target="#carouselHomeGestion" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden"></span>
+				</button>
+				<button class="carousel-control-next" type="button"
+					data-bs-target="#carouselHomeGestion" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden"></span>
+				</button>
+			</div>
+		</div>
+
+		<div class="card-body ">
+			<form id="formUpdateImageCarousel" class="needs-validation">
+				<table>
+					<tr>
+						<th></th>
+						<th th:text="#{gestion.inicio.tabla.imagen1}"></th>
+						<th th:text="#{gestion.inicio.tabla.imagen2}"></th>
+						<th th:text="#{gestion.inicio.tabla.imagen3}"></th>
+					</tr>
+					<tr>
+						<td th:text="#{gestion.inicio.tabla.imagenactual}"></td>
+						<td><a th:text="#{gestion.inicio.tabla.verimagen}"
+							class="imgCarousel" id="image1Carousel" href="#"></a></td>
+						<td><a th:text="#{gestion.inicio.tabla.verimagen}"
+							class="imgCarousel" id="image2Carousel" href="#"></a></td>
+						<td><a th:text="#{gestion.inicio.tabla.verimagen}"
+							class="imgCarousel" id="image3Carousel" href="#"></a></td>
+					</tr>
+					<tr>
+						<td colspan="4" th:text="#{gestion.inicio.tabla.cambiarimagen}"></td>
+					</tr>
+					<tr>
+						<td>
+							<div class="form-group">
+								<label th:text="#{gestion.inicio.tabla.numeroimagen}"
+									for="numImageCarousel"></label> <select class="form-select"
+									id="numImageCarousel"
+									aria-label="Floating label select example" required>
+									<option th:text="#{gestion.inicio.tabla.valoruno}" value="1"></option>
+									<option th:text="#{gestion.inicio.tabla.valordos}" value="2"></option>
+									<option th:text="#{gestion.inicio.tabla.valortres}" value="3"></option>
+								</select>
+							</div>
+						</td>
+						<td colspan="2"><div class="form-group has-validation">
+								<input type="file" name="file"
+									class="form-control form-control-sm" id="imageEditCarousel"
+									required>
+								<div th:text="#{gestion.inicio.tabla.mensaje.validacion}"
+									class="invalid-feedback"></div>
+
+							</div></td>
+						<td><div id="btnActualizarCarouselImage">
+								<button th:text="#{gestion.inicio.tabla.actualizar}"
+									type="button" class="btn btn-light"
+									id="btnActualizarCarouselImageHome"></button>
+							</div></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>

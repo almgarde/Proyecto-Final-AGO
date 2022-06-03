@@ -11,7 +11,6 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * 
  * SUPERCLASE ABSTRACT-ENTITY
  * 
  * @author agadelao
@@ -27,7 +26,7 @@ public class AbstractEntity implements Serializable {
 
 	/** Fecha del registro */
 	private Date updateDate;
-	
+
 	/** Activo s/n */
 	private Boolean active;
 
@@ -59,7 +58,5 @@ public class AbstractEntity implements Serializable {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
-	
-	
 
 }

@@ -1,5 +1,11 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto;
 
+/**
+ * DTO entidad: Authors - Publications
+ * 
+ * @author agadelao
+ *
+ */
 public class AuthorDto {
 
 	private String idAuthor;

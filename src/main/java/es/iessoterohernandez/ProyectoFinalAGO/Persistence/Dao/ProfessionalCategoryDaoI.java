@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
 
 /**
@@ -34,13 +32,12 @@ public interface ProfessionalCategoryDaoI extends JpaRepository<ProfessionalCate
 	 * @return ProfessionalCategory
 	 */
 	public ProfessionalCategory findByIdProCatAndActive(Long id, Boolean activo);
-	
+
 	/**
 	 * Recupera una categoría profesional por su Id
 	 * 
-	 * @param techCat
-	 * @param activo
-	 * @return List<Facility>
+	 * @param Id
+	 * @return ProfessionalCategory
 	 */
 	public ProfessionalCategory findByIdProCat(Long Id);
 

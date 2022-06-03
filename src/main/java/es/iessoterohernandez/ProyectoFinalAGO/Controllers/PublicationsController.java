@@ -1,6 +1,5 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,11 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.PublicationsServiceI;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatFormDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatMembersDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.PublicationsYearsDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsOrderFormDto;
 
@@ -28,13 +25,14 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsOrde
 public class PublicationsController {
 
 	/** Logger */
-	final static Logger LOGGER = LoggerFactory.getLogger(LinksController.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(PublicationsController.class);
 
 	@Autowired
 	PublicationsServiceI publicationsService;
 
 	@GetMapping("/publications")
 	public String getPublications(Model model) throws Exception {
+
 		LOGGER.info("PublicationsController getPublications .- Inicio");
 
 		String viewResult = "/views/common/Errors";
@@ -46,12 +44,13 @@ public class PublicationsController {
 
 			if (listaPublicationsYearsDto != null && !listaPublicationsYearsDto.isEmpty()) {
 				model.addAttribute("listaPublicationsYearsDto", listaPublicationsYearsDto);
-				
 				model.addAttribute("publicationsOrderFormDto", new PublicationsOrderFormDto());
 				viewResult = "/views/public/publications";
 			} else {
-				LOGGER.error("PublicationsController getPublications .- Parámetros nulos");
+				LOGGER.error(
+						"PublicationsController getPublications .- Error: No existen publicaciones activas registradas");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error(
 					"PublicationsController getPublications .- Error no controlado al redireccionar a la pantalla publications");
@@ -65,36 +64,39 @@ public class PublicationsController {
 	}
 
 	@PostMapping("/orderedPublications")
+	@ResponseBody
 	public String orderedPublications(Model model, PublicationsOrderFormDto publicationsOrderFormDto) throws Exception {
 
-		LOGGER.info("PublicationsController orderPublication .- Inicio");
+		LOGGER.info("PublicationsController orderedPublications .- Inicio");
 
 		String viewResult = "/views/common/ErrorAjax";
 
 		try {
+
 			if (publicationsOrderFormDto != null) {
+
 				final List<PublicationsYearsDto> listaPublicationsYearsDto = publicationsService
 						.getAllPublicationsActiveOrdered(publicationsOrderFormDto.getAscendente());
+
 				if (listaPublicationsYearsDto != null && !listaPublicationsYearsDto.isEmpty()) {
 					model.addAttribute("listaPublicationsYearsDto", listaPublicationsYearsDto);
 					viewResult = "/views/public/orderedPublications";
 				} else {
 					LOGGER.error(
-							"PublicationsController orderPublication .- Error: Parámetros nulos de listaPublicationsYearsDto");
+							"PublicationsController orderedPublications .- Error: No existen publicaciones activas registradas");
 				}
 
 			} else {
-				LOGGER.error(
-						"PublicationsController orderPublication .- Error: Parámetros nulos de publicationsOrderFormDto");
+				LOGGER.error("PublicationsController orderedPublications .- Error: Parámetros de entrada nulos");
 			}
 
 		} catch (Exception e) {
 			LOGGER.error(
-					"PublicationsController orderPublication .- Error no controlado al redireccionar a la pantalla publications");
+					"PublicationsController orderedPublications .- Error no controlado al redireccionar a la pantalla publications");
 			throw e;
 		}
 
-		LOGGER.info("PublicationsController orderPublication .- Fin");
+		LOGGER.info("PublicationsController orderedPublications .- Fin");
 
 		return viewResult;
 	}

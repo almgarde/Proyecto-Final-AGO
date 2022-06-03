@@ -1,58 +1,70 @@
 
-
-<div id="response"></div>
+<div class="response" id="response"></div>
 
 <div th:fragment="publications">
 
-	<div>
+	<div id="buttonContainer">
 		<button type="button" id="formAddPublicationsBtn"
-			class="btn btn-secondary">
-			<a href="javascript: mostrarModalAddPublications();">Añadir nueva
-				publicación</a>
+			class="btn btn-light">
+			<a th:text="#{datatable.btn.nuevoregistro}"
+				href="javascript: mostrarModalAddPublications();"></a>
 		</button>
-		<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/publications}">Generar Excel</a></button>
+		<button type="button" th:text="#{datatable.btn.generarexcel}"
+			class="btn btn-light">
+			<a th:href="@{/management/generateExcel/publications}"></a>
+		</button>
 	</div>
-
-
 
 
 	<!-- DATATABLE -->
 
-	<table id="publicationsDatatable" class="table datatableAdmin display nowrap"
-		style="text-align: center;">
-		<thead>
-			<tr>
-				<th class="atri" scope="col">ID</th>
-				<th class="atri" scope="col">Título</th>
-				<th class="atri" scope="col">Autores</th>
-				<th class="atri" scope="col">Revista</th>
-				<th class="atri" scope="col">DOI</th>
-				<th class="atri" scope="col">Año publicación</th>
-				<th class="atri" scope="col">Admin</th>
-				<th class="atri" scope="col">Fecha</th>
-				<th class="atri selectActive" style="width: 500px;" scope="col">Activo</th>
-				<th style="width: 100px;" scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
+	<div class="container" id="datatablePublicationsContainer">
+		<table id="publicationsDatatable"
+			class="table datatableAdmin display nowrap">
+			<thead>
+				<tr>
+					<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+					<th th:text="#{datatable.publications.titulo}" class="atri"
+						scope="col"></th>
+					<th th:text="#{datatable.publications.autores}" class="atri"
+						scope="col"></th>
+					<th th:text="#{datatable.publications.revista}" class="atri"
+						scope="col"></th>
+					<th th:text="#{datatable.publications.doi}" class="atri"
+						scope="col"></th>
+					<th th:text="#{datatable.publications.anyo}" class="atri"
+						scope="col" style="word-break: break-word; white-space: pre-line;"></th>
+					<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+					<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+					<th th:text="#{datatable.table.activo}" class="atri selectActive"
+						scope="col"></th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
+				<tr>
+					<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+					<th th:text="#{datatable.publications.titulo}" class="atri"
+						scope="col"></th>
+					<th th:text="#{datatable.publications.autores}" class="atri"
+						scope="col"></th>
+					<th th:text="#{datatable.publications.revista}" class="atri"
+						scope="col"></th>
+					<th th:text="#{datatable.publications.doi}" class="atri"
+						scope="col"></th>
+					<th th:text="#{datatable.publications.anyo}" class="atri"
+						scope="col" style="word-break: break-word; white-space: pre-line;"></th>
+					<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+					<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+					<th th:text="#{datatable.table.activo}" class="atri selectActive"
+						scope="col"></th>
+					<th scope="col"></th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
 
-		</tbody>
-		<tfoot>
-			<tr>
-				<th class="atri" scope="col">ID</th>
-				<th class="atri" scope="col">Título</th>
-				<th class="atri" scope="col">Autores</th>
-				<th class="atri" scope="col">Revista</th>
-				<th class="atri" scope="col">DOI</th>
-				<th class="atri" scope="col">Año publicación</th>
-				<th class="atri" scope="col">Admin</th>
-				<th class="atri" scope="col">Fecha</th>
-				<th class="atri selectActive" style="width: 500px;" scope="col">Activo</th>
-				<th style="width: 150px;" scope="col"></th>
-			</tr>
-		</tfoot>
-
-	</table>
 	<input class="selectedCat" type="hidden" value="7">
 
 
@@ -61,19 +73,21 @@
 	<div class="modal" tabindex="-1" id="modalAuthorsPublication">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 id="headerAuthorsPublication" class="modal-title"></h5>
+				<div class="modal-header containerTitles">
+					<h5 th:text="#{datatable.modal.add.header}"
+						id="headerAuthorsPublication" class="modal-title"></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
+				<div class="apartado">
+					<h5 th:text="#{datatable.publications.modal.autores}"></h5>
+				</div>
 				<div class="modal-body" id="modalBodyAuthorsPublication">
-					
 					<div id="listaAutores"></div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Close</button>
-
+					<button type="button" th:text="#{modal.btn.cerrar}"
+						class="btn btn-light" data-bs-dismiss="modal"></button>
 				</div>
 			</div>
 		</div>
@@ -84,11 +98,10 @@
 
 	<div class="modal" tabindex="-1" id="modalAddPublications">
 		<div class="modal-dialog">
-			<div class="modal-content"
-				style="width: 1000px; margin-left: -200px;">
-				<div class="modal-header">
-					<h5 id="headerModalAddPublications" class="modal-title">Añadir
-						nueva publicación</h5>
+			<div class="modal-content">
+				<div class="modal-header containerTitles">
+					<h5 th:text="#{datatable.modal.add.header}"
+						id="headerModalAddPublications" class="modal-title"></h5>
 					<button id="btnCloseAddPublication" type="button" class="btn-close"
 						data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
@@ -101,108 +114,129 @@
 						<!-- TÍTULO -->
 
 						<div class="form-group has-validation">
-							<label for="titlePublication">Título</label>
+							<label th:text="#{datatable.publications.titulo}"
+								for="titlePublication"></label>
 							<textarea class="form-control" id="titlePublication"
 								th:field="*{titlePublication}" required></textarea>
-							<div class="invalid-feedback">Please choose a username.</div>
+							<div th:text="#{datatable.publications.modal.validacion.titulo}"
+								class="invalid-feedback"></div>
 						</div>
 
 						<!-- AUTORES -->
 
-
-						<label for="authorSelect">Autores</label>
-						<div class="table-responsive" required>
-							<table class="table table-bordered" id="dynamic_field">
-								<tr id="selectNuevoAutor">
-									<td colspan="3"><select class="form-select"
-										id="authorSelect" aria-label="Floating label select example">
-											<option id="headerSelectAuthors" value="">Escoja un
-												miembro o añada un nuevo autor</option>
-											<option th:each="memberDto : ${listaMembersDto}"
-												th:text="${memberDto.nameMember} + ', ' + ${memberDto.shortNameMember}"
-												th:value="${memberDto.idMember}"
-												th:data-name-member="${memberDto.nameMember}"
-												th:data-short-name-member="${memberDto.shortNameMember}">
-											</option>
-									</select></td>
-									<td rowspan="2"><button type="button" name="add" id="add"
-											class="btn btn-success">Añadir</button></td>
-								</tr>
-								<tr id="btnNuevoAutor">
-									<td colspan="3"><button type="button" name="newAuthor"
-											id="newAuthor" class="btn btn-success">Nuevo Autor</button>
-									<td>
-								</tr>
-
-								<tr class="form-group has-validation">
-									<td></td>
-									<td id="tdInputNameAutor">Nombre: <input
-										id="inputNameAutor" type="text" name="autores[].nameAuthor"
-										class="form-control name_list " required></td>
-									<td id="tdInputShortNameAutor">Nombre abreviado : <input
-										id="inputShortNameAutor" type="text"
-										name="autores[].shortNameAuthor"
-										class="form-control name_list " required></td>
-								</tr>
-
-							</table>
+						<label th:text="#{datatable.publications.autores}"
+							style="margin-top: 20px;" for="authorSelect"></label>
+						<div class="form-group has-validation">
+							<div id="authorsTable" class="table-responsive authorsTable"
+								required>
+								<table class="table table-bordered" id="dynamic_field">
+									<tr id="selectNuevoAutor">
+										<td colspan="3"><select class="form-select"
+											id="authorSelect" aria-label="Floating label select example">
+												<option
+													th:text="#{datatable.publications.modal.autores.select}"
+													id="headerSelectAuthors" value=""></option>
+												<option th:each="memberDto : ${listaMembersDto}"
+													th:text="${memberDto.nameMember} + ', ' + ${memberDto.shortNameMember}"
+													th:value="${memberDto.idMember}"
+													th:data-name-member="${memberDto.nameMember}"
+													th:data-short-name-member="${memberDto.shortNameMember}">
+												</option>
+										</select></td>
+										<td rowspan="2"><button
+												th:text="#{datatable.publications.modal.autores.anyadir}"
+												type="button" name="add" id="add" class="btn btn-light"></button></td>
+									</tr>
+									<tr id="btnNuevoAutor">
+										<td colspan="3"><button
+												th:text="#{datatable.publications.modal.autores.nuevo}"
+												type="button" name="newAuthor" id="newAuthor"
+												class="btn btn-light"></button>
+										<td>
+									</tr>
+									<tr>
+										<td></td>
+										<td th:text="#{datatable.publications.modal.autores.nombre}"
+											id="labelInputNameAutor"></td>
+										<td
+											th:text="#{datatable.publications.modal.autores.nombreautor}"
+											id="labelInputShortNameAutor"></td>
+									</tr>
+									<tr class="form-group has-validation">
+										<td></td>
+										<td id="tdInputNameAutor"><input id="inputNameAutor"
+											type="text" name="autores[].nameAuthor"
+											class="form-control name_list " required></td>
+										<td id="tdInputShortNameAutor"><input
+											id="inputShortNameAutor" type="text"
+											name="autores[].shortNameAuthor"
+											class="form-control name_list " required></td>
+									</tr>
+								</table>
+							</div>
 						</div>
-
+						<div th:text="#{datatable.publications.modal.validacion.autores}"
+							class="invalid-feedback"></div>
 
 						<!-- REVISTA -->
 
 						<div class="form-group has-validation">
-							<label for="journalPublication">Revista</label> <input
-								autocomplete="off" type="text" class="form-control"
-								id="journalPublication" th:field="*{journalPublication}"
-								required>
-							<div class="invalid-feedback">Please choose a username.</div>
-
+							<label th:text="#{datatable.publications.revista}"
+								for="journalPublication"></label> <input autocomplete="off"
+								type="text" class="form-control" id="journalPublication"
+								th:field="*{journalPublication}" required>
+							<div th:text="#{datatable.publications.modal.validacion.revista}"
+								class="invalid-feedback"></div>
 						</div>
 
 						<!-- DOI -->
 
 						<div class="form-group has-validation">
-							<label for="doiPublication">DOI</label> <input type="url"
+							<label th:text="#{datatable.publications.doi}"
+								for="doiPublication"></label> <input type="url"
 								autocomplete="off" class="form-control" id="doiPublication"
 								th:field="*{doiPublication}" required>
-							<div class="invalid-feedback">Please choose a username.</div>
+							<div th:text="#{datatable.publications.modal.validacion.doi}"
+								class="invalid-feedback"></div>
 						</div>
 
 						<!-- AÑO DE PUBLICACIÓN -->
 
 						<div class="form-group has-validation">
-							<label for="yearPublication">Año de publicación</label> <select
+							<label th:text="#{datatable.publications.anyo}"
+								for="yearPublication"></label> <select class="form-select"
 								th:field="*{yearPublication}"
 								aria-label="Floating label select example" required>
-								<option value="">Seleccione un año</option>
+								<option th:text="#{datatable.publications.modal.select.anyo}"
+									value=""></option>
 								<option
 									th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()), #dates.year(#dates.createNow()) - 50)}"
 									th:value="${year}" th:text="${year}"></option>
 							</select>
-							<div class="invalid-feedback">Please choose a username.</div>
+							<div th:text="#{datatable.publications.modal.validacion.anyo}"
+								class="invalid-feedback"></div>
 						</div>
 
 						<!-- ACTIVO -->
 
 						<div class="form-group">
-							<label for="active">Activo</label> <select th:field="*{active}"
-								class="form-select" id="active"
+							<label th:text="#{datatable.table.activo}" for="active"></label>
+							<select th:field="*{active}" class="form-select" id="active"
 								aria-label="Floating label select example" required>
-								<option value="1">Si</option>
-								<option value="0">No</option>
+								<option th:text="#{datatable.table.activo.si}" value="1"></option>
+								<option th:text="#{datatable.table.activo.no}" value="0"></option>
 							</select>
 						</div>
-
-
 
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarAddPublication">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarAddPublication">Cancelar</button>
+					<button type="button" th:text="#{modal.btn.aceptar}"
+						class="btn btn-light" data-bs-dismiss="modal"
+						id="btnAceptarAddPublication"></button>
+					<button type="button" th:text="#{modal.btn.cancelar}"
+						class="btn btn-light" data-bs-dismiss="modal"
+						id="btnCancelarAddPublication"></button>
 
 				</div>
 			</div>
@@ -214,11 +248,10 @@
 
 	<div class="modal" tabindex="-1" id="modalUpdatePublications">
 		<div class="modal-dialog">
-			<div class="modal-content"
-				style="width: 1000px; margin-left: -200px;">
-				<div class="modal-header">
-					<h5 id="headerModalEditPublications" class="modal-title">Editar
-						publicación</h5>
+			<div class="modal-content">
+				<div class="modal-header containerTitles modalUpdate">
+					<h5 th:text="#{datatable.modal.update.header}"
+						id="headerModalEditPublications" class="modal-title"></h5>
 					<button id="btnCloseUpdatePublications" type="button"
 						class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
@@ -231,26 +264,28 @@
 						<!-- TÍTULO -->
 
 						<div class="form-group has-validation">
-							<label for="titlePublicationEdit">Título</label>
+							<label th:text="#{datatable.publications.titulo}"
+								for="titlePublicationEdit"></label>
 							<textarea class="form-control" id="titlePublicationEdit"
 								th:field="*{titlePublication}" required></textarea>
-							<div class="invalid-feedback">Please choose a username.</div>
+							<div th:text="#{datatable.publications.modal.validacion.titulo}"
+								class="invalid-feedback"></div>
 						</div>
 
 						<!-- AUTORES -->
 
+						<label th:text="#{datatable.publications.autores}"
+							style="margin-top: 20px;" for="authorSelectEdit"></label>
 						<div class="form-group has-validation">
-							<label for="authorSelectEdit">Autores</label>
-
-
-							<div class="table-responsive">
+							<div id="authorsTableEdit " class="table-responsive authorsTable">
 								<table class="table table-bordered" id="dynamic_fieldEdit">
 									<tr id="selectNuevoAutorEdit">
 										<td colspan="3"><select class="form-select"
 											id="authorSelectEdit"
 											aria-label="Floating label select example">
-												<option id="headerSelectAuthorsEdit" value="">Escoja
-													un miembro o añada un nuevo autor</option>
+												<option
+													th:text="#{datatable.publications.modal.autores.select}"
+													id="headerSelectAuthorsEdit" value=""></option>
 												<option th:each="memberDto : ${listaMembersDto}"
 													th:text="${memberDto.nameMember} + ', ' + ${memberDto.shortNameMember}"
 													th:value="${memberDto.idMember}"
@@ -262,23 +297,33 @@
 														th:value="${memberDto.shortNameMember}">
 												</option>
 										</select></td>
-										<td rowspan="2"><button type="button" name="add"
-												id="addEdit" class="btn btn-success">Añadir</button></td>
+										<td rowspan="2"><button type="button"
+												th:text="#{datatable.publications.modal.autores.anyadir}"
+												name="add" id="addEdit" class="btn btn-light"></button></td>
 									</tr>
 									<tr id="btnNuevoAutorEdit">
-										<td colspan="3"><button type="button" name="newAuthor"
-												id="newAuthorEdit" class="btn btn-success">Nuevo
-												Autor</button>
+										<td colspan="3"><button
+												th:text="#{datatable.publications.modal.autores.nuevo}"
+												type="button" name="newAuthor" id="newAuthorEdit"
+												style="margin-top: 0px !important;" class="btn btn-light"></button>
 										<td>
+									</tr>
+									<tr>
+										<td></td>
+										<td th:text="#{datatable.publications.modal.autores.nombre}"
+											id="tdLabelNameAutorEdit"></td>
+										<td
+											th:text="#{datatable.publications.modal.autores.nombreautor}"
+											id="tdLabelShortNameAutorEdit"></td>
+
 									</tr>
 									<tr class="form-group has-validation">
 										<td></td>
-										<td id="tdInputNameAutorEdit">Nombre: <input
+										<td id="tdInputNameAutorEdit"><input
 											id="inputNameAutorEdit" type="text"
 											class="form-control name_list"></td>
-										<td id="tdInputShortNameAutorEdit">Nombre abreviado : <input
-											type="text" id="inputShortNameAutorEdit"
-											class="form-control name_list"></td>
+										<td id="tdInputShortNameAutorEdit"><input type="text"
+											id="inputShortNameAutorEdit" class="form-control name_list"></td>
 										<input type="hidden" id="inputIdMemberEdit"
 											class="form-control name_list">
 										<input type="hidden" id="numRowsAuthors">
@@ -286,62 +331,72 @@
 								</table>
 							</div>
 						</div>
+						<div th:text="#{datatable.publications.modal.validacion.autores}"
+							class="invalid-feedback"></div>
 
 						<!-- REVISTA -->
 
 						<div class="form-group has-validation">
-							<label for="journalPublicationEdit">Revista</label> <input
-								autocomplete="off" type="text" class="form-control"
-								id="journalPublicationEdit" th:field="*{journalPublication}"
-								required>
-							<div class="invalid-feedback">Please choose a username.</div>
-
+							<label th:text="#{datatable.publications.revista}"
+								for="journalPublicationEdit"></label> <input autocomplete="off"
+								type="text" class="form-control" id="journalPublicationEdit"
+								th:field="*{journalPublication}" required>
+							<div th:text="#{datatable.publications.modal.validacion.revista}"
+								class="invalid-feedback"></div>
 						</div>
 
 						<!-- DOI -->
 
 						<div class="form-group has-validation">
-							<label for="doiPublicationEdit">DOI</label> <input type="url"
+							<label th:text="#{datatable.publications.doi}"
+								for="doiPublicationEdit"></label> <input type="url"
 								autocomplete="off" class="form-control" id="doiPublicationEdit"
 								th:field="*{doiPublication}" required>
-							<div class="invalid-feedback">Please choose a username.</div>
+							<div th:text="#{datatable.publications.modal.validacion.doi}"
+								class="invalid-feedback"></div>
 						</div>
 
 						<!-- AÑO DE PUBLICACIÓN -->
 
 						<div class="form-group has-validation">
-							<label for="yearPublicationEdit">Año de publicación</label> <select
-								id="yearPublicationEdit" th:field="*{yearPublication}"
+							<label th:text="#{datatable.publications.anyo}"
+								for="yearPublicationEdit"></label> <select
+								id="yearPublicationEdit" class="form-select"
+								th:field="*{yearPublication}"
 								aria-label="Floating label select example" required>
-								<option value="">Seleccione un año</option>
+								<option th:text="#{datatable.publications.modal.select.anyo}"
+									value=""></option>
 								<option
 									th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()), #dates.year(#dates.createNow()) - 50)}"
 									th:value="${year}" th:text="${year}"></option>
 							</select>
-							<div class="invalid-feedback">Please choose a username.</div>
+							<div th:text="#{datatable.publications.modal.validacion.anyo}"
+								class="invalid-feedback"></div>
 						</div>
 
 						<!-- ACTIVO -->
 
 						<div class="form-group">
-							<label for="activeEdit">Activo</label> <select
-								th:field="*{active}" class="form-select" id="activeEdit"
+							<label th:text="#{datatable.table.activo}" for="activeEdit"></label>
+							<select th:field="*{active}" class="form-select" id="activeEdit"
 								aria-label="Floating label select example" required>
-								<option value="1">Si</option>
-								<option value="0">No</option>
+								<option th:text="#{datatable.table.activo.si}" value="1"></option>
+								<option th:text="#{datatable.table.activo.no}" value="0"></option>
 							</select>
 						</div>
 
 						<input th:field="*{idPublication}" type="hidden"
 							id="idPublicationEdit">
+
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarUpdatePublication">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarUpdatePublication">Cancelar</button>
-
+					<button type="button" th:text="#{modal.btn.aceptar}"
+						class="btn btn-light" data-bs-dismiss="modal"
+						id="btnAceptarUpdatePublication"></button>
+					<button type="button" th:text="#{modal.btn.cancelar}"
+						class="btn btn-light" data-bs-dismiss="modal"
+						id="btnCancelarUpdatePublication"></button>
 				</div>
 			</div>
 		</div>
@@ -352,33 +407,30 @@
 
 <!-- MODAL - ELIMINAR PUBLICACIÓN -->
 
-<div class="modal" tabindex="-1" id="modalDeletePublication">
+<div class="modal modalDelete" tabindex="-1" id="modalDeletePublication">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalDeletePublication" class="modal-title">Eliminar
-					publicación</h5>
+			<div class="modal-header containerTitles ">
+				<h5 th:text="#{datatable.modal.delete.header}"
+					id="headerModalDeletePublication" class="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<label>¿Estás seguro de querer eliminar esta publicación?</label> <input
-					type="hidden" id="idPublicationDelete">
+				<label th:text="#{datatable.publications.modal.delete.label}"></label>
+				<input type="hidden" id="idPublicationDelete">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarDeletePublication">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarDeletePublication">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarDeletePublication"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarDeletePublication"></button>
 			</div>
 		</div>
 	</div>
 </div>
-
-
-
-
 
 <script
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"

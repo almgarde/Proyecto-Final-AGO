@@ -6,24 +6,7 @@
 </head>
 <body>
 
-	<footer th:fragment="footer" class="p-3 bg-dark text-white"> <!-- py-3 my-4 	<div -->
-	<!-- 		class="d-flex flex-wrap align-items-center "> --> <!-- 		<div id="logoFooter" style="margin:50px;"> -->
-	<!-- 			<a href="https://www.icms.us-csic.es/" --> <!-- 				class="text-white d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none"> -->
-	<!-- 				<img class="me-2" src="/images/logoIcmse.png" alt="" width="75" -->
-	<!-- 				height="60">Mechanochemistry and Reactivity of Materials --> <!-- 			</a> -->
-
-
-	<!-- 		</div> --> <!-- 		<div class="item2"> --> <!-- 			<h6 style="color: CornflowerBlue;" class="text-center">Información -->
-	<!-- 				de contacto</h6> --> <!-- 			<p class="text-center text-muted">Gotor Martínez, Francisco José: -->
-	<!-- 				francisco.gotor@icmse.csic.es</p> --> <!-- 			<p class="text-center text-muted">Institute of Materials Science -->
-	<!-- 				of Seville</p> --> <!-- 			<p class="text-center text-muted">C/Américo Vespucio, 49. 41092 – -->
-	<!-- 				Sevilla (España)</p> --> <!-- 		</div> --> <!-- 		<div class="item3"> -->
-	<!-- 			<iframe --> <!-- 				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3169.0766990406923!2d-6.009005684734673!3d37.41166197982716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126b8d7da4bfd3%3A0xd1bd98579d1d4f68!2sInstituto%20de%20Ciencia%20de%20los%20Materiales%20de%20Sevilla%20(ICMSE)!5e0!3m2!1ses!2ses!4v1653661068497!5m2!1ses!2ses" -->
-	<!-- 				width="300" height="200" style="border: 0;" allowfullscreen="" -->
-	<!-- 				loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
-
-
-
+	<footer th:fragment="footer" class="p-3 bg-dark text-white">
 
 	<div id="footerContainer"
 		class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -34,36 +17,27 @@
 				<a href="https://www.icms.us-csic.es/" class="text-white"> <img
 					src="/images/logoIcmse.png" alt="" width="75" height="60">
 				</a>
-
 				<div>
-					<p>Mechanochemistry and Reactivity of Materials</p>
+					<p th:text="#{footer.logo.grupo}"></p>
 				</div>
 			</div>
 		</div>
 
-
 		<div id="infoFooter">
-			<h6 style="color: CornflowerBlue;">Información de contacto</h6>
-			<p class="text-muted">Gotor Martínez, Francisco José:
-				francisco.gotor@icmse.csic.es</p>
-			<p class="text-muted">Institute of Materials Science of Seville</p>
-			<p class="text-muted">C/Américo Vespucio, 49. 41092 – Sevilla
-				(España)</p>
+			<h6 th:text="#{footer.info.titulo}" style="color: CornflowerBlue;"></h6>
+			<p th:text="#{footer.info.nombre}" class="text-muted"></p>
+			<p th:text="#{footer.info.centro}" class="text-muted"></p>
+			<p th:text="#{footer.info.direccion}" class="text-muted"></p>
 		</div>
 
-
-		<div  id="mapaFooter">
+		<div id="mapaFooter">
 			<iframe
 				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3169.0766990406923!2d-6.009005684734673!3d37.41166197982716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126b8d7da4bfd3%3A0xd1bd98579d1d4f68!2sInstituto%20de%20Ciencia%20de%20los%20Materiales%20de%20Sevilla%20(ICMSE)!5e0!3m2!1ses!2ses!4v1653661068497!5m2!1ses!2ses"
 				width="150" height="100" style="border: 0;" allowfullscreen=""
 				loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
 		</div>
 
-
-
 	</div>
-
 	</footer>
 
 </body>

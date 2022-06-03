@@ -29,7 +29,7 @@ public class TechnicalCategory extends AbstractEntity implements Serializable {
 
 	/** Nombre */
 	private String nameTechCat;
-	
+
 	/** Lista de servicios de investigación */
 	private List<Facility> listFacilities;
 
@@ -61,7 +61,5 @@ public class TechnicalCategory extends AbstractEntity implements Serializable {
 	public void setListFacilities(List<Facility> listFacilities) {
 		this.listFacilities = listFacilities;
 	}
-	
-	
 
 }

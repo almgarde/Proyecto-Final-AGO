@@ -5,8 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
 
-
-
 /**
  * Interfaz de Persistencia. Entidad: Administradores
  * 
@@ -15,7 +13,5 @@ import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
  */
 @Repository
 public interface AdminDaoI extends JpaRepository<Admin, Long> {
-	
-	
 
 }

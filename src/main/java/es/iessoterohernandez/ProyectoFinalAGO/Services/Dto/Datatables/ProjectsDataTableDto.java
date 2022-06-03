@@ -9,7 +9,7 @@ public class ProjectsDatatableDto {
 	private String imageProject;
 
 	private String descriptionProject;
-	
+
 	private String active;
 
 	private String admin;
@@ -72,5 +72,4 @@ public class ProjectsDatatableDto {
 		this.date = date;
 	}
 
-	
 }

@@ -25,94 +25,13 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.NewsDatata
 @Service
 public class NewsServiceImpl implements NewsServiceI {
 
-	/** Logger */
 	final static Logger LOGGER = LoggerFactory.getLogger(NewsServiceImpl.class);
 
 	@Autowired
 	NewsDaoI newsDao;
 
 	/**
-	 * Muestra las cuatro noticias más recientes
-	 * 
-	 * @return List<NewsDto>
-	 */
-	@Override
-	public List<NewsDto> getSixMostRecentNewsActive() throws Exception {
-
-		LOGGER.info("NewsServiceImpl getFourMostRecentNews .- Inicio");
-
-		List<NewsDto> listaNewsDto = new ArrayList<NewsDto>();
-
-		try {
-			List<News> listNews = newsDao.findTop6ByActiveOrderByUpdateDateDesc(Boolean.TRUE);
-
-			if (listNews != null && !listNews.isEmpty()) {
-
-				for (News n : listNews) {
-					NewsDto newsDto = new NewsDto();
-					newsDto.setIdNews(String.valueOf(n.getIdNews()));
-					newsDto.setTitleNews(n.getTitleNews());
-					newsDto.setAbstractNews(n.getAbstractNews());
-					String subStringNews = n.getContentNews().substring(0, 300);
-					subStringNews= subStringNews +"...";
-//					subStringNews.replaceAll("\n", "br/>");
-					newsDto.setContentNews(subStringNews);
-					newsDto.setImageNews(n.getImageNews());
-
-					listaNewsDto.add(newsDto);
-				}
-
-			} else {
-				LOGGER.error("NewsServiceImpl getFourMostRecentNews .- Error: Parámetros nulos");
-			}
-		} catch (Exception e) {
-			LOGGER.error("NewsServiceImpl getFourMostRecentNews .- Error no controlado al recuperar las noticias");
-			throw e;
-		}
-
-		LOGGER.info("NewsServiceImpl getFourMostRecentNews .- Fin");
-
-		return listaNewsDto;
-	}
-
-	/**
-	 * Recupera una noticia por su Id
-	 * 
-	 * @return List<NewsDto>
-	 */
-	@Override
-	public NewsDto getNewsByIdActive(Long id) throws Exception {
-
-		LOGGER.info("NewsServiceImpl getNewsById .- Inicio");
-
-		NewsDto newsDto = null;
-
-		try {
-			if (id != null) {
-
-				newsDto = new NewsDto();
-				News n = newsDao.findByIdNewsAndActive(id, Boolean.TRUE);
-				newsDto.setIdNews(String.valueOf(n.getIdNews()));
-				newsDto.setTitleNews(n.getTitleNews());
-				newsDto.setAbstractNews(n.getAbstractNews());
-				newsDto.setContentNews(n.getContentNews());
-				newsDto.setImageNews(n.getImageNews());
-
-			} else {
-				LOGGER.error("NewsServiceImpl getNewsById .- Error: Parámetros nulos");
-			}
-		} catch (Exception e) {
-			LOGGER.error("NewsServiceImpl getNewsById .- Error no controlado al recuperar la noticia");
-			throw e;
-		}
-
-		LOGGER.info("NewsServiceImpl getNewsById .- Fin");
-
-		return newsDto;
-	}
-
-	/**
-	 * Recupera todos las noticias almacenadas en BDD
+	 * Recupera todos los datos de las noticias almacenadas en BDD
 	 * 
 	 * @return
 	 * @throws Exception
@@ -124,17 +43,20 @@ public class NewsServiceImpl implements NewsServiceI {
 		List<NewsDatatableDto> listaNewsDatatableDto = new ArrayList<NewsDatatableDto>();
 
 		try {
+
 			List<News> listNews = newsDao.findAll();
 
 			if (listNews != null && !listNews.isEmpty()) {
 
 				for (News n : listNews) {
+
 					NewsDatatableDto newsDatatableDto = new NewsDatatableDto();
 					newsDatatableDto.setIdNews(String.valueOf(n.getIdNews()));
 					newsDatatableDto.setTitleNews(n.getTitleNews());
 					newsDatatableDto.setAbstractNews(n.getAbstractNews());
 					newsDatatableDto.setContentNews(n.getContentNews());
 					newsDatatableDto.setImageNews(n.getImageNews());
+
 					if (n.getActive()) {
 						newsDatatableDto.setActive("true");
 					} else {
@@ -147,8 +69,9 @@ public class NewsServiceImpl implements NewsServiceI {
 				}
 
 			} else {
-				LOGGER.error("NewsServiceImpl getAllNewsData .- Error: Parámetros nulos");
+				LOGGER.error("NewsServiceImpl getAllNewsData .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("NewsServiceImpl getAllNewsData .- Error no controlado al recuperar las noticias");
 			throw e;
@@ -163,11 +86,12 @@ public class NewsServiceImpl implements NewsServiceI {
 	/**
 	 * Almacena una noticia en BDD
 	 * 
-	 * @param addNewsFormDto
+	 * @param newsData
 	 * @param imageNews
+	 * @return
+	 * @throws Exception
 	 */
 	@Override
-
 	public News addNews(Map<String, String> newsData, String imageNews) throws Exception {
 
 		LOGGER.info("NewsServiceImpl addNews .- Inicio");
@@ -175,13 +99,14 @@ public class NewsServiceImpl implements NewsServiceI {
 		News newsSaved2 = null;
 
 		try {
+
 			if (newsData != null && !newsData.isEmpty() && !StringUtils.isEmpty(imageNews)) {
 
 				News n = new News();
 
 				n.setTitleNews(newsData.get("titleNews"));
-								
 				n.setContentNews(newsData.get("contentNews"));
+
 				if (Integer.parseInt(newsData.get("active")) == 1) {
 					n.setActive(true);
 				} else {
@@ -199,8 +124,9 @@ public class NewsServiceImpl implements NewsServiceI {
 				LOGGER.info("NewsServiceImpl addNews .- Noticia almacenada correctamente");
 
 			} else {
-				LOGGER.error("NewsServiceImpl addNews .- Error: Parámetros nulos");
+				LOGGER.error("NewsServiceImpl addNews .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("NewsServiceImpl addNews .- Error no controlado al añadir la noticia");
 			throw e;
@@ -213,10 +139,11 @@ public class NewsServiceImpl implements NewsServiceI {
 	}
 
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza los datos de una noticia almacenada en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param newsData
+	 * @return
+	 * @throws Exception
 	 */
 	@Override
 	public News updateNews(Map<String, String> newsData) throws Exception {
@@ -226,6 +153,7 @@ public class NewsServiceImpl implements NewsServiceI {
 		News newsUpdated = null;
 
 		try {
+
 			if (newsData != null && !newsData.isEmpty()) {
 
 				News n = newsDao.findByIdNews(Long.parseLong(newsData.get("idNews")));
@@ -233,10 +161,9 @@ public class NewsServiceImpl implements NewsServiceI {
 				if (n != null) {
 
 					n.setTitleNews(newsData.get("titleNews"));
-					
 					n.setAbstractNews(newsData.get("abstractNews"));
-
 					n.setContentNews(newsData.get("contentNews"));
+
 					if (Integer.parseInt(newsData.get("active")) == 1) {
 						n.setActive(true);
 					} else {
@@ -247,16 +174,19 @@ public class NewsServiceImpl implements NewsServiceI {
 					n.setUpdateDate(new Date());
 
 					newsUpdated = newsDao.save(n);
+
 				} else {
-					LOGGER.error("NewsServiceImpl updateNews .- Equipo no encontrado");
+					LOGGER.error("NewsServiceImpl updateNews .- Noticia no encontrada");
 				}
-				LOGGER.info("NewsServiceImpl updateNews .- Equipo actualizado correctamente");
+
+				LOGGER.info("NewsServiceImpl updateNews .- Noticia actualizada correctamente");
 
 			} else {
-				LOGGER.error("NewsServiceImpl updateNews .- Error: Parámetros nulos");
+				LOGGER.error("NewsServiceImpl updateNews .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("NewsServiceImpl updateNews .- Error no controlado al actualizar la publicación");
+			LOGGER.error("NewsServiceImpl updateNews .- Error no controlado al actualizar la noticia");
 			throw e;
 		}
 
@@ -267,74 +197,173 @@ public class NewsServiceImpl implements NewsServiceI {
 	}
 
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza la imagen de una noticia almacenada en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param newsData
+	 * @param photoNews
+	 * @return
+	 * @throws Exception
 	 */
 	@Override
 	public News updateImageNews(Map<String, String> newsData, String imageNews) throws Exception {
 
-		LOGGER.info("NewsServiceImpl updateNews .- Inicio");
+		LOGGER.info("NewsServiceImpl updateImageNews .- Inicio");
 
 		News newsImageUpdated = null;
 
 		try {
+
 			if (newsData != null && !newsData.isEmpty() && imageNews != null) {
 
 				News n = newsDao.findByIdNews(Long.parseLong(newsData.get("idNews")));
 
 				if (n != null) {
-
 					n.setImageNews(n.getIdNews() + imageNews);
 					newsImageUpdated = newsDao.save(n);
 				} else {
-					LOGGER.error("NewsServiceImpl updateNews .- Equipo no encontrado");
+					LOGGER.error("NewsServiceImpl updateImageNews .- Noticia no encontrada");
 				}
-				LOGGER.info("NewsServiceImpl updateNews .- Equipo actualizado correctamente");
+
+				LOGGER.info("NewsServiceImpl updateImageNews .- Noticia actualizada correctamente");
 
 			} else {
-				LOGGER.error("NewsServiceImpl updateNews .- Error: Parámetros nulos");
+				LOGGER.error("NewsServiceImpl updateImageNews .- Error: Parámetros nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("NewsServiceImpl updateNews .- Error no controlado al actualizar la publicación");
+			LOGGER.error("NewsServiceImpl updateImageNews .- Error no controlado al actualizar la noticia");
 			throw e;
 		}
 
-		LOGGER.info("NewsServiceImpl updateNews .- Fin");
+		LOGGER.info("NewsServiceImpl updateImageNews .- Fin");
 
 		return newsImageUpdated;
 
 	}
 
+	/**
+	 * Elimina una noticia almacenada en BDD
+	 * 
+	 * @param newsData
+	 * @throws Exception
+	 */
 	@Override
 	public void deleteNews(Map<String, String> newsData) throws Exception {
 
-		LOGGER.info("PublicationsServiceImpl deletePublications .- Inicio");
+		LOGGER.info("NewsServiceImpl deleteNews .- Inicio");
 
 		try {
+
 			if (newsData != null && !newsData.isEmpty()) {
 
 				News n = newsDao.findByIdNews(Long.parseLong(newsData.get("idNews")));
 
 				if (n != null) {
-
 					newsDao.delete(n);
-
 				}
-				LOGGER.info("PublicationsServiceImpl deletePublications .- Publicación eliminada correctamente");
+
+				LOGGER.info("NewsServiceImpl deleteNews .- Noticia eliminada correctamente");
 
 			} else {
-				LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros nulos");
+				LOGGER.error("NewsServiceImpl deleteNews .- Error: Parámetros nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error(
-					"PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
+			LOGGER.error("NewsServiceImpl deleteNews .- Error no controlado al eliminar la noticia");
 			throw e;
 		}
 
-		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
+		LOGGER.info("NewsServiceImpl deleteNews .- Fin");
 
+	}
+
+	/**
+	 * Recupera las seis noticias s/n activas más recientes ordenadas por fecha
+	 * descendente
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public List<NewsDto> getSixMostRecentNewsActive() throws Exception {
+
+		LOGGER.info("NewsServiceImpl getSixMostRecentNewsActive .- Inicio");
+
+		List<NewsDto> listaNewsDto = new ArrayList<NewsDto>();
+
+		try {
+
+			List<News> listNews = newsDao.findTop6ByActiveOrderByUpdateDateDesc(Boolean.TRUE);
+
+			if (listNews != null && !listNews.isEmpty()) {
+
+				for (News n : listNews) {
+
+					NewsDto newsDto = new NewsDto();
+					newsDto.setIdNews(String.valueOf(n.getIdNews()));
+					newsDto.setTitleNews(n.getTitleNews());
+					newsDto.setAbstractNews(n.getAbstractNews());
+					String subStringNews = n.getContentNews().substring(0, 300);
+					subStringNews = subStringNews + "...";
+					newsDto.setContentNews(subStringNews);
+					newsDto.setImageNews(n.getImageNews());
+
+					listaNewsDto.add(newsDto);
+				}
+
+			} else {
+				LOGGER.error(
+						"NewsServiceImpl getSixMostRecentNewsActive .- Error: No existen noticias activas registradas");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("NewsServiceImpl getSixMostRecentNewsActive .- Error no controlado al recuperar las noticias");
+			throw e;
+		}
+
+		LOGGER.info("NewsServiceImpl getSixMostRecentNewsActive .- Fin");
+
+		return listaNewsDto;
+	}
+
+	/**
+	 * Recupera una noticia activa por su Id
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public NewsDto getNewsByIdActive(Long id) throws Exception {
+
+		LOGGER.info("NewsServiceImpl getNewsByIdActive .- Inicio");
+
+		NewsDto newsDto = null;
+
+		try {
+
+			if (id != null) {
+
+				newsDto = new NewsDto();
+				News n = newsDao.findByIdNewsAndActive(id, Boolean.TRUE);
+				newsDto.setIdNews(String.valueOf(n.getIdNews()));
+				newsDto.setTitleNews(n.getTitleNews());
+				newsDto.setAbstractNews(n.getAbstractNews());
+				newsDto.setContentNews(n.getContentNews());
+				newsDto.setImageNews(n.getImageNews());
+
+			} else {
+				LOGGER.error("NewsServiceImpl getNewsByIdActive .- Error: Parámetros de entrada nulos");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("NewsServiceImpl getNewsByIdActive .- Error no controlado al recuperar la noticia");
+			throw e;
+		}
+
+		LOGGER.info("NewsServiceImpl getNewsByIdActive .- Fin");
+
+		return newsDto;
 	}
 
 }

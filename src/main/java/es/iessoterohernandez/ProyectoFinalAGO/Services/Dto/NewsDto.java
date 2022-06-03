@@ -1,7 +1,5 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Services.Dto;
 
-import java.sql.Clob;
-
 /**
  * DTO entidad: Noticias
  * 

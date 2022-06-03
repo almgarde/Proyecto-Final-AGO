@@ -71,7 +71,6 @@ public class Publication extends AbstractEntity implements Serializable {
 		this.authorsPublication = authorsPublication;
 	}
 
-	
 	@Column(name = "JOURNAL_PUBLICATION", nullable = false)
 	public String getJournalPublication() {
 		return journalPublication;
@@ -98,7 +97,5 @@ public class Publication extends AbstractEntity implements Serializable {
 	public void setYearPublication(Integer yearPublication) {
 		this.yearPublication = yearPublication;
 	}
-
-
 
 }

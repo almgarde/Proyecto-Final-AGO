@@ -29,7 +29,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 	/** ID de Tesis */
 	private Long idThesis;
 
-	/** Doctorando */
+	/** Doctor */
 	private String doctorThesis;
 
 	/** Título */
@@ -69,6 +69,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 	public void setDoctorThesis(String doctorThesis) {
 		this.doctorThesis = doctorThesis;
 	}
+
 	@Column(name = "TITLE_THESIS", nullable = false)
 	public String getTitleThesis() {
 		return titleThesis;
@@ -77,6 +78,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 	public void setTitleThesis(String titleThesis) {
 		this.titleThesis = titleThesis;
 	}
+
 	@Column(name = "COVER_PAGE_THESIS", nullable = false)
 	public String getCoverPageThesis() {
 		return coverPageThesis;
@@ -85,6 +87,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 	public void setCoverPageThesis(String coverPageThesis) {
 		this.coverPageThesis = coverPageThesis;
 	}
+
 	@Column(name = "DATE_DEFENSE_THESIS", nullable = false)
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -96,6 +99,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 	public void setDateDefenseThesis(Date dateDefenseThesis) {
 		this.dateDefenseThesis = dateDefenseThesis;
 	}
+
 	@Column(name = "DIRECTOR_THESIS", nullable = false)
 	public String getDirectorThesis() {
 		return directorThesis;
@@ -104,6 +108,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 	public void setDirectorThesis(String directorThesis) {
 		this.directorThesis = directorThesis;
 	}
+
 	@Column(name = "CODIRECTOR_THESIS", nullable = true)
 	public String getCoDirectorThesis() {
 		return coDirectorThesis;
@@ -112,6 +117,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 	public void setCoDirectorThesis(String coDirectorThesis) {
 		this.coDirectorThesis = coDirectorThesis;
 	}
+
 	@Column(name = "URL_THESIS", nullable = true)
 	public String getUrlThesis() {
 		return urlThesis;

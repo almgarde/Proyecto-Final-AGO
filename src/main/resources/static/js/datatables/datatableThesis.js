@@ -1,23 +1,23 @@
 function getDatatableThesis() {
+
 	let table = $('#thesisDatatable').DataTable({
 		"sAjaxSource": "/management/getThesisData",
 		"sAjaxDataProp": "",
-		"sDom":"ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"bAutoWidth": false,
 		"language": {
-			"lengthMenu": "Mostrando _MENU_ entradas",
-			"emptyTable": "Sin datos en esta tabla",
-			"zeroRecords": "No se han encontrado coincidencias",
-			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-			"infoFiltered": "(filtrado de _MAX_ entradas)",
-			"loadingRecords": "Cargando...",
+			"lengthMenu": $('#labelMostrando').val() + ' _MENU_ ' + $('#labelEntradas').val(),
+			"emptyTable": $('#labelTablaVacia').val(),
+			"search": $('#labelBuscador').val(),
+			"zeroRecords": $('#labelNoCoincidencias').val(),
+			"info": $('#labelMostrando').val() + ' _START_ ' + $('#labelA').val() + ' _END_ ' + $('#labelDe').val() + ' _TOTAL_ ' + $('#labelEntradas').val(),
+			"infoEmpty": $('#labelMostrando').val() + " 0 " + $('#labelA').val() + ' 0 ' + $('#labelDe').val() + ' 0 ' + $('#labelEntradas').val(),
+			"infoFiltered": '(' + $('#labelFiltrado').val() + ' _MAX_ ' + $('#labelEntradas').val() + ')',
+			"loadingRecords": $('#labelCargando').val(),
 			"paginate": {
-				"first": "Primero",
-				"last": "Ultimo",
-				"next": "Siguiente",
-				"previous": "Anterior"
+				"next": $('#labelSiguiente').val(),
+				"previous": $('#labelAnterior').val()
 			},
 		},
 		"order": [[0, "desc"]],
@@ -36,7 +36,6 @@ function getDatatableThesis() {
 				},
 				"bSortable": true
 			},
-
 			{
 				"mData": "titleThesis",
 				"mRender": function(data, type, row) {
@@ -59,16 +58,9 @@ function getDatatableThesis() {
 				"bSortable": true
 			},
 			{
-				"mData": "directorThesis",
+
 				"mRender": function(data, type, row) {
-					return data;
-				},
-				"bSortable": false
-			},
-			{
-				"mData": "coDirectorThesis",
-				"mRender": function(data, type, row) {
-					return data;
+					return row.directorThesis + row.coDirectorThesis;
 				},
 				"bSortable": false
 			},
@@ -108,51 +100,64 @@ function getDatatableThesis() {
 		],
 		"fnCreatedRow": function(row, data, index) {
 
-			// Portada 		
-
+			// Portada 	
 			var verPortada = $('<a/>', {
-				text: 'Portada',
+				text: $('#coverPageThesisLabel').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
 					//$('#newsDatatable').DataTable().ajax.reload();
-					mostrarModalCoverPageThesis(data.coverPageThesis);
+					mostrarModalCoverPageThesis(data.titleThesis, data.coverPageThesis);
 				}
 			});
+
 			$('td:eq(3)', row).html(verPortada);
 
-			// Enlace 		
 
+			// Directores 			
+			var verDir = $('<a/>', {
+				text: $('#directorsThesisLabel').val(),
+				href: '',
+				click: function(e) {
+					e.preventDefault();
+					mostrarModalDirectoresData(data.titleThesis, data.directorThesis, data.coDirectorThesis);
+				}
+			});
+
+			$('td:eq(5)', row).html(verDir);
+
+
+			// Enlace 
 			var irEnlace = $('<a/>', {
-				text: 'Enlace',
+				text: $('#urlThesisLabel').val(),
 				href: data.urlThesis,
 				click: function(e) {
 					e.preventDefault();
-					//					$(this).attr('href', data.urlThesis);
 					window.open(this, '_blank');
 					return false;
 				}
 			});
-			$('td:eq(7)', row).html(irEnlace);
+
+			$('td:eq(6)', row).html(irEnlace);
 
 			// Activo 
-
+			var activo;
 			if (data.active == 'true') {
-				var activo = $('<a/>', {
-					text: "Si"
+				activo = $('<a/>', {
+					text: $('#activoSi').val()
 				});
 			} else {
-				var activo = $('<a/>', {
-					text: "No"
+				activo = $('<a/>', {
+					text: $('#activoNo').val()
 				});
 			}
-			$('td:eq(10)', row).html(activo);
-			
+			$('td:eq(9)', row).html(activo);
+
+
 			// Acciones 	
-			
 			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
-				text: 'Editar',
+				text: $('#linkEditar').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
@@ -163,12 +168,12 @@ function getDatatableThesis() {
 			accion1.addClass('dropdown-item').attr('href', '#');
 			liAccion1.append(accion1);
 
+
 			var liAccion2 = $('<li/>');
 			var accion2 = $('<a/>', {
-				text: 'Cambiar foto',
+				text: $('#linkCambiarFoto').val(),
 				href: '',
 				click: function(e) {
-
 					e.preventDefault();
 					mostrarModalUpdateCoverPageThesis(data.idThesis);
 				}
@@ -177,12 +182,12 @@ function getDatatableThesis() {
 			accion2.addClass('dropdown-item').attr('href', '#');
 			liAccion2.append(accion2);
 
+
 			var liAccion3 = $('<li/>');
 			var accion3 = $('<a/>', {
-				text: 'Eliminar',
+				text: $('#linkEliminar').val(),
 				href: '',
 				click: function(e) {
-
 					e.preventDefault();
 					mostrarModalDeleteThesis(data.idThesis);
 				}
@@ -191,11 +196,12 @@ function getDatatableThesis() {
 			accion3.addClass('dropdown-item').attr('href', '#');
 			liAccion3.append(accion3);
 
+
 			var divAcciones = $('<div/>');
 			divAcciones.addClass("text-end");
 
 			var liPrincipal = $('<li/>').css('list-style-type', 'none').addClass('nav-item').addClass('dropdown');
-			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Acciones');
+			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text($('#linkAcciones').val());
 			var uPrincipal = $('<u/>').addClass('dropdown-menu').attr('aria-labelledby', 'listaAcciones').css('text-decoration', 'none');
 
 			liPrincipal.append(aPrincipal);
@@ -206,13 +212,31 @@ function getDatatableThesis() {
 
 			divAcciones.append(liPrincipal);
 
-			$('td:eq(11)', row).html(divAcciones);
+			$('td:eq(10)', row).html(divAcciones);
+
+
+			$('td:eq(0)', row).attr("data-label", "ID");
+			$('td:eq(1)', row).attr("data-label", "Doctor");
+			$('td:eq(2)', row).attr("data-label", "Título");
+			$('td:eq(3)', row).attr("data-label", "Portada");
+			$('td:eq(4)', row).attr("data-label", "Fecha de defensa");
+			$('td:eq(5)', row).attr("data-label", "Directores");
+			$('td:eq(6)', row).attr("data-label", "URL");
+			$('td:eq(7)', row).attr("data-label", "Admin");
+			$('td:eq(8)', row).attr("data-label", "Fecha");
+			$('td:eq(9)', row).attr("data-label", "Activo");
+			$('td:eq(10)', row).attr("data-label", "");
+
 		}
 	});
-	
-	
 
-	
+
+	// DATEPICKER
+
+	activateDatePicker();
+
+
+	// FILTROS
 
 	$('#thesisDatatable thead tr').clone(true).addClass('filters').appendTo('#thesisDatatable thead');
 
@@ -220,58 +244,52 @@ function getDatatableThesis() {
 		$(this).off();
 		$(this).removeClass('sorting_desc');
 		$(this).removeClass('sorting');
-
 	});
 
 	$('#thesisDatatable thead tr:eq(1) th.atri').each(function(i) {
-		//let title = $(this).text();
-		$(this).html('<input style="max-width: 100px;" type="text" />');
+
+		$(this).html('<input type="text" />');
 
 		$('input', this).on('keyup change', function() {
-
 			if (table.column(i).search() != this.value) {
-
 				table.column(i).search(this.value).draw();
 			}
 		});
 	});
-	
+
 
 	$('#thesisDatatable thead tr:eq(1) th.selectActive').each(function(i) {
 
-		$(this).html('<select class="form-select"><option value=""><option value="true">Si</option><option value="false">No</option></select>');
+		$(this).html('<select class="form-select"><option value=""><option value="true">' + $('#activoSi').val() + '</option><option value="false">' + $('#activoNo').val() + '</option></select>');
 
 		$('select', this).on('keyup change', function() {
 			if (table.column(10).search() !== this.value) {
-
 				table.column(10).search(this.value).draw();
 			}
 		});
 	});
 
-activateDatePicker();
+
+	// BOTONES
 
 	$(document).on("click", "#btnAceptarAddThesis", function(e) {
-				$('#modalAddThesis').modal('show');
+
+		$('#modalAddThesis').modal('show');
 		var form = $("#formAddThesis");
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
 		} else {
-
 			anyadirNuevaTesis();
 			$('#modalAddThesis').modal('hide');
-
 		}
 		form.addClass('was-validated');
-		
 
 	});
-	
-							$(document).on("click", "#btnCancelarAddThesis", function() {
-$("#formAddThesis").removeClass('was-validated');
+
+	$(document).on("click", "#btnCancelarAddThesis", function() {
+		$("#formAddThesis").removeClass('was-validated');
 		$("#doctorThesis").val('');
 		$("#titleThesis").val('');
 		$("#coverPageThesis").val('');
@@ -280,10 +298,10 @@ $("#formAddThesis").removeClass('was-validated');
 		$("#coDirectorThesis").val('');
 		$("#urlThesis").val('');
 		$("#active").val('1');
-});
+	});
 
-		$(document).on("click", "#btnCloseAddThesis", function() {
-$("#formAddThesis").removeClass('was-validated');
+	$(document).on("click", "#btnCloseAddThesis", function() {
+		$("#formAddThesis").removeClass('was-validated');
 		$("#doctorThesis").val('');
 		$("#titleThesis").val('');
 		$("#coverPageThesis").val('');
@@ -292,105 +310,104 @@ $("#formAddThesis").removeClass('was-validated');
 		$("#coDirectorThesis").val('');
 		$("#urlThesis").val('');
 		$("#active").val('1');
-
 	});
-	
+
 	$(document).on("click", "#btnAceptarUpdateThesis", function(e) {
-						$('#modalUpdateThesis').modal('show');
+
+		$('#modalUpdateThesis').modal('show');
 		var form = $("#formUpdateThesis");
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
 		} else {
-
 			editarTesis();
 			$('#modalUpdateThesis').modal('hide');
-
 		}
 		form.addClass('was-validated');
-		
+
 
 	});
-	
+
 	$(document).on("click", "#btnCancelarUpdateThesis", function(e) {
-$("#formUpdateThesis").removeClass('was-validated');
-
-	});
-	
-		$(document).on("click", "#btnCloseUpdateThesis", function(e) {
-$("#formUpdateThesis").removeClass('was-validated');
-
+		$("#formUpdateThesis").removeClass('was-validated');
 	});
 
-	
+	$(document).on("click", "#btnCloseUpdateThesis", function(e) {
+		$("#formUpdateThesis").removeClass('was-validated');
+	});
+
+
 	$(document).on("click", "#btnAceptarUpdateCoverPageThesis", function(e) {
-						$('#modalUpdateCoverPageThesis').modal('show');
+
+		$('#modalUpdateCoverPageThesis').modal('show');
 		var form = $("#formUpdateCoverPageThesis");
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
 		} else {
-
 			editarPortadaTesis();
 			$('#modalUpdateCoverPageThesis').modal('hide');
-
 		}
 		form.addClass('was-validated');
-		
-		
 
 	});
-	
+
 	$(document).on("click", "#btnCancelarUpdateCoverPageThesis", function(e) {
-$("#formUpdateCoverPageThesis").removeClass('was-validated');
-$("#coverPageThesisEdit").val('');
-
+		$("#formUpdateCoverPageThesis").removeClass('was-validated');
+		$("#coverPageThesisEdit").val('');
 	});
-	
-		$(document).on("click", "#btnCloseUpdateCoverPageThesis", function(e) {
-$("#formUpdateCoverPageThesis").removeClass('was-validated');
-$("#coverPageThesisEdit").val('');
 
+	$(document).on("click", "#btnCloseUpdateCoverPageThesis", function(e) {
+		$("#formUpdateCoverPageThesis").removeClass('was-validated');
+		$("#coverPageThesisEdit").val('');
 	});
 
 	$(document).on("click", "#btnAceptarDeleteThesis", function(e) {
 		e.preventDefault();
 		eliminarTesis();
-
 	});
 
 }
+
+
+// MODALES
+
+function mostrarModalDirectoresData(titulo, director, coDirector) {
+	$("#headerDirectorsThesisData").text(titulo);
+	$("#modalDirectorThesis").text(director);
+	$("#modalCoDirectorThesis").text(coDirector);
+	$("#modalDirectorsThesisData").modal('toggle');
+}
+
 
 function mostrarModalAddThesis() {
 	$("#modalAddThesis").modal('toggle');
 }
 
-function mostrarModalCoverPageThesis(portada) {
+function mostrarModalCoverPageThesis(titleThesis, portada) {
+	$('#headerCoverPageThesis').text(titleThesis);
 	$('#bodyModalCoverPageThesis').attr('src', 'images/' + portada);
 	$('#modalCoverPageThesis').modal('toggle');
 }
 
 function mostrarModalUpdateThesis(idThesis, doctorThesis, titleThesis, dateDefenseThesis, directorThesis, coDirectorThesis, urlThesis, active) {
-$('#idThesisUpdate').val(idThesis);
+
+	$('#idThesisUpdate').val(idThesis);
 	$('#doctorThesisEdit').val(doctorThesis);
 	$('#titleThesisEdit').val(titleThesis);
 	$('#dateDefenseThesisEdit').val(dateDefenseThesis);
 	$('#directorThesisEdit').val(directorThesis);
 	$('#coDirectorThesisEdit').val(coDirectorThesis);
 	$('#urlThesisEdit').val(urlThesis);
-	
-	
+
 	if (active == 'true') {
 		$('#activeEdit').val('1');
 	} else {
 		$('#activeEdit').val('0');
-		
 	}
-	
+
 	$("#modalUpdateThesis").modal('toggle');
 }
 
@@ -400,10 +417,12 @@ function mostrarModalUpdateCoverPageThesis(idThesis) {
 }
 
 function mostrarModalDeleteThesis(idThesis) {
-		$('#idThesisDelete').val(idThesis);
+	$('#idThesisDelete').val(idThesis);
 	$("#modalDeleteThesis").modal('toggle');
 }
 
+
+// FUNCIONES CRUD
 
 function anyadirNuevaTesis() {
 
@@ -418,31 +437,27 @@ function anyadirNuevaTesis() {
 	form.append("urlThesis", $("#urlThesis").val());
 	form.append("active", $("#active").val());
 
-
 	$.ajax({
 		url: '/management/addThesisData',
 		type: "POST",
 		processData: false,
 		contentType: false,
 		data: form,
-
 		success: function(data) {
 			if (data == '') {
 				$('#thesisDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#addOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#addErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#addErrorMensaje').val());
 		}
 	}).done(function() {
-		
 		$("#formAddThesis").removeClass('was-validated');
 		$("#doctorThesis").val('');
 		$("#titleThesis").val('');
@@ -452,7 +467,6 @@ function anyadirNuevaTesis() {
 		$("#coDirectorThesis").val('');
 		$("#urlThesis").val('');
 		$("#active").val('1');
-
 	});
 }
 
@@ -470,33 +484,28 @@ function editarTesis() {
 	form.append("urlThesis", $("#urlThesisEdit").val());
 	form.append("active", $("#activeEdit").val());
 
-
 	$.ajax({
 		url: '/management/updateThesisData',
 		type: "POST",
 		processData: false,
 		contentType: false,
 		data: form,
-
 		success: function(data) {
 			if (data == '') {
 				$('#thesisDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#updateOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#updateErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#updateErrorMensaje').val());
 		}
 	}).done(function() {
-		
-$("#formUpdateThesis").removeClass('was-validated');
-
+		$("#formUpdateThesis").removeClass('was-validated');
 	});
 }
 
@@ -505,7 +514,7 @@ function editarPortadaTesis() {
 	let form = new FormData();
 
 	form.append("idThesis", $("#idThesisUpdateCoverPage").val());
-form.append("file", $('#coverPageThesisEdit')[0].files[0]);
+	form.append("file", $('#coverPageThesisEdit')[0].files[0]);
 
 	$.ajax({
 		url: '/management/updateCoverPageThesisData',
@@ -513,26 +522,23 @@ form.append("file", $('#coverPageThesisEdit')[0].files[0]);
 		processData: false,
 		contentType: false,
 		data: form,
-
 		success: function(data) {
 			if (data == '') {
 				$('#thesisDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#updateOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#updateErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#updateErrorMensaje').val());
 		}
 	}).done(function() {
-		
-$("#formUpdateCoverPageThesis").removeClass('was-validated');
-$("#coverPageThesisEdit").val('');
+		$("#formUpdateCoverPageThesis").removeClass('was-validated');
+		$("#coverPageThesisEdit").val('');
 	});
 }
 
@@ -542,32 +548,25 @@ function eliminarTesis() {
 
 	form.append("idThesis", $("#idThesisDelete").val());
 
-
 	$.ajax({
 		url: '/management/deleteThesisData',
 		type: "POST",
 		processData: false,
 		contentType: false,
 		data: form,
-
 		success: function(data) {
 			if (data == '') {
 				$('#thesisDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#deleteOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#deleteErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#deleteErrorMensaje').val());
 		}
-	}).done(function() {
-		
-
-
 	});
 }

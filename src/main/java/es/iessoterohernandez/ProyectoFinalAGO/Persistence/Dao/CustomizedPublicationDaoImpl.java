@@ -1,10 +1,8 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -33,15 +31,16 @@ public class CustomizedPublicationDaoImpl implements CustomizedPublicationDao {
 	EntityManager em;
 
 	/**
-	 * Recupera los años asociados a las publicaciones sin repetir ordenados
+	 * Recupera los años ordenados asociados a las publicaciones sin repetir
 	 * 
 	 * @param active
+	 * @param ascendente
 	 * @return List<Integer>
 	 */
 	@Override
 	public List<Integer> getYearsPublicationsActiveOrdered(Boolean active, Boolean ascendente) {
 
-		LOGGER.info("CustomizedPublicationDaoImpl getYearsPublicationsActive .- Inicio");
+		LOGGER.info("CustomizedPublicationDaoImpl getYearsPublicationsActiveOrdered .- Inicio");
 
 		final CriteriaBuilder cb = em.getCriteriaBuilder();
 		final CriteriaQuery<Integer> cQuery = cb.createQuery(Integer.class);
@@ -59,7 +58,7 @@ public class CustomizedPublicationDaoImpl implements CustomizedPublicationDao {
 
 		List<Integer> years = em.createQuery(cQuery.distinct(true)).getResultList();
 
-		LOGGER.info("CustomizedPublicationDaoImpl getYearsPublicationsActive .- Fin");
+		LOGGER.info("CustomizedPublicationDaoImpl getYearsPublicationsActiveOrdered .- Fin");
 
 		return years;
 	}

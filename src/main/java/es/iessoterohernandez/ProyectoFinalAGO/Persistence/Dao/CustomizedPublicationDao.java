@@ -10,10 +10,11 @@ import java.util.List;
  */
 public interface CustomizedPublicationDao {
 
-	/** 
-	 * Recupera los años asociados a las publicaciones sin repetir ordenadas
+	/**
+	 * Recupera los años ordenados asociados a las publicaciones sin repetir
 	 * 
 	 * @param active
+	 * @param ascendente
 	 * @return List<Integer>
 	 */
 	public List<Integer> getYearsPublicationsActiveOrdered(Boolean active, Boolean ascendente);

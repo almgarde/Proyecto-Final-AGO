@@ -9,7 +9,7 @@ public class LinksDatatableDto {
 	private String imageLink;
 
 	private String urlLink;
-	
+
 	private String active;
 
 	private String admin;
@@ -71,7 +71,5 @@ public class LinksDatatableDto {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
-	
 
 }

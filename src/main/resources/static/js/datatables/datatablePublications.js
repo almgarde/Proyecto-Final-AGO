@@ -1,25 +1,23 @@
 function getDatatablePublications() {
-	$('.alert').hide();
 
 	let table = $('#publicationsDatatable').DataTable({
 		"sAjaxSource": "/management/getPublicationsData",
 		"sAjaxDataProp": "",
-		"sDom": "ltipr",
 		"orderCellsTop": true,
 		"fixedHeader": false,
+		"bAutoWidth": false,
 		"language": {
-			"lengthMenu": "Mostrando _MENU_ entradas",
-			"emptyTable": "Sin datos en esta tabla",
-			"zeroRecords": "No se han encontrado coincidencias",
-			"info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-			"infoEmpty": "Mostrando 0 a 0 de 0 entradas",
-			"infoFiltered": "(filtrado de _MAX_ entradas)",
-			"loadingRecords": "Cargando...",
+			"lengthMenu": $('#labelMostrando').val() + ' _MENU_ ' + $('#labelEntradas').val(),
+			"emptyTable": $('#labelTablaVacia').val(),
+			"search": $('#labelBuscador').val(),
+			"zeroRecords": $('#labelNoCoincidencias').val(),
+			"info": $('#labelMostrando').val() + ' _START_ ' + $('#labelA').val() + ' _END_ ' + $('#labelDe').val() + ' _TOTAL_ ' + $('#labelEntradas').val(),
+			"infoEmpty": $('#labelMostrando').val() + ' 0 ' + $('#labelA').val() + ' 0 ' + $('#labelDe').val() + ' 0 ' + $('#labelEntradas').val(),
+			"infoFiltered": '(' + $('#labelFiltrado').val() + ' _MAX_ ' + $('#labelEntradas').val() + ')',
+			"loadingRecords": $('#labelCargando').val(),
 			"paginate": {
-				"first": "Primero",
-				"last": "Ultimo",
-				"next": "Siguiente",
-				"previous": "Anterior"
+				"next": $('#labelSiguiente').val(),
+				"previous": $('#labelAnterior').val()
 			},
 		},
 		"order": [[0, "desc"]],
@@ -97,13 +95,11 @@ function getDatatablePublications() {
 
 			// Autores
 			var verAutores = $('<a/>', {
-				text: "Autores",
+				text: $('#authorsPublicationLabel').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
-
 					mostrarModalAuthorsPublication(data.titlePublication, data.authorsPublication);
-
 				}
 			});
 
@@ -112,7 +108,7 @@ function getDatatablePublications() {
 
 			// Doi 	
 			var irDoi = $('<a/>', {
-				text: 'Enlace',
+				text: $('#doiPublicationtLabel').val(),
 				href: data.doiPublication,
 				click: function(e) {
 					e.preventDefault();
@@ -120,19 +116,22 @@ function getDatatablePublications() {
 					return false;
 				}
 			});
+
 			$('td:eq(4)', row).html(irDoi);
 
 
 			// Activo 
+			var activo;
 			if (data.active == 'true') {
-				var activo = $('<a/>', {
-					text: "Si"
+				activo = $('<a/>', {
+					text: $('#activoSi').val()
 				});
 			} else {
-				var activo = $('<a/>', {
-					text: "No"
+				activo = $('<a/>', {
+					text: $('#activoNo').val()
 				});
 			}
+
 			$('td:eq(8)', row).html(activo);
 
 
@@ -140,7 +139,7 @@ function getDatatablePublications() {
 
 			var liAccion1 = $('<li/>');
 			var accion1 = $('<a/>', {
-				text: 'Editar',
+				text: $('#linkEditar').val(),
 				href: '',
 				click: function(e) {
 					e.preventDefault();
@@ -151,12 +150,12 @@ function getDatatablePublications() {
 			accion1.addClass('dropdown-item').attr('href', '#');
 			liAccion1.append(accion1);
 
+
 			var liAccion2 = $('<li/>');
 			var accion2 = $('<a/>', {
-				text: 'Eliminar',
+				text: $('#linkEliminar').val(),
 				href: '',
 				click: function(e) {
-
 					e.preventDefault();
 					mostrarModalDeletePublication(data.idPublication);
 				}
@@ -165,11 +164,12 @@ function getDatatablePublications() {
 			accion2.addClass('dropdown-item').attr('href', '#');
 			liAccion2.append(accion2);
 
+
 			var divAcciones = $('<div/>');
 			divAcciones.addClass("text-end");
 
 			var liPrincipal = $('<li/>').css('list-style-type', 'none').addClass('nav-item').addClass('dropdown');
-			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Acciones');
+			var aPrincipal = $('<a/>').addClass('nav-link').addClass('dropdown-toggle').attr('href', '#').attr('id', 'listaAcciones').attr('role', 'button').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text($('#linkAcciones').val());
 			var uPrincipal = $('<u/>').addClass('dropdown-menu').attr('aria-labelledby', 'listaAcciones').css('text-decoration', 'none');
 
 			liPrincipal.append(aPrincipal);
@@ -182,26 +182,61 @@ function getDatatablePublications() {
 
 			$('td:eq(9)', row).html(divAcciones);
 
+
+			$('td:eq(0)', row).attr("data-label", "ID");
+			$('td:eq(1)', row).attr("data-label", "Titulo");
+			$('td:eq(2)', row).attr("data-label", "Autores");
+			$('td:eq(3)', row).attr("data-label", "Revista");
+			$('td:eq(4)', row).attr("data-label", "DOI");
+			$('td:eq(5)', row).attr("data-label", "Año de publicación");
+			$('td:eq(6)', row).attr("data-label", "Admin");
+			$('td:eq(7)', row).attr("data-label", "Fecha");
+			$('td:eq(8)', row).attr("data-label", "Activo");
+			$('td:eq(9)', row).attr("data-label", "");
+
 		}
 	});
 
 
+	// FILTROS
+
+	$('#publicationsDatatable thead tr').clone(true).addClass('filters').appendTo('#publicationsDatatable thead');
+
+	$('#publicationsDatatable thead tr.filters th').each(function() {
+		$(this).off();
+		$(this).removeClass('sorting_desc');
+		$(this).removeClass('sorting');
+	});
+
+	$('#publicationsDatatable thead tr:eq(1) th.atri').each(function(i) {
+
+		$(this).html('<input type="text" />');
+
+		$('input', this).off('keyup change').on('keyup change', function() {
+			if (table.column(i).search() != this.value) {
+				table.column(i).search(this.value).draw();
+			}
+		});
+	});
+
+	$('#publicationsDatatable thead tr:eq(1) th.selectActive').each(function(i) {
+
+		$(this).html('<select class="form-select"><option value=""><option value="true">' + $('#activoSi').val() + '</option><option value="false">' + $('#activoNo').val() + '</option></select>');
+
+		$('select', this).on('keyup change', function() {
+			if (table.column(8).search() !== this.value) {
+				table.column(8).search(this.value).draw();
+			}
+		});
+	});
 
 
-
-
-
-
-
-
-
-	//BOTONES
+	// BOTONES
 
 	$(document).on("click", "#btnAceptarAddPublication", function(e) {
+
 		$('#modalAddPublications').modal('show');
 		var form = $("#formAddPublication");
-
-
 
 		if (i >= 2) {
 			$('#inputNameAutor').removeAttr('required');
@@ -215,7 +250,6 @@ function getDatatablePublications() {
 			$('#authorSelect').val('');
 			$('#btnNuevoAutor').show();
 			$('#headerSelectAuthors').text('Escoja un miembro o añada un nuevo autor');
-
 		} else {
 			$('#inputNameAutor').val('');
 			$('#inputShortNameAutor').val('');
@@ -233,15 +267,11 @@ function getDatatablePublications() {
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
-
 		} else {
 			form.submit();
 			$('#modalAddPublications').modal('hide');
-
 		}
 		form.addClass('was-validated');
-
 	});
 
 	$(document).on("click", "#btnCancelarAddPublication", function() {
@@ -252,7 +282,6 @@ function getDatatablePublications() {
 		$('#journalPublication').val('');
 		$('#doiPublication').val('');
 		$('#yearPublication').val('');
-
 	});
 
 	$(document).on("click", "#btnCloseAddPublication", function() {
@@ -263,7 +292,6 @@ function getDatatablePublications() {
 		$('#journalPublication').val('');
 		$('#doiPublication').val('');
 		$('#yearPublication').val('');
-
 	});
 
 	$("#modalAddPublications").on('hide.bs.modal', function() {
@@ -272,10 +300,11 @@ function getDatatablePublications() {
 
 
 	$(document).on("click", "#btnAceptarUpdatePublication", function(e) {
-		debugger;
+
 		$('#modalUpdatePublications').modal('show');
 		var form = $("#formUpdatePublication");
 		j = $('#numRowsAuthors').val();
+
 		if (j > 0) {
 			$('#inputNameAutorEdit').removeAttr('required');
 			$('#inputShortNameAutorEdit').removeAttr('required');
@@ -288,7 +317,6 @@ function getDatatablePublications() {
 			$('#authorSelectEdit').val('');
 			$('#btnNuevoAutorEdit').show();
 			$('#headerSelectAuthorsEdit').text('Escoja un miembro o añada un nuevo autor');
-
 		} else {
 			$('#inputNameAutorEdit').val('');
 			$('#inputShortNameAutorEdit').val('');
@@ -301,56 +329,35 @@ function getDatatablePublications() {
 			$('#headerSelectAuthorsEdit').text('Nuevo autor');
 			$('#inputNameAutorEdit').prop("required", true);
 			$('#inputShortNameAutorEdit').prop("required", true);
-
-
 		}
-
-
 
 		if (form[0].checkValidity() === false) {
 			e.preventDefault();
 			e.stopPropagation();
-
-
-
-
 		} else {
 			form.submit();
 			$('#modalUpdatePublications').modal('hide');
-
 		}
 		form.addClass('was-validated');
-
-
 	});
-
-
 
 	$(document).on("click", "#btnCancelarUpdatePublication", function(e) {
 		$("#formUpdatePublication").removeClass('was-validated');
 		$('#inputNameAutorEdit').val('');
 		$('#inputShortNameAutorEdit').val('');
 		$('.authorsList').remove();
-		//		$('#titlePublicationEdit').val('');
-		//		$('#journalPublicationEdit').val('');
-		//		$('#doiPublicationEdit').val('');
-		//		$('#yearPublicationEdit').val('');
-
 	});
 
-	$(document).on("click", "#btnCloseUpdatePublication", function(e) {
-
+	$(document).on("click", "#btnCloseUpdatePublications", function(e) {
 		$("#formUpdatePublication").removeClass('was-validated');
 		$('#inputNameAutorEdit').val('');
 		$('#inputShortNameAutorEdit').val('');
 		$('.authorsList').remove();
-
 	});
 
 	$("#modalUpdatePublications").on('hide.bs.modal', function() {
 		$("#formUpdatePublication").removeClass('was-validated');
 	});
-
 
 	$(document).on("click", "#btnAceptarDeletePublication", function(e) {
 		e.preventDefault();
@@ -358,89 +365,35 @@ function getDatatablePublications() {
 	});
 
 
-	//FILTROS
-
-	$('#publicationsDatatable thead tr').clone(true).addClass('filters').appendTo('#publicationsDatatable thead');
-
-	$('#publicationsDatatable thead tr.filters th').each(function() {
-		$(this).off();
-		$(this).removeClass('sorting_desc');
-		$(this).removeClass('sorting');
-
-	});
-
-	$('#publicationsDatatable thead tr:eq(1) th.atri').each(function(i) {
-		//let title = $(this).text();
-		$(this).html('<input style="max-width: 100px;" type="text" />');
-
-		$('input', this).off('keyup change').on('keyup change', function() {
-			if (table.column(i).search() != this.value) {
-				table.column(i).search(this.value).draw();
-			}
-		});
-	});
-
-	$('#publicationsDatatable thead tr:eq(1) th.selectActive').each(function(i) {
-
-		$(this).html('<select class="form-select"><option value=""><option value="true">Si</option><option value="false">No</option></select>');
-
-		$('select', this).on('keyup change', function() {
-			if (table.column(8).search() !== this.value) {
-				table.column(8).search(this.value).draw();
-
-			}
-		});
-	});
-
-
 	// FORMULARIO AÑADIR AUTORES
 
 	var i = 1;
+
 	$('#add').click(function() {
 
 		let nameAuthor;
 		let shortNameAuthor;
 		let idMember;
-		if ($('#authorSelect').val() != '') {
 
+		if ($('#authorSelect').val() != '') {
 			idMember = $('#authorSelect').val();
 			nameAuthor = $('#authorSelect option:selected').attr('data-name-member');
 			shortNameAuthor = $('#authorSelect option:selected').attr('data-short-name-member');
-
-
 		} else {
 			nameAuthor = $('#inputNameAutor').val();
 			shortNameAuthor = $('#inputShortNameAutor').val();
 		}
-
 
 		if ($('#authorSelect').val() != '') {
 			i++;
 			$('#dynamic_field').append('<tr id="row' + i + '"><td>' + (i - 1) + '</td><td><input value="' + nameAuthor + '" id="inputAddNameAuthor' + i + '" type="text" name="authorsPublication[' + (i - 2) + '].nameAuthor" class="form-control" /></td><td><input value="' + shortNameAuthor + '" id="inputAddShortNameAuthor' + i + '" type="text" name="authorsPublication[' + (i - 2) + '].shortNameAuthor" class="form-control " /></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove" data-is-member="true">X</button></td><input value="' + idMember + '" id="inputAddIdMember' + i + '" type="hidden" name="authorsPublication[' + (i - 2) + '].idMember" class="form-control" /></tr>');
 			$('#authorSelect option:selected').remove();
 		} else {
-
 			if ($('#inputNameAutor').val() != '' && $('#inputShortNameAutor').val() != '') {
 				i++;
 				$('#dynamic_field').append('<tr id="row' + i + '"><td>' + (i - 1) + '</td><td><input value="' + nameAuthor + '" id="inputAddNameAuthor' + i + '" type="text" name="authorsPublication[' + (i - 2) + '].nameAuthor" class="form-control "/></td><td><input value="' + shortNameAuthor + '" id="inputAddShortNameAuthor' + i + '" type="text" name="authorsPublication[' + (i - 2) + '].shortNameAuthor" class="form-control " /></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove" data-is-member="false">X</button></td></tr>');
-
 			}
 		}
-
-
-		//		if (i > 1) {
-		//			//			$('#inputNameAutor').removeAttr('required');
-		//			//			$('#inputShortNameAutor').removeAttr('required');
-		//			$('#inputNameAutor').removeClass('.is-invalid');
-		//			$('#inputShortNameAutor').removeClass('.is-invalid');
-		//		} else {
-		//			//			$('#inputNameAutor').prop("required", true);
-		//			//			$('#inputShortNameAutor').prop("required", true);
-		//			$('#inputNameAutor').addClass('.is-invalid');
-		//			$('#inputShortNameAutor').addClass('.is-invalid');
-		//		}
-
-
 
 		$('#btnNuevoAutor').show();
 		$('#headerSelectAuthors').text('Escoja un miembro o añada un nuevo autor');
@@ -454,44 +407,22 @@ function getDatatablePublications() {
 
 	});
 
-
-
 	$(document).on('click', '.btn_remove', function() {
+
 		i--;
 		var button_id = $(this).attr("id");
 
-
 		if ($(this).attr("data-is-member") == "true") {
-			debugger;
+
 			var nameMember = $('#inputAddNameAuthor' + button_id).val();
 			var shortNameMember = $('#inputAddShortNameAuthor' + button_id).val();
 			var idMember = $('#inputAddIdMember' + button_id).val();
 
-
 			$('#authorSelect').append('<option id="optionAdded' + idMember + '" value="' + idMember + '" data-name-member="' + nameMember + '" data-short-name-member="' + shortNameMember + '"/></option>');
-
-
 			$('#optionAdded' + idMember).text(nameMember + ',' + shortNameMember);
 		}
-
 		$('#row' + button_id + '').remove();
-
 	});
-
-
-
-
-	//			if (i > 1) {
-	//				$('#inputNameAutor').removeAttr('required');
-	//				$('#inputShortNameAutor').removeAttr('required');
-	//	
-	//			} else {
-	//				$('#inputNameAutor').prop("required", true);
-	//				$('#inputShortNameAutor').prop("required", true);
-	//	
-	//			}
-
-
 
 	$(document).on("click", "#newAuthor", function(e) {
 
@@ -501,8 +432,8 @@ function getDatatablePublications() {
 		} else {
 			$('#inputNameAutor').prop("required", true);
 			$('#inputShortNameAutor').prop("required", true);
-
 		}
+
 		e.preventDefault();
 		$('#btnNuevoAutor').hide();
 		$('#tdInputNameAutor').show();
@@ -512,11 +443,10 @@ function getDatatablePublications() {
 		$('#authorSelect').val('');
 		$('#headerSelectAuthors').text('Nuevo autor');
 
-
 	});
 
-
 	$(document).on("change", "#authorSelect", function(e) {
+
 		e.preventDefault();
 		$('#headerSelectAuthors').text('Escoja un miembro o añada un nuevo autor');
 
@@ -535,26 +465,22 @@ function getDatatablePublications() {
 	// FORMULARIO EDITAR	
 
 	var j;
+
 	$('#addEdit').click(function() {
-		debugger;
 
 		j = $('#numRowsAuthors').val();
 		let idMember;
 		let nameAuthor;
 		let shortNameAuthor
-		if ($('#authorSelectEdit').val() != '') {
 
+		if ($('#authorSelectEdit').val() != '') {
 			idMember = $('#authorSelectEdit').val();
 			nameAuthor = $('#authorSelectEdit option:selected').attr('data-name-member');
 			shortNameAuthor = $('#authorSelectEdit option:selected').attr('data-short-name-member');
-
 		} else {
 			nameAuthor = $('#inputNameAutorEdit').val();
 			shortNameAuthor = $('#inputShortNameAutorEdit').val();
 		}
-
-
-
 
 		if ($('#authorSelectEdit').val() != '') {
 			j++;
@@ -569,20 +495,6 @@ function getDatatablePublications() {
 			}
 		}
 
-		//		if (j > 0) {
-		//			$('#inputNameAutorEdit').removeAttr('required');
-		//			$('#inputShortNameAutorEdit').removeAttr('required');
-		//			$('#inputNameAutorEdit').removeClass('.is-invalid');
-		//			$('#inputShortNameAutorEdit').removeClass('.is-invalid');
-		//		} else {
-		//			$('#inputNameAutorEdit').prop("required", true);
-		//			$('#inputShortNameAutorEdit').prop("required", true);
-		//			$('#inputNameAutorEdit').addClass('.is-invalid');
-		//			$('#inputShortNameAutorEdit').addClass('.is-invalid');
-		//		}
-
-
-
 		$('#btnNuevoAutorEdit').show();
 		$('#headerSelectAuthorsEdit').text('Escoja un miembro o añada un nuevo autor');
 		$('#tdInputNameAutorEdit').hide();
@@ -593,12 +505,8 @@ function getDatatablePublications() {
 		$('#inputShortNameAutorEdit').val('');
 		$('#authorSelectEdit').val('');
 
-
 	});
 
-	//$('.btn_removeEdit').click(function (){
-	//	console.log('Hola');
-	//})
 	$(document).on('click', '.btn_removeEdit', function() {
 
 		j = $('#numRowsAuthors').val();
@@ -609,46 +517,31 @@ function getDatatablePublications() {
 		$('#numRowsAuthors').val(j);
 
 		if ($(this).attr("data-is-member") == "true") {
-			debugger;
+
 			var nameMember = $('#inputUpdateNameAuthor' + button_id).val();
 			var shortNameMember = $('#inputUpdateShortNameAuthor' + button_id).val();
 			var idMember = $('#inputUpdateIdMember' + button_id).val();
 
-
 			$('#authorSelectEdit').append('<option id="optionAdded' + idMember + '" value="' + idMember + '" data-name-member="' + nameMember + '" data-short-name-member="' + shortNameMember + '"/></option>');
-
 
 			$('#optionAdded' + idMember).text(nameMember + ',' + shortNameMember);
 
 		}
 		$('#row' + button_id + '').remove();
 
-
-		//		if (j > 0) {
-		//			//			$('#inputNameAutorEdit').removeAttr('required');
-		//			//			$('#inputShortNameAutorEdit').removeAttr('required');
-		//			$('#inputNameAutorEdit').removeClass('.is-invalid');
-		//			$('#inputShortNameAutorEdit').removeClass('.is-invalid');
-		//		} else {
-		//			//			$('#inputNameAutorEdit').prop("required", true);
-		//			//			$('#inputShortNameAutorEdit').prop("required", true);
-		//			$('#inputNameAutorEdit').addClass('.is-invalid');
-		//			$('#inputShortNameAutorEdit').addClass('.is-invalid');
-		//		}
 	});
 
 
 	$(document).on("click", "#newAuthorEdit", function(e) {
+
 		e.preventDefault();
 
 		if (j > 0) {
 			$('#inputNameAutorEdit').removeAttr('required');
 			$('#inputShortNameAutorEdit').removeAttr('required');
-
 		} else {
 			$('#inputNameAutorEdit').prop("required", true);
 			$('#inputShortNameAutorEdit').prop("required", true);
-
 		}
 
 		$('#btnNuevoAutorEdit').hide();
@@ -670,7 +563,6 @@ function getDatatablePublications() {
 		$('#inputNameAutorEdit').hide();
 		$('#inputShortNameAutorEdit').hide();
 		$('#btnNuevoAutorEdit').show();
-
 	});
 
 }
@@ -687,7 +579,6 @@ function mostrarModalAuthorsPublication(titulo, autores) {
 	});
 }
 
-
 function mostrarModalAddPublications() {
 	$("#modalAddPublications").modal('toggle');
 	$('#tdInputNameAutor').hide();
@@ -696,7 +587,6 @@ function mostrarModalAddPublications() {
 	$('#inputShortNameAutor').hide();
 }
 
-
 function mostrarModalUpdatePublication(idPublication, titlePublication, authorsPublication, journalPublication, doiPublication, yearPublication, active) {
 
 	$('#titlePublicationEdit').val(titlePublication);
@@ -704,6 +594,7 @@ function mostrarModalUpdatePublication(idPublication, titlePublication, authorsP
 	$('#doiPublicationEdit').val(doiPublication);
 	$('#yearPublicationEdit').val(yearPublication);
 	$('#idPublicationEdit').val(idPublication);
+
 	if (active == 'true') {
 		$('#activeEdit').val('1');
 	} else {
@@ -711,17 +602,19 @@ function mostrarModalUpdatePublication(idPublication, titlePublication, authorsP
 	}
 
 	var j = 0;
-	debugger;
+
 	authorsPublication.forEach(function(valor, indice, array) {
+
 		j++;
+
 		if (valor.idMember != '') {
 			$('#authorSelectEdit option[value="' + valor.idMember + '"]').remove();
 			$('#dynamic_fieldEdit').append('<tr class="authorsList" id="row' + j + '"><td>' + j + '</td><td><input id="inputUpdateNameAuthor' + j + '" value="' + valor.nameAuthor + '" type="text" name="authorsPublication[' + (j - 1) + '].nameAuthor" class="form-control name_list"></td><td><input id="inputUpdateShortNameAuthor' + j + '" value="' + valor.shortNameAuthor + '" type="text" name="authorsPublication[' + (j - 1) + '].shortNameAuthor" class="form-control name_list"></td><td><button type="button" name="remove" id="' + j + '" class="btn btn-danger btn_removeEdit" data-is-member="true">X</button></td><input id="inputUpdateIdMember' + j + '" value="' + valor.idMember + '" type="hidden" name="authorsPublication[' + (j - 1) + '].idMember" class="form-control name_list"></tr>');
 		} else {
-			$('#dynamic_fieldEdit').append('<tr class="authorsList" id="row' + j + '"><td>' + j + '</td><td><input id="inputUpdateNameAuthor' + j + '" value="' + valor.nameAuthor + '" type="text" name="authorsPublication[' + (j - 1) + '].nameAuthor" class="form-control name_list" /></td><td><input id="inputUpdateShortNameAuthor' + j + '" value="' + valor.shortNameAuthor + '" type="text" name="authorsPublication[' + (j - 1) + '].shortNameAuthor" class="form-control name_list" /></td><td><button type="button" name="remove" id="' + j + '" class="btn btn-danger btn_removeEdit" data-is-member="false">X</button></td></tr>');
-
+			$('#dynamic_fieldEdit').append('<tr class="authorsList" id="row' + j + '"><td>' + j + '</td><td><input id="inputUpdateNameAuthor' + j + '" value="' + valor.nameAuthor + '" type="text" name="authorsPublication[' + (j - 1) + '].nameAuthor" class="form-control name_list" /></td><td><input id="inputUpdateShortNameAuthor' + j + '" value="' + valor.shortNameAuthor + '" type="text" name="authorsPublication[' + (j - 1) + '].shortNameAuthor" class="form-control name_list" /></td><td><button type="button" name="remove" id="' + j + '" class="btn btn-danger btn_removeEdit" data-is-member="false">X</button></td><input id="inputUpdateIdMember' + j + '" value="' + null + '" type="hidden" name="authorsPublication[' + (j - 1) + '].idMember" class="form-control name_list"></tr>');
 		}
 		$('#numRowsAuthors').val(j);
+
 	})
 
 	$('#tdInputNameAutorEdit').hide();
@@ -737,18 +630,14 @@ function mostrarModalDeletePublication(idPublication) {
 }
 
 
-
 // FUNCIONES CRUD
 
 function eliminarPublicacion() {
 
 	let form = new FormData();
-
 	form.append("idPublication", $("#idPublicationDelete").val());
 
-	$('#cargar').show;
 	$.ajax({
-
 		url: '/management/deletePublicationsData',
 		type: "POST",
 		processData: false,
@@ -758,20 +647,17 @@ function eliminarPublicacion() {
 			if (data == '') {
 				$('#publicationsDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text('Bieeen');
+				$(".alert").text($('#deleteOkMensaje').val());
 			} else {
 				errorMessage();
-				$(".alert").text('Joooo');
+				$(".alert").text($('#deleteErrorMensaje').val());
 			}
-
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text('Joooo');
+			$(".alert").text($('#deleteErrorMensaje').val());
 		}
-	}).done(function() {
 	});
-
 
 }
 

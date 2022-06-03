@@ -1,41 +1,47 @@
-<div id="response"></div>
 
-<div>
-	<button type="button" id="formAddProCatBtn" class="btn btn-secondary">
-		<a href="javascript: mostrarModalAddProCat();">Añadir nueva
-			categoría profesional</a>
+<div class="response" id="response"></div>
+
+<div id="buttonContainer">
+	<button type="button" id="formAddProCatBtn" class="btn btn-light">
+		<a th:text="#{datatable.btn.nuevoregistro}"
+			href="javascript: mostrarModalAddProCat();"></a>
 	</button>
-	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/proCat}">Generar Excel</a></button>
+	<button type="button" th:text="#{datatable.btn.generarexcel}"
+		class="btn btn-light">
+		<a th:href="@{/management/generateExcel/proCat}"></a>
+	</button>
 </div>
+
 
 <!-- DATATABLE -->
 
-<table id="proCatDatatable" class="table datatableAdmin display nowrap" style="text-align: center;">
-	<thead>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Categoría profesional</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</thead>
-	<tbody>
-
-	</tbody>
-	<tfoot>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Categoría profesional</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</tfoot>
-
-</table>
+<div class="container" id="datatableProCatContainer">
+	<table id="proCatDatatable" class="table datatableAdmin display nowrap">
+		<thead>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.procat.procat}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.procat.procat}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
 <input class="selectedCat" type="hidden" value="2">
 
 
@@ -44,13 +50,12 @@
 <div class="modal" tabindex="-1" id="modalAddProCat">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalAddProCat" class="modal-title">Añadir nueva
-					categoría profesional</h5>
-				<button id="btnCloseAddProCat"  type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.modal.add.header}"
+					id="headerModalAddProCat" class="modal-title"></h5>
+				<button id="btnCloseAddProCat" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			
 			<div class="modal-body">
 
 				<form id="formAddProCat" class="row g-3 needs-validation">
@@ -58,112 +63,119 @@
 					<!-- NOMBRE -->
 
 					<div class="form-group has-validation">
-						<label for="nameProCat" class="form-label">Categoría
-							profesional</label> <input autocomplete="off" type="text"
+						<label th:text="#{datatable.procat.procat}" for="nameProCat"
+							class="form-label"></label> <input autocomplete="off" type="text"
 							class="form-control" id="nameProCat" name="nameProCat" required>
-						<div class="invalid-feedback">Please choose a username.</div>
+						<div th:text="#{datatable.procat.modal.validacion.contenido}"
+							class="invalid-feedback"></div>
 					</div>
 
 					<!-- ACTIVO -->
+
 					<div class="form-group">
-						<label for="active" class="form-label">Activo</label> <select
-							class="form-select" id="active"
-							aria-label="Floating label select example" required>
-							<option value="1">Si</option>
-							<option value="0">No</option>
+						<label th:text="#{datatable.table.activo}" for="active"
+							class="form-label"></label> <select class="form-select"
+							id="active" aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
 						</select>
 					</div>
-			</form>
 
+				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarAddProCat">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarAddProCat">Cancelar</button>
-
+				<button type="submit" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarAddProCat"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarAddProCat"></button>
 			</div>
-			
-			
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR CATEGORÍA PROFESIONAL -->
 
 <div class="modal" tabindex="-1" id="modalUpdateProCat">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateProCat" class="modal-title">Editar
-					categoría profesional</h5>
-				<button id="btnCloseUpdateProCat" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.header}"
+					id="headerModalUpdateProCat" class="modal-title"></h5>
+				<button id="btnCloseUpdateProCat" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			
 			<div class="modal-body">
-<form id="formUpdateProCat" class="row g-3 needs-validation" >
 
-				<!-- NOMBRE -->
+				<form id="formUpdateProCat" class="row g-3 needs-validation">
 
-				<div class="form-group has-validation">
-					<label for="nameProCatEdit">Categoría profesional</label>
-					<input autocomplete="off" type="text"
-							 class="form-control" id="nameProCatEdit"
-							name="nameProCat" required><div class="invalid-feedback" >Please choose a username.</div>
-					
-					
-				</div>
+					<!-- NOMBRE -->
 
-				<!-- ACTIVO -->
-				<div class="form-group">
-					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
-				<input
-						type="hidden" id="idProCatUpdate"> 
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.procat.procat}" for="nameProCatEdit"></label>
+						<input autocomplete="off" type="text" class="form-control"
+							id="nameProCatEdit" name="nameProCat" required>
+						<div th:text="#{datatable.procat.modal.validacion.contenido}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="activeEdit"></label>
+						<select class="form-select" id="activeEdit"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
+
+					<input type="hidden" id="idProCatUpdate">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateProCat">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateProCat">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateProCat"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateProCat"></button>
 			</div>
-			
 		</div>
 	</div>
 </div>
 
-	<!-- MODAL - ELIMINAR PROCAT -->
 
-	<div class="modal" tabindex="-1" id="modalDeleteProCat">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 id="headerModalDeleteProCat" class="modal-title">Eliminar
-						Categoría profesional</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<label>¿Estás seguro de querer eliminar esta categoría profesional?</label> <input
-						type="hidden" id="idProCatDelete"> 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarDeleteProCat">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarDeleteProCat">Cancelar</button>
+<!-- MODAL - ELIMINAR PROCAT -->
 
-				</div>
+<div class="modal modalDelete" tabindex="-1" id="modalDeleteProCat">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles ">
+				<h5 th:text="#{datatable.modal.delete.header}"
+					id="headerModalDeleteProCat" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label th:text="#{datatable.procat.modal.delete.label}"></label> <input
+					type="hidden" id="idProCatDelete">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-bs-dismiss="modal"
+					th:text="#{modal.btn.aceptar}" id="btnAceptarDeleteProCat"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarDeleteProCat"></button>
 			</div>
 		</div>
 	</div>
+</div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+	integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+	crossorigin="anonymous"></script>

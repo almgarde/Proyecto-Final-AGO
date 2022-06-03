@@ -37,14 +37,16 @@ public class HomeController {
 		String viewResult = "/views/common/Errors";
 
 		try {
+
 			final List<NewsDto> listaNewsDto = newsService.getSixMostRecentNewsActive();
 
 			if (listaNewsDto != null && !listaNewsDto.isEmpty()) {
 				model.addAttribute("listaNews", listaNewsDto);
 				viewResult = "/views/public/home";
 			} else {
-				LOGGER.error("InicioController inicio .- Error: Parámetros nulos");
+				LOGGER.error("InicioController inicio .- Error: No existen noticias activas registradas");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("InicioController inicio .- Error no controlado al redireccionar a la pantalla inicio");
 			throw e;

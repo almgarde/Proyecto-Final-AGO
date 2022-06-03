@@ -1,8 +1,8 @@
 $(document).ready(function() {
 
-generarAutores();
-	
-$('#selectOrdenPublication').val("false");
+	generarAutores();
+
+	$('#selectOrdenPublication').val("false");
 
 	$(document).on("change", "#selectOrdenPublication", function(e) {
 		e.preventDefault();
@@ -13,10 +13,10 @@ $('#selectOrdenPublication').val("false");
 
 
 function generarAutores() {
+
 	var i = 0;
 
 	$(".authors").each(function(index) {
-
 
 		var numAuthors = $(this).attr("data-num-autor");
 		var autor;
@@ -25,14 +25,11 @@ function generarAutores() {
 			autor = $('<a/>', {
 				text: $(this).attr("data-text"),
 				href: "/memberComplete/" + $(this).attr("data-id-member"),
-				
-			})
-
+			});
 		} else {
 			autor = $('<p/>', {
 				text: $(this).attr("data-text")
-
-			})
+			});
 		}
 
 		if (i < numAuthors - 1) {
@@ -45,8 +42,9 @@ function generarAutores() {
 		$(this).append(autor);
 	});
 }
+
 function orderedPublications() {
-debugger;
+	
 	$.ajax({
 		type: "post",
 		url: "/orderedPublications",

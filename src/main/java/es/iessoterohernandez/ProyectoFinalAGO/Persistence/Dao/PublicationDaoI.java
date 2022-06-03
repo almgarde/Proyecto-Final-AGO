@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Publication;
 
 /**
@@ -18,43 +17,38 @@ import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Publication;
 public interface PublicationDaoI extends JpaRepository<Publication, Long>, CustomizedPublicationDao {
 
 	/**
-	 * Recupera las publicaciones s/n activas ordenadas por año de publicación
-	 * descendiente
+	 * Recupera las publicaciones s/n activas ordenadas por año de publicación -
+	 * Descendiente
 	 * 
 	 * @param activo
-	 * @return
+	 * @return List<Publication>
 	 */
 	public List<Publication> findByActiveOrderByYearPublicationDesc(Boolean activo);
 
 	/**
-	 * Recupera las publicaciones s/n activas ordenadas por año de publicación
-	 * ascendente
+	 * Recupera las publicaciones s/n activas ordenadas por año de publicación -
+	 * Ascendente
 	 * 
 	 * @param activo
-	 * @return
+	 * @return List<Publication>
 	 */
 	public List<Publication> findByActiveOrderByYearPublicationAsc(Boolean activo);
 
 	/**
-	 * Recupera las publicaciones s/n activas por año de publicación descendiente
+	 * Recupera las publicaciones s/n activas por año de publicación
 	 * 
 	 * @param year
 	 * @param activo
 	 * @return List<Publication>
 	 */
 	public List<Publication> findByYearPublicationAndActive(int year, Boolean activo);
-	
+
 	/**
 	 * Recupera una publicación por su Id
 	 * 
-	 * @param techCat
-	 * @param activo
-	 * @return List<Facility>
+	 * @param Id
+	 * @return Publication
 	 */
 	public Publication findByIdPublication(Long Id);
-	
-
-	
-	
 
 }

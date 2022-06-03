@@ -20,8 +20,7 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.LinksDto;
  */
 @Controller
 public class LinksController {
-	
-	/** Logger */
+
 	final static Logger LOGGER = LoggerFactory.getLogger(LinksController.class);
 
 	@Autowired
@@ -41,8 +40,9 @@ public class LinksController {
 				model.addAttribute("listaLinkDto", listaLinkDto);
 				viewResult = "/views/public/links";
 			} else {
-				LOGGER.error("LinksController getLinks .- Parámetros nulos");
+				LOGGER.error("LinksController getLinks .- Error: No existen links activos registrados");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("LinksController getLinks .- Error no controlado al redireccionar a la pantalla links");
 			throw e;

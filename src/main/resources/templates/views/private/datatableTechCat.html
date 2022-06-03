@@ -1,40 +1,49 @@
-<div id="response"></div>
 
-<div>
-	<button type="button" id="formAddTechCatBtn" class="btn btn-secondary">
-		<a href="javascript: mostrarModalAddTechCat();">Añadir nueva categoría técnica</a>
+<div class="response" id="response"></div>
+
+<div id="buttonContainer">
+	<button type="button" id="formAddTechCatBtn" class="btn btn-light">
+		<a th:text="#{datatable.btn.nuevoregistro}"
+			href="javascript: mostrarModalAddTechCat();"></a>
 	</button>
-	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/techCat}">Generar Excel</a></button>
+	<button type="button" th:text="#{datatable.btn.generarexcel}"
+		class="btn btn-light">
+		<a th:href="@{/management/generateExcel/techCat}"></a>
+	</button>
 </div>
+
 
 <!-- DATATABLE -->
 
-<table id="techCatDatatable" class="table datatableAdmin display nowrap" style="text-align: center;">
-	<thead>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Categoría técnica</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</thead>
-	<tbody>
+<div class="container" id="datatableTechCatContainer">
+	<table id="techCatDatatable"
+		class="table datatableAdmin display nowrap">
+		<thead>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.techcat.techcat}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.techcat.techcat}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
 
-	</tbody>
-	<tfoot>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col" style="max-width: 300px;">Categoría técnica</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</tfoot>
-
-</table>
 <input class="selectedCat" type="hidden" value="5">
 
 
@@ -43,121 +52,132 @@
 <div class="modal" tabindex="-1" id="modalAddTechCat">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalAddTechCat" class="modal-title">Añadir nueva
-					categoría técnica</h5>
-				<button id="btnCloseAddTechCat" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.modal.add.header}"
+					id="headerModalAddTechCat" class="modal-title"></h5>
+				<button id="btnCloseAddTechCat" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-<form id="formAddTechCat" class="row g-3 needs-validation" >
+				<form id="formAddTechCat" class="row g-3 needs-validation">
 
-				<!-- NOMBRE -->
+					<!-- NOMBRE -->
 
-				<div class="form-group mb-3 has-validation">
-					<label for="nameTechCat">Categoría técnica</label>
-					<input autocomplete="off" type="text"
-							class="form-control" id="nameTechCat" name="nameTechCat" required>
-						<div class="invalid-feedback">Please choose a username.</div>
-		
-				</div>
+					<div class="form-group mb-3 has-validation">
+						<label th:text="#{datatable.techcat.techcat}" for="nameTechCat"></label>
+						<input autocomplete="off" type="text" class="form-control"
+							id="nameTechCat" name="nameTechCat" required>
+						<div th:text="#{datatable.techcat.modal.validacion.categoria}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<!-- ACTIVO -->
-				<div class="form-group">
-					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="active"></label> <select
+							class="form-select" id="active"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
 				</form>
-				
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarAddTechCat">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarAddTechCat">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarAddTechCat"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarAddTechCat"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR CATEGORÍA TÉCNICA -->
 
 <div class="modal" tabindex="-1" id="modalUpdateTechCat">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateTechCat" class="modal-title">Editar
-					categoría técnica</h5>
-				<button id="btnCloseUpdateTechCat" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.header}"
+					id="headerModalUpdateTechCat" class="modal-title"></h5>
+				<button id="btnCloseUpdateTechCat" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-<form id="formUpdateTechCat" class="row g-3 needs-validation" >
+				<form id="formUpdateTechCat" class="row g-3 needs-validation">
 
-				<!-- NOMBRE -->
+					<!-- NOMBRE -->
 
-				<div class="form-group has-validation">
-					<label for="nameTechCatEdit">Categoría técnica</label>
-					<input autocomplete="off" type="text"
-							class="form-control" id="nameTechCatEdit" name="nameTechCat" required>
-						<div class="invalid-feedback">Please choose a username.</div>
-					
-					
-				</div>
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.techcat.techcat}"
+							for="nameTechCatEdit"></label> <input autocomplete="off"
+							type="text" class="form-control" id="nameTechCatEdit"
+							name="nameTechCat" required>
+						<div th:text="#{datatable.techcat.modal.validacion.categoria}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<!-- ACTIVO -->
-				<div class="form-group">
-					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
-				<input
-						type="hidden" id="idTechCatUpdate"> 
-						</form>
-				
+					<!-- ACTIVO -->
+
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="activeEdit"></label>
+						<select class="form-select" id="activeEdit"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
+
+					<input type="hidden" id="idTechCatUpdate">
+
+				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateTechCat">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateTechCat">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateTechCat"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateTechCat"></button>
 			</div>
 		</div>
 	</div>
 </div>
 
-	<!-- MODAL - ELIMINAR TECHCAT -->
 
-	<div class="modal" tabindex="-1" id="modalDeleteTechCat">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 id="headerModalDeleteTechCat" class="modal-title">Eliminar
-						Categoría técnica</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<label>¿Estás seguro de querer eliminar esta categoría técnica?</label> <input
-						type="hidden" id="idTechCatDelete"> 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarDeleteTechCat">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarDeleteTechCat">Cancelar</button>
+<!-- MODAL - ELIMINAR TECHCAT -->
 
-				</div>
+<div class="modal modalDelete" tabindex="-1" id="modalDeleteTechCat">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles ">
+				<h5 th:text="#{datatable.modal.delete.header}"
+					id="headerModalDeleteTechCat" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label th:text="#{datatable.techcat.modal.delete.label}"></label> <input
+					type="hidden" id="idTechCatDelete">
+			</div>
+			<div class="modal-footer">
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarDeleteTechCat"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarDeleteTechCat"></button>
 			</div>
 		</div>
 	</div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+	integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+	crossorigin="anonymous"></script>

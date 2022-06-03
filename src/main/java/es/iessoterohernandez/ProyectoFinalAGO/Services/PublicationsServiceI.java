@@ -17,6 +17,40 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsForm
 public interface PublicationsServiceI {
 
 	/**
+	 * Recupera todos los datos de las publicaciones almacenadas en BDD
+	 * 
+	 * @return List<PublicationsDatatableDto>
+	 * @throws Exception
+	 */
+	public List<PublicationsDatatableDto> getAllPublicationsData() throws Exception;
+
+	/**
+	 * Almacena una publicación en BDD
+	 * 
+	 * @param publicationsFormDto
+	 * @return Publication
+	 * @throws Exception
+	 */
+	public Publication addPublications(PublicationsFormDto publicationsFormDto) throws Exception;
+
+	/**
+	 * Actualiza los datos de una publicacion almacenada en BDD
+	 * 
+	 * @param publicationsFormDto
+	 * @return Publication
+	 * @throws Exception
+	 */
+	public Publication updatePublications(PublicationsFormDto publicationsFormDto) throws Exception;
+
+	/**
+	 * Elimina una publicacion almacenada en BDD
+	 * 
+	 * @param publicationData
+	 * @throws Exception
+	 */
+	public void deletePublications(Map<String, String> publicationData) throws Exception;
+
+	/**
 	 * Recupera todas las publicaciones activas ordenadas por año de publicación y
 	 * agrupadas por año
 	 * 
@@ -25,30 +59,5 @@ public interface PublicationsServiceI {
 	 * @throws Exception
 	 */
 	public List<PublicationsYearsDto> getAllPublicationsActiveOrdered(Boolean ascendente) throws Exception;
-	
-	/**
-	 * Recupera todos las noticias almacenadas en BDD
-	 * @return
-	 * @throws Exception
-	 */
-	public List<PublicationsDatatableDto> getAllPublicationsData() throws Exception;
-	
-	/**
-	 * Almacena una noticia en BDD
-	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
-	 */
-	public Publication addPublications(PublicationsFormDto publicationsFormDto) throws Exception;
-	
-	/**
-	 * Actualiza una noticia en BDD
-	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
-	 */
-	public Publication updatePublications(PublicationsFormDto publicationsFormDto) throws Exception;
-	
-	public void deletePublications(Map<String, String> publicationData) throws Exception;
 
 }

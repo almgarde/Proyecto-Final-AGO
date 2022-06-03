@@ -22,14 +22,14 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.NewsDto;
 @RequestMapping("/news")
 public class NewsController {
 
-	/** Logger */
-	final static Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(NewsController.class);
 
 	@Autowired
 	NewsServiceI newsService;
 
 	@GetMapping("/newsComplete/{idNews}")
 	public String getNews(@PathVariable String idNews, Model model) throws Exception {
+
 		LOGGER.info("NewsController getNews .- Inicio");
 
 		String viewResult = "/views/common/Errors";
@@ -42,8 +42,9 @@ public class NewsController {
 				model.addAttribute("news", newsDto);
 				viewResult = "/views/public/newsComplete";
 			} else {
-				LOGGER.error("NewsController getNews .- Parámetros nulos");
+				LOGGER.error("NewsController getNews .- Error: No existen noticias activas registradas");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("NewsController getNews .- Error no controlado al redireccionar a la pantalla newsComplete");
 			throw e;

@@ -1,59 +1,68 @@
-<div id="response"></div>
 
-<div>
-	<button type="button" id="formAddFacilitiesBtn"
-		class="btn btn-secondary">
-		<a href="javascript: mostrarModalAddFacilities();">Añadir nuevo
-			equipo</a>
+<div class="response" id="response"></div>
+
+<div id="buttonContainer">
+	<button type="button" id="formAddFacilitiesBtn" class="btn btn-light">
+		<a th:text="#{datatable.btn.nuevoregistro}"
+			href="javascript: mostrarModalAddFacilities();"></a>
 	</button>
-	<button type="button" class="btn btn-warning"><a th:href="@{/management/generateExcel/facilities}">Generar Excel</a></button>
+	<button type="button" class="btn btn-light">
+		<a th:text="#{datatable.btn.generarexcel}"
+			th:href="@{/management/generateExcel/facilities}"></a>
+	</button>
 </div>
-
-
 
 
 <!-- DATATABLE -->
 
-<table id="facilitiesDatatable" class="table datatableAdmin display nowrap"
-	style="text-align: center;">
-	<thead>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col">Nombre</th>
-			<th class="atri selectCat" scope="col">Categoría</th>
-			<th class="atri" scope="col">Foto</th>
-			<th class="atri" scope="col">Características</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" style="width: 500px;" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</thead>
-	<tbody>
-
-	</tbody>
-	<tfoot>
-		<tr>
-			<th class="atri" scope="col">ID</th>
-			<th class="atri" scope="col">Nombre</th>
-			<th class="atri selectCat" scope="col">Categoría</th>
-			<th class="atri" scope="col">Foto</th>
-			<th class="atri" scope="col">Características</th>
-			<th class="atri" scope="col">Admin</th>
-			<th class="atri" scope="col">Fecha</th>
-			<th class="atri selectActive" style="width: 500px;" scope="col">Activo</th>
-			<th scope="col"></th>
-		</tr>
-	</tfoot>
-
-</table>
+<div class="container" id="datatableFacilitiesContainer">
+	<table id="facilitiesDatatable"
+		class="table datatableAdmin display nowrap">
+		<thead>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.facilities.nombre}" class="atri"
+					scope="col"></th>
+				<th th:text="#{datatable.facilities.categoria}"
+					class="atri selectCat" scope="col"></th>
+				<th th:text="#{datatable.facilities.foto}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.facilities.caracteristicas}" class="atri"
+					scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.facilities.nombre}" class="atri"
+					scope="col"></th>
+				<th th:text="#{datatable.facilities.categoria}"
+					class="atri selectCat" scope="col"></th>
+				<th th:text="#{datatable.facilities.foto}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.facilities.caracteristicas}" class="atri"
+					scope="col"></th>
+				<th th:text="#{datatable.table.admin}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.fecha}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.table.activo}" class="atri selectActive"
+					scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
 <input class="selectedCat" type="hidden" value="6">
 
 
 <!-- SELECT FILTRO CATEGORÍAS -->
+
 <select class="form-select" id="idTechCatSelect"
 	aria-label="Floating label select example">
-	<option value="">Seleccione una categoría</option>
+	<option th:text="#{datatable.facilities.select.categoria}" value=""></option>
 	<option th:each="techCatDto : ${listaTechCatDto}"
 		th:text="${techCatDto.nameTechCat}" th:value="${techCatDto.idTechCat}">
 </select>
@@ -64,13 +73,17 @@
 <div class="modal" tabindex="-1" id="modalPhotoFacilities">
 	<div class="modal-dialog">
 		<div class="modal-content">
+			<div class="modal-header containerTitles">
+				<h5 id="headerImageFacility" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
 			<div class="modal-body">
-				<img id="bodyModalPhotoFacilities"></img>
+				<img class="modalImage" id="bodyModalPhotoFacilities"></img>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
@@ -81,24 +94,24 @@
 <div class="modal" tabindex="-1" id="modalFeaturesFacility">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header containerTitles">
 				<h5 id="headerFeaturesFacility" class="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
+			<div class="apartado">
+				<h5 th:text="#{datatable.facilities.modal.caracteristicas}"></h5>
+			</div>
+			<div class="modal-body modalTexto">
 				<p id="bodyFeaturesFacility"></p>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">Close</button>
-
+				<button type="button" th:text="#{modal.btn.cerrar}"
+					class="btn btn-light" data-bs-dismiss="modal"></button>
 			</div>
 		</div>
 	</div>
 </div>
-
-
 
 
 <!-- MODAL - AÑADIR EQUIPO -->
@@ -106,176 +119,214 @@
 <div class="modal" tabindex="-1" id="modalAddFacilities">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalAddFacilities" class="modal-title">Añadir
-					nuevo equipo</h5>
-				<button id="btnCloseAddFacilities" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.modal.add.header}"
+					id="headerModalAddFacilities" class="modal-title"></h5>
+				<button id="btnCloseAddFacilities" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-<form id="formAddFacilities" class="row g-3 needs-validation">
-				<!-- NOMBRE -->
+				<form id="formAddFacilities" class="row g-3 needs-validation">
 
-				<div class="form-group has-validation">
-					<label for="nameFacility">Nombre</label> <input autocomplete="off" type="text"
-						class="form-control" id="nameFacility"
-						name="nameFacility" required><div class="invalid-feedback">Please choose a username.</div> 
-				</div>
+					<!-- NOMBRE -->
 
-				<!-- CATEGORÍA -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.facilities.nombre}" for="nameFacility"></label>
+						<input autocomplete="off" type="text" class="form-control"
+							id="nameFacility" name="nameFacility" required>
+						<div th:text="#{datatable.facilities.modal.validacion.nombre}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<div class="form-group has-validation">
-					<label for="idTechCatActiveSelect">Categoría</label> <select
-						class="form-select" id="idTechCatActiveSelect"
-						aria-label="Floating label select example" required>
-						<option value="">Seleccione una categoría</option>
-						<option th:each="techCatDto : ${listaTechCatDtoActivas}"
-							th:text="${techCatDto.nameTechCat}"
-							th:value="${techCatDto.idTechCat}">
-					</select><div class="invalid-feedback">Please choose a username.</div>
-					<div class="form-group"></div>
-				</div>
+					<!-- CATEGORÍA -->
 
-				<!-- FOTO -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.facilities.categoria}"
+							for="idTechCatActiveSelect"></label> <select class="form-select"
+							id="idTechCatActiveSelect"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.facilities.select.categoria}"
+								value=""></option>
+							<option th:each="techCatDto : ${listaTechCatDtoActivas}"
+								th:text="${techCatDto.nameTechCat}"
+								th:value="${techCatDto.idTechCat}">
+						</select>
+						<div th:text="#{datatable.facilities.modal.validacion.categoria}"
+							class="invalid-feedback"></div>
+						<div class="form-group"></div>
+					</div>
 
-				<div class="form-group has-validation">
-					<label for="photoFacility">Foto</label> <input type="file"
-						name="file" class="form-control form-control-sm"
-						id="photoFacility" required> <div class="invalid-feedback">Please choose a username.</div>
-				</div>
+					<!-- FOTO -->
 
-				<!-- CARACTERÍSTICAS -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.facilities.foto}" for="photoFacility"></label>
+						<input type="file" name="file"
+							class="form-control form-control-sm" id="photoFacility" required>
+						<div th:text="#{datatable.facilities.modal.validacion.foto}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<div class="form-group has-validation">
-					<label for="featuresFacility">Características</label>
-					<textarea class="form-control" id="featuresFacility"
-						style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
-					
-				</div>
+					<!-- CARACTERÍSTICAS -->
 
-				<!-- ACTIVO -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.facilities.caracteristicas}"
+							for="featuresFacility"></label>
+						<textarea class="form-control" id="featuresFacility" required></textarea>
+						<small th:text="#{datatable.modal.maximo}"></small>
+						<div
+							th:text="#{datatable.facilities.modal.validacion.caracteristicas}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<div class="form-group">
-					<label for="active">Activo</label> <select class="form-select"
-						id="active" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
+					<!-- ACTIVO -->
 
+					<div class="form-group">
+						<label for="active" th:text="#{datatable.table.activo}"></label> <select
+							class="form-select" id="active"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
 
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarAddFacilities">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarAddFacilities">Cancelar</button>
-
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarAddFacilities"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarAddFacilities"></button>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - EDITAR EQUIPO -->
 
 <div class="modal" tabindex="-1" id="modalUpdateFacilities">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdateFacilities" class="modal-title">Editar
-					equipo</h5>
-				<button id="btnCloseUpdateFacilities"type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.header}"
+					id="headerModalUpdateFacilities" class="modal-title"></h5>
+				<button id="btnCloseUpdateFacilities" type="button"
+					class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-<form id="formUpdateFacilities" class="row g-3 needs-validation">
-				<!-- NOMBRE -->
+				<form id="formUpdateFacilities" class="row g-3 needs-validation">
 
-				<div class="form-group has-validation">
-					<label for="nameFacilityEdit">Nombre</label> <input autocomplete="off" type="text"
-						class="form-control" id="nameFacilityEdit"
-						name="nameFacility" required> <div class="invalid-feedback">Please choose a username.</div>
-				</div>
+					<!-- NOMBRE -->
 
-				<!-- CATEGORÍA -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.facilities.nombre}"
+							for="nameFacilityEdit"></label> <input autocomplete="off"
+							type="text" class="form-control" id="nameFacilityEdit"
+							name="nameFacility" required>
+						<div th:text="#{datatable.facilities.modal.validacion.nombre}"
+							class="invalid-feedback">Please choose a username.</div>
+					</div>
 
-				<div class="form-group has-validation">
-					<label for="idTechCatActiveSelectEdit">Categoría</label> <select
-						class="form-select" id="idTechCatActiveSelectEdit"
-						aria-label="Floating label select example" required>
-						<option value="">Seleccione una categoría</option>
-						<option th:each="techCatDto : ${listaTechCatDtoActivas}"
-							th:text="${techCatDto.nameTechCat}"
-							th:value="${techCatDto.idTechCat}">
-					</select><div class="invalid-feedback">Please choose a username.</div>
-					<div class="form-group"></div>
-				</div>
+					<!-- CATEGORÍA -->
 
-				<!-- CARACTERÍSTICAS -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.facilities.categoria}"
+							for="idTechCatActiveSelectEdit"></label> <select
+							class="form-select" id="idTechCatActiveSelectEdit"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.facilities.select.categoria}"
+								value=""></option>
+							<option th:each="techCatDto : ${listaTechCatDtoActivas}"
+								th:text="${techCatDto.nameTechCat}"
+								th:value="${techCatDto.idTechCat}">
+						</select>
+						<div th:text="#{datatable.facilities.modal.validacion.categoria}"
+							class="invalid-feedback"></div>
+						<div class="form-group"></div>
+					</div>
 
-				<div class="form-group has-validation">
-					<label for="featuresFacilityEdit">Características</label>
-					<textarea class="form-control" id="featuresFacilityEdit"
-						style="height: 100px" required></textarea><div class="invalid-feedback">Please choose a username.</div>
-					
-				</div>
+					<!-- CARACTERÍSTICAS -->
 
-				<!-- ACTIVO -->
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.facilities.caracteristicas}"
+							for="featuresFacilityEdit"></label>
+						<textarea class="form-control" id="featuresFacilityEdit" required></textarea>
+						<small th:text="#{datatable.modal.maximo}"></small>
+						<div
+							th:text="#{datatable.facilities.modal.validacion.caracteristicas}"
+							class="invalid-feedback"></div>
+					</div>
 
-				<div class="form-group">
-					<label for="activeEdit">Activo</label> <select class="form-select"
-						id="activeEdit" aria-label="Floating label select example" required>
-						<option value="1">Si</option>
-						<option value="0">No</option>
-					</select>
-				</div>
+					<!-- ACTIVO -->
 
-				<input type="hidden" id="idFacilityUpdate">  
+					<div class="form-group">
+						<label th:text="#{datatable.table.activo}" for="activeEdit"></label>
+						<select class="form-select" id="activeEdit"
+							aria-label="Floating label select example" required>
+							<option th:text="#{datatable.table.activo.si}" value="1"></option>
+							<option th:text="#{datatable.table.activo.no}" value="0"></option>
+						</select>
+					</div>
+
+					<input type="hidden" id="idFacilityUpdate">
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnAceptarUpdateFacilities">Aceptar</button>
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal" id="btnCancelarUpdateFacilities">Cancelar</button>
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateFacilities"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateFacilities"></button>
 
 			</div>
 		</div>
 	</div>
 </div>
+
 
 <!-- MODAL - CAMBIAR FOTO -->
 
 <div class="modal" tabindex="-1" id="modalUpdatePhotoFacilities">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 id="headerModalUpdatePhotoFacilities" class="modal-title">Cambiar
-					foto equipo</h5>
-				<button id="btnCloseUpdatePhotoFacilities" type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+			<div class="modal-header containerTitles modalUpdate">
+				<h5 th:text="#{datatable.modal.update.photo.header}"
+					id="headerModalUpdatePhotoFacilities" class="modal-title"></h5>
+				<button id="btnCloseUpdatePhotoFacilities" type="button"
+					class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-<form id="formUpdatePhotoFacilities" class="row g-3 needs-validation">
-				<!-- FOTO -->
-			
-				<div  class="form-group has-validation">
-					<label for="photoFacilityEdit">Foto</label> <input type="file"
-						name="file" class="form-control form-control-sm"
-						id="photoFacilityEdit" required><div class="invalid-feedback">Please choose a username.</div> 
-				</div>
+				<form id="formUpdatePhotoFacilities"
+					class="row g-3 needs-validation">
 
-				<input type="hidden" id="idFacilityPhotoUpdate">  
-</form>
+					<!-- FOTO -->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.facilities.foto}"
+							for="photoFacilityEdit"></label> <input type="file" name="file"
+							class="form-control form-control-sm" id="photoFacilityEdit"
+							required>
+						<div th:text="#{datatable.facilities.modal.validacion.foto}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<input type="hidden" id="idFacilityPhotoUpdate">
+
+				</form>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarUpdatePhotoFacilities">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarUpdatePhotoFacilities">Cancelar</button>
+					<button type="button" th:text="#{modal.btn.aceptar}"
+						class="btn btn-light" data-bs-dismiss="modal"
+						id="btnAceptarUpdatePhotoFacilities"></button>
+					<button type="button" th:text="#{modal.btn.cancelar}"
+						class="btn btn-light" data-bs-dismiss="modal"
+						id="btnCancelarUpdatePhotoFacilities"></button>
 
 				</div>
 			</div>
@@ -285,31 +336,34 @@
 </div>
 
 
+<!-- MODAL - ELIMINAR EQUIPO -->
 
-	<!-- MODAL - ELIMINAR EQUIPO -->
-
-	<div class="modal" tabindex="-1" id="modalDeleteFacilities">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 id="headerModalDeleteFacilities" class="modal-title">Eliminar
-						equipo</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<label>¿Estás seguro de querer eliminar este equipo?</label> <input
-						type="hidden" id="idFacilitiesDelete">
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnAceptarDeleteFacilities">Aceptar</button>
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal" id="btnCancelarDeleteFacilities">Cancelar</button>
-
-				</div>
+<div class="modal modalDelete" tabindex="-1" id="modalDeleteFacilities">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles ">
+				<h5 th:text="#{datatable.modal.delete.header}"
+					id="headerModalDeleteFacilities" class="modal-title"></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label th:text="#{datatable.facilities.modal.delete.label}"></label>
+				<input type="hidden" id="idFacilitiesDelete">
+			</div>
+			<div class="modal-footer">
+				<button type="button" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarDeleteFacilities"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarDeleteFacilities"></button>
 			</div>
 		</div>
 	</div>
-	
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+</div>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+	integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+	crossorigin="anonymous"></script>

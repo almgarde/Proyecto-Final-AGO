@@ -10,21 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.FacilityDaoI;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.TechnicalCategoryDaoI;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.AuthorsPublication;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Publication;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.TechnicalCategory;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.AuthorDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.FacilitiesDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.TechCatFacilitiesDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.FacilitiesDatatableDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.MembersDatatableDto;
-import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsFormDto;
 
 /**
  * Servicios. Entidad: Equipos de investigación
@@ -35,7 +28,6 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsForm
 @Service
 public class FacilitiesServiceImpl implements FacilitiesServiceI {
 
-	/** Logger */
 	final static Logger LOGGER = LoggerFactory.getLogger(FacilitiesServiceImpl.class);
 
 	@Autowired
@@ -45,103 +37,9 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 	TechnicalCategoryDaoI techCatDao;
 
 	/**
-	 * Recupera los equipos de investigación activos por categorías técnicas
+	 * Recupera todos los datos de los equipos de investigación almacenados en BDD
 	 * 
-	 * @returnList<TechCatFacilitiesDto>
-	 * @throws Exception
-	 */
-	@Override
-	public List<TechCatFacilitiesDto> getAllFacilitiesByTechCatActive() throws Exception {
-		LOGGER.info("FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Inicio");
-
-		List<TechCatFacilitiesDto> listaTechCatFacilitiesDto = null;
-
-		try {
-
-			List<TechnicalCategory> listaTechCat = techCatDao.findByActive(Boolean.TRUE);
-
-			if (listaTechCat != null && !listaTechCat.isEmpty()) {
-				listaTechCatFacilitiesDto = new ArrayList<TechCatFacilitiesDto>();
-				for (TechnicalCategory tc : listaTechCat) {
-					TechCatFacilitiesDto techCatFacilitiesDto = getFacilitiesByTechCatActive(tc);
-					if (techCatFacilitiesDto != null) {
-						listaTechCatFacilitiesDto.add(techCatFacilitiesDto);
-					} else {
-						LOGGER.error(
-								"FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Error: Parámetros nulos de equipos");
-					}
-				}
-
-			} else {
-				LOGGER.error(
-						"FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Error: Parámetros nulos de categorías");
-			}
-		} catch (Exception e) {
-			LOGGER.error(
-					"FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Error no controlado al recuperar los equipos");
-			throw e;
-		}
-
-		LOGGER.info("FacilitiesServiceImpl getAllFacilitiesBytechCatActive .- Fin");
-
-		return listaTechCatFacilitiesDto;
-	}
-
-	/**
-	 * Recupera los equipos de investigación activos de una categoría técnica
-	 * 
-	 * @param techCat
-	 * @return TechCatFacilitiesDto
-	 * @throws Exception
-	 */
-	@Override
-	public TechCatFacilitiesDto getFacilitiesByTechCatActive(TechnicalCategory techCat) throws Exception {
-		LOGGER.info("FacilitiesServiceImpl getFacilitiesByTechCatActive .- Inicio");
-
-		TechCatFacilitiesDto techCatFacilitiesDto = null;
-
-		try {
-
-			if (techCat != null) {
-				TechnicalCategory techCat2 = techCatDao.findByIdTechCatAndActive(techCat.getIdTechCat(), Boolean.TRUE);
-				List<Facility> listaFacilities = facilityDao.findByIdTechCatAndActive(techCat2, Boolean.TRUE);
-				if (listaFacilities != null && !listaFacilities.isEmpty()) {
-					techCatFacilitiesDto = new TechCatFacilitiesDto();
-					techCatFacilitiesDto.setIdTechCat(String.valueOf(techCat2.getIdTechCat()));
-					techCatFacilitiesDto.setNameTechCat(techCat2.getNameTechCat());
-					List<FacilitiesDto> listaFacilitiesDto = new ArrayList<FacilitiesDto>();
-					for (Facility f : listaFacilities) {
-
-						FacilitiesDto facilitiesDto = new FacilitiesDto();
-						facilitiesDto.setNameFacility(f.getNameFacility());
-						facilitiesDto.setIdTechCat(String.valueOf(techCat2.getIdTechCat()));
-						facilitiesDto.setPhotoFacility(f.getPhotoFacility());
-						facilitiesDto.setFeaturesFacility(f.getFeaturesFacility());
-
-						listaFacilitiesDto.add(facilitiesDto);
-					}
-					techCatFacilitiesDto.setFacilitiesDto(listaFacilitiesDto);
-
-				} else {
-					LOGGER.info("FacilitiesServiceImpl getFacilitiesByTechCatActive .- Categoría sin equipos");
-				}
-			} else {
-				LOGGER.error("FacilitiesServiceImpl getFacilitiesByTechCatActive .- Error: Parámetro introducido nulo");
-			}
-		} catch (Exception e) {
-			LOGGER.error(
-					"FacilitiesServiceImpl getFacilitiesByTechCatActive .- Error no controlado al recuperar los equipos");
-			throw e;
-		}
-
-		LOGGER.info("FacilitiesServiceImpl getFacilitiesByTechCatActive .- Fin");
-		return techCatFacilitiesDto;
-	}
-
-	/**
-	 * Recupera todos las equipos almacenadas en BDD
-	 * 
-	 * @return
+	 * @return List<FacilitiesDatatableDto>
 	 * @throws Exception
 	 */
 	public List<FacilitiesDatatableDto> getAllFacilitiesData() throws Exception {
@@ -151,6 +49,7 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 		List<FacilitiesDatatableDto> listaFacilitiesDatatableDto = new ArrayList<FacilitiesDatatableDto>();
 
 		try {
+
 			List<Facility> listaFacilities = facilityDao.findAll();
 
 			if (listaFacilities != null && !listaFacilities.isEmpty()) {
@@ -164,6 +63,7 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 					facilitiesDatatableDto.setActiveTechCat(String.valueOf(f.getIdTechCat().getActive()));
 					facilitiesDatatableDto.setPhotoFacility(f.getPhotoFacility());
 					facilitiesDatatableDto.setFeaturesFacility(f.getFeaturesFacility());
+
 					if (f.getActive()) {
 						facilitiesDatatableDto.setActive("true");
 					} else {
@@ -176,7 +76,7 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 				}
 
 			} else {
-				LOGGER.error("FacilitiesServiceImpl getAllFacilitiesData .- Error: Parámetros nulos");
+				LOGGER.error("FacilitiesServiceImpl getAllFacilitiesData .- Error: Sin equipos registrados");
 			}
 		} catch (Exception e) {
 			LOGGER.error("FacilitiesServiceImpl getAllFacilitiesData .- Error no controlado al recuperar los equipos");
@@ -190,13 +90,14 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 	}
 
 	/**
-	 * Almacena un miembro en BDD
+	 * Almacena un equipo de investigación en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param facilitiesData
+	 * @param photoFacilities
+	 * @return
+	 * @throws Exception
 	 */
 	@Override
-
 	public Facility addFacilities(Map<String, String> facilitiesData, String photoFacilites) throws Exception {
 
 		LOGGER.info("FacilitiesServiceImpl addFacilities .- Inicio");
@@ -204,6 +105,7 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 		Facility facilitySaved2 = null;
 
 		try {
+
 			if (facilitiesData != null && !facilitiesData.isEmpty() && !StringUtils.isEmpty(photoFacilites)) {
 
 				Facility f = new Facility();
@@ -212,7 +114,7 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 				f.setIdTechCat(techCatDao.findByIdTechCatAndActive(Long.parseLong(facilitiesData.get("idTechCat")),
 						Boolean.TRUE));
 				f.setFeaturesFacility(facilitiesData.get("featuresFacility"));
-				
+
 				if (Integer.parseInt(facilitiesData.get("active")) == 1) {
 					f.setActive(true);
 				} else {
@@ -227,11 +129,12 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 				f.setPhotoFacility(facilitySaved.getIdFacility() + photoFacilites);
 				facilitySaved2 = facilityDao.save(f);
 
-				LOGGER.info("FacilitiesServiceImpl addFacilities .- Equipo almacenada correctamente");
+				LOGGER.info("FacilitiesServiceImpl addFacilities .- Equipo almacenado correctamente");
 
 			} else {
-				LOGGER.error("FacilitiesServiceImpl addFacilities .- Error: Parámetros nulos");
+				LOGGER.error("FacilitiesServiceImpl addFacilities .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
 			LOGGER.error("FacilitiesServiceImpl addFacilities .- Error no controlado al añadir el equipo");
 			throw e;
@@ -242,12 +145,13 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 		return facilitySaved2;
 
 	}
-	
+
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza los datos de un equipo de investigación almacenado en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param facilitiesData
+	 * @return Facility
+	 * @throws Exception
 	 */
 	@Override
 	public Facility updateFacilities(Map<String, String> facilitiesData) throws Exception {
@@ -257,18 +161,18 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 		Facility facilityUpdated = null;
 
 		try {
-			if (facilitiesData != null && !facilitiesData.isEmpty() ) {
 
-				Facility f = facilityDao
-						.findByIdFacility(Long.parseLong(facilitiesData.get("idFacility")));
+			if (facilitiesData != null && !facilitiesData.isEmpty()) {
+
+				Facility f = facilityDao.findByIdFacility(Long.parseLong(facilitiesData.get("idFacility")));
 
 				if (f != null) {
-					
+
 					f.setNameFacility(facilitiesData.get("nameFacility"));
 					f.setIdTechCat(techCatDao.findByIdTechCatAndActive(Long.parseLong(facilitiesData.get("idTechCat")),
 							Boolean.TRUE));
 					f.setFeaturesFacility(facilitiesData.get("featuresFacility"));
-					
+
 					if (Integer.parseInt(facilitiesData.get("active")) == 1) {
 						f.setActive(true);
 					} else {
@@ -279,16 +183,19 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 					f.setUpdateDate(new Date());
 
 					facilityUpdated = facilityDao.save(f);
+
 				} else {
 					LOGGER.error("FacilitiesServiceImpl updateFacilities .- Equipo no encontrado");
 				}
+
 				LOGGER.info("FacilitiesServiceImpl updateFacilities .- Equipo actualizado correctamente");
 
 			} else {
-				LOGGER.error("FacilitiesServiceImpl updateFacilities .- Error: Parámetros nulos");
+				LOGGER.error("FacilitiesServiceImpl updateFacilities .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("FacilitiesServiceImpl updateFacilities .- Error no controlado al actualizar la publicación");
+			LOGGER.error("FacilitiesServiceImpl updateFacilities .- Error no controlado al actualizar el equipo");
 			throw e;
 		}
 
@@ -297,79 +204,188 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 		return facilityUpdated;
 
 	}
-	
+
 	/**
-	 * Almacena una noticia en BDD
+	 * Actualiza la foto un equipo de investigación almacenado en BDD
 	 * 
-	 * @param addNewsFormDto
-	 * @param imageNews
+	 * @param facilitiesData
+	 * @param photoFacilities
+	 * @return Facility
+	 * @throws Exception
 	 */
 	@Override
 	public Facility updatePhotoFacilities(Map<String, String> facilitiesData, String photoFacilities) throws Exception {
 
-		LOGGER.info("FacilitiesServiceImpl updateFacilities .- Inicio");
+		LOGGER.info("FacilitiesServiceImpl updatePhotoFacilities .- Inicio");
 
 		Facility facilityPhotoUpdated = null;
 
 		try {
+
 			if (facilitiesData != null && !facilitiesData.isEmpty() && photoFacilities != null) {
 
-				Facility f = facilityDao
-						.findByIdFacility(Long.parseLong(facilitiesData.get("idFacility")));
+				Facility f = facilityDao.findByIdFacility(Long.parseLong(facilitiesData.get("idFacility")));
 
 				if (f != null) {
-
 					f.setPhotoFacility(f.getIdFacility() + photoFacilities);
 					facilityPhotoUpdated = facilityDao.save(f);
 				} else {
-					LOGGER.error("FacilitiesServiceImpl updateFacilities .- Equipo no encontrado");
+					LOGGER.error("FacilitiesServiceImpl updatePhotoFacilities .- Equipo no encontrado");
 				}
-				LOGGER.info("FacilitiesServiceImpl updateFacilities .- Equipo actualizado correctamente");
+
+				LOGGER.info("FacilitiesServiceImpl updatePhotoFacilities .- Equipo actualizado correctamente");
 
 			} else {
-				LOGGER.error("FacilitiesServiceImpl updateFacilities .- Error: Parámetros nulos");
+				LOGGER.error("FacilitiesServiceImpl updatePhotoFacilities .- Error: Parámetros nulos");
 			}
 		} catch (Exception e) {
-			LOGGER.error("FacilitiesServiceImpl updateFacilities .- Error no controlado al actualizar la publicación");
+			LOGGER.error(
+					"FacilitiesServiceImpl updatePhotoFacilities .- Error no controlado al actualizar la publicación");
 			throw e;
 		}
 
-		LOGGER.info("FacilitiesServiceImpl updateFacilities .- Fin");
+		LOGGER.info("FacilitiesServiceImpl updatePhotoFacilities .- Fin");
 
 		return facilityPhotoUpdated;
 
 	}
-	
+
+	/**
+	 * Elimina un equipo de investigación almacenado en BDD
+	 * 
+	 * @param facilitiesData
+	 * @throws Exception
+	 */
 	@Override
 	public void deleteFacilities(Map<String, String> facilitiesData) throws Exception {
 
-		LOGGER.info("PublicationsServiceImpl deletePublications .- Inicio");
-
+		LOGGER.info("FacilitiesServiceImpl deleteFacilities .- Inicio");
 
 		try {
 			if (facilitiesData != null && !facilitiesData.isEmpty()) {
 
-				Facility f = facilityDao
-						.findByIdFacility(Long.parseLong(facilitiesData.get("idFacility")));
+				Facility f = facilityDao.findByIdFacility(Long.parseLong(facilitiesData.get("idFacility")));
 
 				if (f != null) {
 
 					facilityDao.delete(f);
 
 				}
-				LOGGER.info("PublicationsServiceImpl deletePublications .- Publicación eliminada correctamente");
+				LOGGER.info("FacilitiesServiceImpl deleteFacilities .- Equipo eliminado correctamente");
 
 			} else {
-				LOGGER.error("PublicationsServiceImpl deletePublications .- Error: Parámetros nulos");
+				LOGGER.error("FacilitiesServiceImpl deleteFacilities .- Error: Parámetros de entrada nulos");
 			}
+
 		} catch (Exception e) {
-			LOGGER.error("PublicationsServiceImpl deletePublications .- Error no controlado al eliminar la publicación");
+			LOGGER.error("FacilitiesServiceImpl deleteFacilities .- Error no controlado al eliminar la publicación");
 			throw e;
 		}
 
-		LOGGER.info("PublicationsServiceImpl deletePublications .- Fin");
+		LOGGER.info("FacilitiesServiceImpl deleteFacilities .- Fin");
 
+	}
 
+	/**
+	 * Recupera todos los equipos de investigación activos agrupados por categorías
+	 * técnicas
+	 * 
+	 * @return List<TechCatFacilitiesDto>
+	 * @throws Exception
+	 */
+	@Override
+	public List<TechCatFacilitiesDto> getAllFacilitiesByTechCatActive() throws Exception {
+
+		LOGGER.info("FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Inicio");
+
+		List<TechCatFacilitiesDto> listaTechCatFacilitiesDto = null;
+
+		try {
+
+			List<TechnicalCategory> listaTechCat = techCatDao.findByActive(Boolean.TRUE);
+
+			if (listaTechCat != null && !listaTechCat.isEmpty()) {
+
+				listaTechCatFacilitiesDto = new ArrayList<TechCatFacilitiesDto>();
+
+				for (TechnicalCategory tc : listaTechCat) {
+					TechCatFacilitiesDto techCatFacilitiesDto = getFacilitiesByTechCatActive(tc);
+					if (techCatFacilitiesDto != null) {
+						listaTechCatFacilitiesDto.add(techCatFacilitiesDto);
+					} else {
+						LOGGER.error(
+								"FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Error: Categoría sin equipos");
+					}
+				}
+
+			} else {
+				LOGGER.error("FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Error: Sin categorías activas");
+			}
+		} catch (Exception e) {
+			LOGGER.error(
+					"FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Error no controlado al recuperar los equipos");
+			throw e;
+		}
+
+		LOGGER.info("FacilitiesServiceImpl getAllFacilitiesByTechCatActive .- Fin");
+
+		return listaTechCatFacilitiesDto;
+	}
+
+	/**
+	 * Recupera los equipos de investigación activos de una categoría técnica
+	 * 
+	 * @param techCat
+	 * @return TechCatFacilitiesDto
+	 * @throws Exception
+	 */
+	@Override
+	public TechCatFacilitiesDto getFacilitiesByTechCatActive(TechnicalCategory techCat) throws Exception {
+
+		LOGGER.info("FacilitiesServiceImpl getFacilitiesByTechCatActive .- Inicio");
+
+		TechCatFacilitiesDto techCatFacilitiesDto = null;
+
+		try {
+
+			if (techCat != null) {
+
+				TechnicalCategory techCat2 = techCatDao.findByIdTechCatAndActive(techCat.getIdTechCat(), Boolean.TRUE);
+				List<Facility> listaFacilities = facilityDao.findByIdTechCatAndActive(techCat2, Boolean.TRUE);
+
+				if (listaFacilities != null && !listaFacilities.isEmpty()) {
+
+					techCatFacilitiesDto = new TechCatFacilitiesDto();
+					techCatFacilitiesDto.setIdTechCat(String.valueOf(techCat2.getIdTechCat()));
+					techCatFacilitiesDto.setNameTechCat(techCat2.getNameTechCat());
+					List<FacilitiesDto> listaFacilitiesDto = new ArrayList<FacilitiesDto>();
+
+					for (Facility f : listaFacilities) {
+						FacilitiesDto facilitiesDto = new FacilitiesDto();
+						facilitiesDto.setNameFacility(f.getNameFacility());
+						facilitiesDto.setIdTechCat(String.valueOf(techCat2.getIdTechCat()));
+						facilitiesDto.setPhotoFacility(f.getPhotoFacility());
+						facilitiesDto.setFeaturesFacility(f.getFeaturesFacility());
+
+						listaFacilitiesDto.add(facilitiesDto);
+					}
+					techCatFacilitiesDto.setFacilitiesDto(listaFacilitiesDto);
+
+				} else {
+					LOGGER.info("FacilitiesServiceImpl getFacilitiesByTechCatActive .- Categoría sin equipos");
+				}
+			} else {
+				LOGGER.error("FacilitiesServiceImpl getFacilitiesByTechCatActive .- Error: Parámetro de entrada nulo");
+			}
+		} catch (Exception e) {
+			LOGGER.error(
+					"FacilitiesServiceImpl getFacilitiesByTechCatActive .- Error no controlado al recuperar los equipos");
+			throw e;
+		}
+
+		LOGGER.info("FacilitiesServiceImpl getFacilitiesByTechCatActive .- Fin");
+
+		return techCatFacilitiesDto;
 	}
 
 }

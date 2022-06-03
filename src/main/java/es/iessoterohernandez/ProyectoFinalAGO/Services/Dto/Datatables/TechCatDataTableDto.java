@@ -5,7 +5,7 @@ public class TechCatDatatableDto {
 	private String idTechCat;
 
 	private String nameTechCat;
-	
+
 	private String active;
 
 	private String admin;
@@ -51,7 +51,5 @@ public class TechCatDatatableDto {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
-	
 
 }
