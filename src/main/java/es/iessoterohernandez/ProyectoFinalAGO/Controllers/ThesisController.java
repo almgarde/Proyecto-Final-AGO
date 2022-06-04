@@ -1,10 +1,12 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +38,11 @@ public class ThesisController {
 		try {
 
 			final List<ThesisDto> listaThesisDto = thesisService.getAllThesisActive();
+			Locale lang = LocaleContextHolder.getLocale();
 
 			if (listaThesisDto != null && !listaThesisDto.isEmpty()) {
 				model.addAttribute("listaThesisDto", listaThesisDto);
+				model.addAttribute("lang", lang);
 				viewResult = "/views/public/thesis";
 			} else {
 				LOGGER.error("ThesisController getThesis .- Error: No existen tesis activas registradas");

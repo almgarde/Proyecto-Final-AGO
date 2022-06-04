@@ -1,0 +1,114 @@
+
+<div class="response" id="response"></div>
+
+<input id="inputPrueba" type="hidden" th:value="${#httpServletRequest.remoteUser}">
+<h1 id="prueba"> </h1>
+
+<div id="buttonContainer">
+	<button type="button" id="formAddFacilitiesBtn" class="btn btn-light">
+		<a href="javascript: mostrarModalAddAdmins();">Nuevo admin</a>
+	</button>
+	<button type="button" class="btn btn-light">
+		<a>Editar datos</a>
+	</button>
+	<button type="button" class="btn btn-light">
+		<a>Cambiar contraseña</a>
+	</button>
+</div>
+
+
+<!-- DATATABLE -->
+
+<div class="container" id="datatableAdminsContainer">
+	<table id="adminsDatatable"
+		class="table datatableAdmin display nowrap">
+		<thead>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th class="atri" scope="col">Nombre</th>
+				<th class="atri selectCat" scope="col">Email</th>
+				<th class="atri" scope="col">Nombre de usuario</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+		<tfoot>
+			<tr>
+				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
+				<th class="atri" scope="col">Nombre</th>
+				<th class="atri selectCat" scope="col">Email</th>
+				<th class="atri" scope="col">Nombre de usuario</th>
+
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<input class="selectedCat" type="hidden" value="10">
+
+<!-- MODAL - AÑADIR CATEGORÍA PROFESIONAL -->
+
+<div class="modal" tabindex="-1" id="modalAddAdmins">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.modal.add.header}"
+					id="headerModalAddAdmins" class="modal-title"></h5>
+				<button id="btnCloseAddAdmins" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<form id="formAddAdmins" class="row g-3 needs-validation">
+
+					<!-- NOMBRE -->
+
+					<div class="form-group has-validation">
+						<label for="nameAdmin"
+							class="form-label">Nombre</label> <input autocomplete="off" type="text"
+							class="form-control" id="nameAdmin" name="nameAdmin" required>
+						<div th:text="#{datatable.procat.modal.validacion.contenido}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- EMAIL -->
+
+					<div class="form-group has-validation">
+						<label for="emailAdmin">Email</label>
+						<input type="email" autocomplete="off" class="form-control"
+							id="emailAdmin" name="emailAdmin" required>
+						<div th:text="#{datatable.members.modal.validacion.email}"
+							class="invalid-feedback"></div>
+					</div>
+					
+					<!-- USUARIO -->
+
+					<div class="form-group has-validation">
+						<label for="usernameAdmin"
+							class="form-label">Usuario</label> <input autocomplete="off" type="text"
+							class="form-control" id="usernameAdmin" name="usernameAdmin" required>
+						<div th:text="#{datatable.procat.modal.validacion.contenido}"
+							class="invalid-feedback"></div>
+					</div>
+					
+					<!-- CONTRASEÑA -->
+
+					<div class="form-group has-validation">
+						<label for="pwdAdmin"
+							class="form-label">Contraseña</label> <input autocomplete="off" type="text"
+							class="form-control" id="pwdAdmin" name="pwdAdmin" required>
+						<div th:text="#{datatable.procat.modal.validacion.contenido}"
+							class="invalid-feedback"></div>
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarAddAdmins"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarAddAdmins"></button>
+			</div>
+		</div>
+	</div>
+</div>

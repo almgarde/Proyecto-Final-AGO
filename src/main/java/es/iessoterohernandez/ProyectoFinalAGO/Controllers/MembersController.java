@@ -1,10 +1,12 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +44,11 @@ public class MembersController {
 		try {
 
 			final List<ProCatMembersDto> listaProCatMemberDto = membersService.getAllMembersByProCatActive();
+			Locale lang = LocaleContextHolder.getLocale();
 
 			if (listaProCatMemberDto != null && !listaProCatMemberDto.isEmpty()) {
 				model.addAttribute("listaProCatMemberDto", listaProCatMemberDto);
+				model.addAttribute("lang", lang);
 				viewResult = "/views/public/members";
 			} else {
 				LOGGER.error("MembersController getMembers .- Error: No existen miembros activos registrados");
@@ -73,9 +77,11 @@ public class MembersController {
 			if (idMember != null) {
 
 				final MembersDto membersDto = membersService.getMemberByIdActive(Long.parseLong(idMember));
+				Locale lang = LocaleContextHolder.getLocale();
 
 				if (membersDto != null) {
 					model.addAttribute("member", membersDto);
+					model.addAttribute("lang", lang);
 					viewResult = "/views/public/memberComplete";
 				} else {
 					LOGGER.error("NewsController getMemberInfo .- Error: No existen miembros activos registrados");

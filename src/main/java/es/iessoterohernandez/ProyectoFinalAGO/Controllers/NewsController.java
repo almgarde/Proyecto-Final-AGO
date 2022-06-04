@@ -1,8 +1,11 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,9 +40,11 @@ public class NewsController {
 		try {
 
 			final NewsDto newsDto = newsService.getNewsByIdActive(Long.parseLong(idNews));
+			Locale lang = LocaleContextHolder.getLocale();
 
 			if (newsDto != null) {
 				model.addAttribute("news", newsDto);
+				model.addAttribute("lang", lang);
 				viewResult = "/views/public/newsComplete";
 			} else {
 				LOGGER.error("NewsController getNews .- Error: No existen noticias activas registradas");

@@ -109,6 +109,10 @@ function getDataTableCategory(numCat) {
 					getDatatableLinks();
 					break;
 
+				case "10":
+					getDatatableAdmins();
+					break;
+
 			}
 		},
 		error: function(e) {
@@ -193,7 +197,7 @@ function actualizarCarouselImages() {
 		contentType: false,
 		data: form,
 		timeout: 5000,
-		success: function(html) {		
+		success: function(html) {
 			if (html != '') {
 				okMessage();
 				$(".alert").text('Bieeen');

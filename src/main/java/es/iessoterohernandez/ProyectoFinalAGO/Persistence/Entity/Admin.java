@@ -27,18 +27,18 @@ public class Admin implements Serializable {
 	/** Nombre */
 	private String nameAdmin;
 
-	/** Nombre */
+	/** Email */
 	private String emailAdmin;
 
-	/** Nombre */
+	/** Usuario */
 	private String usernameAdmin;
 
-	/** Nombre */
+	/** Contraseña */
 	private String pwdAdmin;
 
 	@Id
 	@GeneratedValue(generator = "genSeqAdmin")
-	@SequenceGenerator(name = "genSeqAdmin", sequenceName = "SEQ_ADMIN", allocationSize = 1)
+	@SequenceGenerator(name = "genSeqAdmin", sequenceName = "SEQ_ADMINS", allocationSize = 1)
 	public Long getIdAdmin() {
 		return idAdmin;
 	}
@@ -66,15 +66,15 @@ public class Admin implements Serializable {
 	}
 
 	@Column(name = "USER_ADMIN", nullable = false, unique = true)
-	public String getUserAdmin() {
+	public String getUsernameAdmin() {
 		return usernameAdmin;
 	}
 
-	public void setUserAdmin(String usernameAdmin) {
+	public void setUsernameAdmin(String usernameAdmin) {
 		this.usernameAdmin = usernameAdmin;
 	}
 
-	@Column(name = "PWD_ADMIN", nullable = false, unique = true)
+	@Column(name = "PWD_ADMIN", nullable = false)
 	public String getPwdAdmin() {
 		return pwdAdmin;
 	}

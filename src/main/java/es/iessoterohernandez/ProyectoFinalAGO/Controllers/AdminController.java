@@ -1,17 +1,20 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +25,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Link;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Project;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Publication;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Thesis;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.AdminServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.FacilitiesServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.LinksServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.MembersServiceI;
@@ -41,6 +45,7 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.ThesisServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.MembersDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.TechCatDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.AdminsDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.FacilitiesDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.LinksDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.MembersDatatableDto;
@@ -86,8 +91,21 @@ public class AdminController {
 	@Autowired
 	PublicationsServiceI publicationsService;
 
+	@Autowired
+	AdminServiceI adminService;
+
 	@GetMapping
 	public String getManagementPanel(Model model) throws Exception {
+		
+//		String username = auth.getName();
+//		
+//		if (session.getAttribute("admin") == null) {
+//			Admin admin = adminService.getAdminByUsername(username);
+//			admin.setPwdAdmin(null);
+//			session.setAttribute("admin", admin);
+//		}
+		Locale lang = LocaleContextHolder.getLocale();
+		model.addAttribute("lang", lang);
 		String viewResult = "/views/private/gestionPanel";
 		return viewResult;
 	}
@@ -138,7 +156,7 @@ public class AdminController {
 		return viewResult;
 	}
 
-	@PostMapping("/getDatatableCategory/")
+	@PostMapping("/getDatatableCategory")
 	public String getDatatableCategory(Model model, String numCat) throws Exception {
 
 		LOGGER.info("AdminController getDatatableCategory .- Inicio");
@@ -216,6 +234,10 @@ public class AdminController {
 
 				case "9":
 					viewResult = "/views/private/datatableLinks";
+					break;
+
+				case "10":
+					viewResult = "/views/private/datatableAdmins";
 					break;
 
 				default:
@@ -413,9 +435,9 @@ public class AdminController {
 		List<ProCatDatatableDto> listaProCatDataTableDto = null;
 
 		try {
-			
+
 			listaProCatDataTableDto = proCatService.getAllProCatData();
-			
+
 		} catch (Exception e) {
 			LOGGER.error(
 					"AdminController getProCatData .- Error no controlado al recuperar los datos de las categorías profesionales");
@@ -467,7 +489,8 @@ public class AdminController {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController updateProCatData .- Error no controlado al actualizar la categoría profesional");
+			LOGGER.error(
+					"AdminController updateProCatData .- Error no controlado al actualizar la categoría profesional");
 			throw e;
 		}
 
@@ -489,7 +512,8 @@ public class AdminController {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController deleteProCatData .- Error no controlado al eliminar la categoría profesional");
+			LOGGER.error(
+					"AdminController deleteProCatData .- Error no controlado al eliminar la categoría profesional");
 			throw e;
 		}
 
@@ -502,9 +526,9 @@ public class AdminController {
 		LOGGER.info("AdminController exportToExcelProCat .- Inicio");
 
 		List<ProCatDatatableDto> listaProCat = null;
-		
+
 		try {
-			
+
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataProCat.xlsx\"");
 
 			listaProCat = proCatService.getAllProCatData();
@@ -513,11 +537,13 @@ public class AdminController {
 				GeneratorExcels generatorExcelProCat = new GeneratorExcels();
 				generatorExcelProCat.exportExcelProCat(response, listaProCat);
 			} else {
-				LOGGER.error("AdminController exportToExcelProCat .- Error: No existen categorías profesionales registradas");
+				LOGGER.error(
+						"AdminController exportToExcelProCat .- Error: No existen categorías profesionales registradas");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController exportToExcelProCat .- Error no controlado al realizar la exportación a Excel");
+			LOGGER.error(
+					"AdminController exportToExcelProCat .- Error no controlado al realizar la exportación a Excel");
 
 			throw e;
 		}
@@ -627,7 +653,7 @@ public class AdminController {
 		List<TechCatDatatableDto> listaTechCat = null;
 
 		try {
-			
+
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataTechCat.xlsx\"");
 			listaTechCat = techCatService.getAllTechCatData();
 
@@ -635,7 +661,8 @@ public class AdminController {
 				GeneratorExcels generatorExcel = new GeneratorExcels();
 				generatorExcel.exportExcelTechCat(response, listaTechCat);
 			} else {
-				LOGGER.error("AdminController exportToExcelTechCat .- Error: No existen categorías técnicas registradas");
+				LOGGER.error(
+						"AdminController exportToExcelTechCat .- Error: No existen categorías técnicas registradas");
 			}
 
 		} catch (Exception e) {
@@ -801,7 +828,8 @@ public class AdminController {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController exportToExcelMembers .- Error no controlado al realizar la exportación a Excel");
+			LOGGER.error(
+					"AdminController exportToExcelMembers .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
 
@@ -962,7 +990,8 @@ public class AdminController {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController exportToExcelFacilities .- Error no controlado al realizar la exportación a Excel");
+			LOGGER.error(
+					"AdminController exportToExcelFacilities .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
 
@@ -1075,9 +1104,9 @@ public class AdminController {
 		LOGGER.info("AdminController exportToExcelPublications .- Fin");
 
 		List<PublicationsDatatableDto> listaPublications = null;
-		
+
 		try {
-			
+
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataPublications.xlsx\"");
 			listaPublications = publicationsService.getAllPublicationsData();
 
@@ -1085,11 +1114,13 @@ public class AdminController {
 				GeneratorExcels generatorExcel = new GeneratorExcels();
 				generatorExcel.exportExcelPublications(response, listaPublications);
 			} else {
-				LOGGER.error("AdminController exportToExcelPublications .- Error: No existen publicaciones registradas");
+				LOGGER.error(
+						"AdminController exportToExcelPublications .- Error: No existen publicaciones registradas");
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController exportToExcelPublications .- Error no controlado al realizar la exportación a Excel");
+			LOGGER.error(
+					"AdminController exportToExcelPublications .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
 
@@ -1239,7 +1270,7 @@ public class AdminController {
 		List<ProjectsDatatableDto> listaProjects = null;
 
 		try {
-			
+
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataProjects.xlsx\"");
 			listaProjects = projectsService.getAllProjectsData();
 
@@ -1251,7 +1282,8 @@ public class AdminController {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController exportToExcelProjects .- Error no controlado al realizar la exportación a Excel");
+			LOGGER.error(
+					"AdminController exportToExcelProjects .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
 
@@ -1398,9 +1430,9 @@ public class AdminController {
 		LOGGER.info("AdminController exportToExcelThesis .- Fin");
 
 		List<ThesisDatatableDto> listaThesis = null;
-		
+
 		try {
-			
+
 			response.setHeader("Content-Disposition", "attachment; filename=\"dataThesis.xlsx\"");
 			listaThesis = thesisService.getAllThesisData();
 
@@ -1412,7 +1444,8 @@ public class AdminController {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController exportToExcelThesis .- Error no controlado al realizar la exportación a Excel");
+			LOGGER.error(
+					"AdminController exportToExcelThesis .- Error no controlado al realizar la exportación a Excel");
 			throw e;
 		}
 
@@ -1576,11 +1609,59 @@ public class AdminController {
 			}
 
 		} catch (Exception e) {
-			LOGGER.error("AdminController exportToExcelLinks .- Error no controlado al realizar la Exportación a Excel");
+			LOGGER.error(
+					"AdminController exportToExcelLinks .- Error no controlado al realizar la Exportación a Excel");
 			throw e;
 		}
 
 		LOGGER.info("AdminController exportToExcelLinks .- Fin");
+	}
+
+	@GetMapping("/getAdminsData")
+	@ResponseBody
+	public List<AdminsDatatableDto> getAdminsData(Model model) throws Exception {
+
+		LOGGER.info("AdminController getAdminsData .- Inicio");
+
+		List<AdminsDatatableDto> listaAdminsDatatableDto = null;
+
+		try {
+
+			listaAdminsDatatableDto = adminService.getAllAdminsData();
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController getAdminsData .- Error no controlado al recuperar los datos de los administradores");
+			throw e;
+		}
+
+		LOGGER.info("AdminController getAdminsData .- Fin");
+
+		return listaAdminsDatatableDto;
+
+	}
+
+	@PostMapping("/addAdminsData")
+	@ResponseBody
+	public void addAdminsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController addAdminsData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+				adminService.addAdmin(params);
+			} else {
+				LOGGER.error("AdminController addAdminsData .- Error: Parámetros de entrada nulos");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController addAdminsData .- Error no controlado al dar de alta el administrador");
+			throw e;
+		}
+
+		LOGGER.info("AdminController addAdminsData .- Fin");
+
 	}
 
 }

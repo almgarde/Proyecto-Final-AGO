@@ -1,10 +1,12 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +37,11 @@ public class LinksController {
 		try {
 
 			final List<LinksDto> listaLinkDto = linksService.getAllLinksActive();
+			Locale lang = LocaleContextHolder.getLocale();
 
 			if (listaLinkDto != null && !listaLinkDto.isEmpty()) {
 				model.addAttribute("listaLinkDto", listaLinkDto);
+				model.addAttribute("lang", lang);
 				viewResult = "/views/public/links";
 			} else {
 				LOGGER.error("LinksController getLinks .- Error: No existen links activos registrados");

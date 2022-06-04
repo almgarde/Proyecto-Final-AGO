@@ -1,10 +1,12 @@
 package es.iessoterohernandez.ProyectoFinalAGO.Controllers;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +26,7 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsOrde
 @Controller
 public class PublicationsController {
 
-	/** Logger */
+	
 	final static Logger LOGGER = LoggerFactory.getLogger(PublicationsController.class);
 
 	@Autowired
@@ -41,10 +43,12 @@ public class PublicationsController {
 
 			final List<PublicationsYearsDto> listaPublicationsYearsDto = publicationsService
 					.getAllPublicationsActiveOrdered(Boolean.FALSE);
+			Locale lang = LocaleContextHolder.getLocale();
 
 			if (listaPublicationsYearsDto != null && !listaPublicationsYearsDto.isEmpty()) {
 				model.addAttribute("listaPublicationsYearsDto", listaPublicationsYearsDto);
 				model.addAttribute("publicationsOrderFormDto", new PublicationsOrderFormDto());
+				model.addAttribute("lang", lang);
 				viewResult = "/views/public/publications";
 			} else {
 				LOGGER.error(

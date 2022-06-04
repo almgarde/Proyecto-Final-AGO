@@ -59,18 +59,26 @@
 						th:text="#{header.menu.idioma}"
 						class="text-white nav-link dropdown-toggle" href="#"
 						id="navbarDarkDropdownMenuLink" role="button"
-						data-bs-toggle="dropdown" aria-expanded="false">Lenguaje</a>
-						<ul class="dropdown-menu dropdown-menu-dark"
+						data-bs-toggle="dropdown" aria-expanded="false"></a>
+						<ul id="headerLangDropdown"
+							class="dropdown-menu dropdown-menu-dark headerDropdown"
 							aria-labelledby="navbarDarkDropdownMenuLink">
-							<li><img class="me-2" src="/images/es.svg" alt="" width="25"
-								height="15"><a th:text="#{header.menu.idioma.espanyol}"
-								class="dropdown-item" href="?lang=es"></a></li>
-							<li><img class="me-2" src="/images/gb.svg" alt="" width="25"
-								height="15"><a th:text="#{header.menu.idioma.ingles}"
-								class="dropdown-item" href="?lang=en"></a></li>
-							<li><img class="me-2" src="/images/fr.svg" alt="" width="25"
-								height="15"><a th:text="#{header.menu.idioma.frances}"
-								class="dropdown-item" href="?lang=fr"></a></li>
+							<div id="espLang" class="dropdown-item headerLang active">
+								<li><img class="me-2" src="/images/es.svg" alt=""
+									width="25" height="15"><a
+									th:text="#{header.menu.idioma.espanyol}" href="?lang=es"></a></li>
+							</div>
+							<div id="engLang" class="dropdown-item headerLang">
+								<li><img class="me-2" src="/images/gb.svg" alt=""
+									width="25" height="15"><a
+									th:text="#{header.menu.idioma.ingles}" href="?lang=en"></a></li>
+							</div>
+							<div id="frLang" class="dropdown-item headerLang">
+								<li><img class="me-2" src="/images/fr.svg" alt=""
+									width="25" height="15"><a
+									th:text="#{header.menu.idioma.frances}" href="?lang=fr"></a></li>
+							</div>
+
 						</ul></li>
 				</div>
 				<div class="text-end">
@@ -83,21 +91,55 @@
 								viewBox="0 0 16 16"> <path
 								d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
 							</svg></a>
-						<ul class="dropdown-menu dropdown-menu-dark"
+						<ul class="dropdown-menu dropdown-menu-dark headerDropdown"
 							aria-labelledby="navbarDarkDropdownMenuLink">
-							<li><i class="flag flag-spain"></i><a
-								th:text="#{header.menu.gestion.iniciarsesion}"
-								class="dropdown-item">Gestion</a></li>
+							<li>
+<a href="/login">login</a>
+<!-- 								<form id="formAddPublication" class="row g-3 needs-validation" -->
+<!-- 									th:action="@{/home}" -->
+<!-- 									method="POST"> -->
+<!-- 									<div class="form-group has-validation"> -->
+<!-- 										<label for="usernameAdmin">Usuario</label> <input -->
+<!-- 											autocomplete="off" type="text" class="form-control" -->
+<!-- 											id="usernameAdmin" name="username" required> -->
+<!-- 										<div th:text="#{datatable.facilities.modal.validacion.nombre}" -->
+<!-- 											class="invalid-feedback"></div> -->
+<!-- 									</div> -->
+<!-- 									<div class="form-group has-validation"> -->
+<!-- 										<label for="pwdAdmin">Contraseña</label> <input -->
+<!-- 											autocomplete="off" type="password" class="form-control" -->
+<!-- 											id="pwdAdmin" name="password" required> -->
+<!-- 										<div th:text="#{datatable.facilities.modal.validacion.nombre}" -->
+<!-- 											class="invalid-feedback"></div> -->
+<!-- 									</div> -->
+									
+<!-- 									<button type="button" class="btn btn-light" -->
+<!-- 										data-bs-dismiss="modal" id="btnLogin">Login</button> -->
+
+<!-- 								</form> -->
+<!-- 								<div th:if="${param.error}" class="alert alert-danger mb-3">Credenciales -->
+<!-- 										incorrectas</div> -->
+							</li>
+
+
 							<li><a th:text="#{header.menu.gestion.gestionar}"
 								class="dropdown-item" href="/management"></a></li>
-							<li><a th:text="#{header.menu.gestion.cerrarsesion}"
-								class="dropdown-item" href="#"> </a></li>
+							<li>
+								<div class="dropdown-item">
+									<form id="formLogout" class="row g-3 "
+										th:action="@{/logout}" method="POST">
+										<button th:text="#{header.menu.gestion.cerrarsesion}"
+											type="submit" class="btn btn-light"></button>
+									</form>
+									<div th:if="${param.logout}" class="alert alert-danger mb-3">Adioos</div>
+								</div>
+							</li>
 						</ul></li>
 				</div>
 			</div>
 		</div>
 	</div>
 
-
+	<script src="/js/header.js"></script>
 </body>
 </html>

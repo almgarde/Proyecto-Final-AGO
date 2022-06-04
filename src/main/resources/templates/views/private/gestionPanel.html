@@ -26,12 +26,12 @@
 				class="catSidebar" href="#publications" data-num-cat="7"></a> <a
 				th:text="#{sidebar.tesis}" class="catSidebar" href="#thesis"
 				data-num-cat="8"></a> <a th:text="#{sidebar.enlaces}"
-				class="catSidebar" href="#links" data-num-cat="9"></a> <a
+				class="catSidebar" href="" data-num-cat="9"></a> <a
 				th:text="#{sidebar.admins}" class="catSidebar" href="#admins"
 				data-num-cat="10"></a>
 		</div>
 
-		<div
+		<div 
 			class="container d-lg-flex flex-wrap align-items-center justify-content-center justify-content-lg-start --bs-bg-opacity: 1"
 			id="containerDataTables">
 
@@ -177,7 +177,7 @@
 	<div class="footer">
 		<footer th:replace="views/common/footer :: footer"></footer>
 	</div>
-
+<input id="lang" type="hidden" th:value="${lang}">
 	<div th:replace="views/common/commonLabels :: commonLabels"></div>
 
 
@@ -202,7 +202,8 @@
 	<script src="/js/datatables/datatableThesis.js"></script>
 	<script src="/js/datatables/datatableFacilities.js"></script>
 	<script src="/js/datatables/datatablePublications.js"></script>
-
+	<script src="/js/datatables/datatableAdmins.js"></script>
+	<script src="/js/header.js"></script>
 
 </body>
 </html>

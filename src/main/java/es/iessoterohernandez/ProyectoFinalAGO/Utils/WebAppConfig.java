@@ -21,10 +21,10 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public LocaleResolver localeResolver() {
+	public LocaleResolver localeResolver() {		
 		return new SessionLocaleResolver();
 	}
-
+	
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();

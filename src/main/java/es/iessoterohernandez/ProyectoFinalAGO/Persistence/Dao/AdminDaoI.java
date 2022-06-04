@@ -14,4 +14,12 @@ import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
 @Repository
 public interface AdminDaoI extends JpaRepository<Admin, Long> {
 
+	/**
+	 * Recupera un admin por su usuario
+	 * 
+	 * @param usernameAdmin
+	 * @return Admin
+	 */
+	public Admin findByUsernameAdmin(String usernameAdmin);
+
 }
