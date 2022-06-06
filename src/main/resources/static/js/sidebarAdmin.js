@@ -60,7 +60,8 @@ function getDataTableCategory(numCat) {
 		type: "post",
 		url: "/management/getDatatableCategory/",
 		data: {
-			numCat: numCat
+			numCat: numCat, 
+			inputUser: $("#inputUser").val()
 		},
 		success: function(html) {
 
@@ -126,14 +127,27 @@ function getDataTableCategory(numCat) {
 // DATEPICKER
 
 function activateDatePicker() {
+//
+//	var valores = window.location.search;
+//	var urlParams = new URLSearchParams(valores);
+debugger;
+var lang = $("#lang").val();
+var calendarLang;
 
-	const valores = window.location.search;
-	const urlParams = new URLSearchParams(valores);
+if (lang == "es") {
+		calendarLang="es";
+	} else if (lang == "es_ES") {
+		calendarLang="es";
+	} else if (lang == "en") {
+		calendarLang="en";
+	} else {
+		calendarLang="fr";
+	} 
 
-	var lang = urlParams.get('lang');
+
 	$('.input-group.date').datepicker({
 		format: "dd/mm/yyyy",
-		language: lang
+		language: calendarLang
 
 	});
 }

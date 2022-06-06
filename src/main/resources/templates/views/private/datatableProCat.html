@@ -82,6 +82,7 @@
 					</div>
 
 				</form>
+				<div class="alert-danger text-center mensajeError" id="addProCatError"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="submit" th:text="#{modal.btn.aceptar}"
@@ -135,6 +136,8 @@
 					<input type="hidden" id="idProCatUpdate">
 
 				</form>
+				<div class="alert-danger text-center mensajeError" id="updateProCatError"></div>
+				
 			</div>
 			<div class="modal-footer">
 				<button type="button" th:text="#{modal.btn.aceptar}"

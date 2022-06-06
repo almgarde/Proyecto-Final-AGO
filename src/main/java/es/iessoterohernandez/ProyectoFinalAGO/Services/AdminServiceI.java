@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.AdminDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.AdminsDatatableDto;
 
 /**
@@ -20,6 +20,7 @@ public interface AdminServiceI {
 	 * 
 	 * @param usernameAdmin
 	 * @return Admin
+	 * @throws Exception
 	 */
 	public Admin getAdminByUsername(String usernameAdmin) throws Exception;
 
@@ -38,6 +39,40 @@ public interface AdminServiceI {
 	 * @return Admin
 	 * @throws Exception
 	 */
-	public Admin addAdmin(Map<String, String> adminData) throws Exception;
+	public void addAdmin(Map<String, String> adminData) throws Exception;
+
+	/**
+	 * Recupera los datos personales de un administrador por su nombre de usuario
+	 * 
+	 * @param usernameAdmin
+	 * @return AdminDto
+	 * @throws Exception
+	 */
+	public AdminDto getAdminDataByUsername(String usernameAdmin) throws Exception;
+	
+	/**
+	 * Actualiza los datos personales de un administrador en BD
+	 * 
+	 * @param adminData
+	 * @return Admin
+	 * @throws Exception
+	 */
+	public void updateDataAdmin(Map<String, String> adminData) throws Exception;
+	
+	/**
+	 * Actualiza la contraseña de un administrador en BD
+	 * 
+	 * @param adminData
+	 * @throws Exception
+	 */
+	public void changePwdAdmins(Map<String, String> adminData) throws Exception;
+	
+	/**
+	 * Elimina un admin almacenado en BDD
+	 * 
+	 * @param adminsData
+	 * @throws Exception
+	 */
+	public void deleteAdmins(Map<String, String> adminData) throws Exception;
 
 }

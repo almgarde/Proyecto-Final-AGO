@@ -122,7 +122,7 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 				}
 
 				f.setPhotoFacility(photoFacilites);
-				f.setUpdateAdmin("agadelao");
+				f.setUpdateAdmin(facilitiesData.get("inputUser"));
 				f.setUpdateDate(new Date());
 
 				Facility facilitySaved = facilityDao.save(f);
@@ -179,7 +179,7 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 						f.setActive(false);
 					}
 
-					f.setUpdateAdmin("agadelao");
+					f.setUpdateAdmin(facilitiesData.get("inputUser"));
 					f.setUpdateDate(new Date());
 
 					facilityUpdated = facilityDao.save(f);
@@ -227,6 +227,7 @@ public class FacilitiesServiceImpl implements FacilitiesServiceI {
 				Facility f = facilityDao.findByIdFacility(Long.parseLong(facilitiesData.get("idFacility")));
 
 				if (f != null) {
+					f.setUpdateAdmin(facilitiesData.get("inputUser"));
 					f.setPhotoFacility(f.getIdFacility() + photoFacilities);
 					facilityPhotoUpdated = facilityDao.save(f);
 				} else {

@@ -63,9 +63,8 @@ function getDatatableAdmins() {
 
 	});
 
+$('#inputDeleteAdmins').val($('#inputUser').val());
 
-var inputPrueba = $('#inputPrueba').val();
-$('#prueba').text(inputPrueba);
 
 
 	// BOTONES
@@ -80,7 +79,6 @@ $('#prueba').text(inputPrueba);
 			e.stopPropagation();
 		} else {
 			anyadirNuevoAdmin();
-			$('#modalAddAdmins').modal('hide');
 		}
 		form.addClass('was-validated');
 
@@ -88,29 +86,133 @@ $('#prueba').text(inputPrueba);
 
 	$(document).on("click", "#btnCancelarAddAdmins", function() {
 		$("#formAddAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameAdmin").val('');
 		$("#emailAdmin").val('');
 		$("#usernameAdmin").val('');
 		$("#pwdAdmin").val('');
+		$("#pwdAdminAddConfirm").val('');
 	});
 
 	$(document).on("click", "#btnCloseAddAdmins", function() {
 		$("#formAddAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameAdmin").val('');
 		$("#emailAdmin").val('');
 		$("#usernameAdmin").val('');
 		$("#pwdAdmin").val('');
+		$("#pwdAdminAddConfirm").val('');
+	});
+
+	$("#modalAddAdmins").on('hide.bs.modal', function() {
+		$("#formAddAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 
+	$(document).on("click", "#btnAceptarUpdateDataAdmins", function(e) {
+
+		$('#modalUpdateDataAdmins').modal('show');
+		var form = $("#formUpdateDataAdmins");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+		} else {
+			actualizarDataAdmin();
+		}
+		form.addClass('was-validated');
+
+	});
+
+	$(document).on("click", "#btnCancelarUpdateDataAdmins", function() {
+		$("#formUpdateDataAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+
+	});
+
+	$(document).on("click", "#btnCloseUpdateDataAdmins", function() {
+		$("#formUpdateDataAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+
+	});
+
+	$("#modalUpdateDataAdmins").on('hide.bs.modal', function() {
+		$("#formUpdateDataAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
 
 
+	$(document).on("click", "#btnAceptarPwdAdminActualAdmins", function(e) {
+
+		$('#modalChangePwdAdmins').modal('show');
+		var form = $("#formChangePwdAdmins");
+
+		if (form[0].checkValidity() === false) {
+			e.preventDefault();
+			e.stopPropagation();
+		} else {
+			cambiarPwdAdmin();
+
+		}
+		form.addClass('was-validated');
+
+	});
+
+	$(document).on("click", "#btnCancelarChangePwdAdmins", function() {
+		$("#formChangePwdAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+		$("#pwdAdminActual").val('');
+		$("#pwdAdminNueva").val('');
+		$("#pwdAdminConfirm").val('');
+
+
+	});
+
+	$(document).on("click", "#btnCloseChangePwdAdmins", function() {
+		$("#formChangePwdAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+		$("#pwdAdminActual").val('');
+		$("#pwdAdminNueva").val('');
+		$("#pwdAdminConfirm").val('');
+	});
+
+	$("#modalChangePwdAdmins").on('hide.bs.modal', function() {
+		$("#formChangePwdAdmins").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
 
 }
 
 
 function mostrarModalAddAdmins() {
+	$(".mensajeError").hide();
+	$(".mensajeError").text('');
 	$("#modalAddAdmins").modal('toggle');
+}
+
+
+function mostrarModalUpdateDataAdmins() {
+	$(".mensajeError").hide();
+	$(".mensajeError").text('');
+	$('#nameAdminEdit').val($('#nameAdminInput').val());
+	$('#emailAdminEdit').val($('#emailAdminInput').val());
+	$("#modalUpdateDataAdmins").modal('toggle');
+}
+
+function mostrarModalChangePwdAdmins() {
+	$(".mensajeError").hide();
+	$(".mensajeError").text('');
+	$("#modalChangePwdAdmins").modal('toggle');
 }
 
 
@@ -123,6 +225,7 @@ function anyadirNuevoAdmin() {
 	form.append("emailAdmin", $("#emailAdmin").val());
 	form.append("usernameAdmin", $("#usernameAdmin").val());
 	form.append("pwdAdmin", $("#pwdAdmin").val());
+	form.append("pwdAdminConfirm", $("#pwdAdminAddConfirm").val());
 
 	$.ajax({
 		url: '/management/addAdminsData',
@@ -131,25 +234,168 @@ function anyadirNuevoAdmin() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
-				$('#adminsDatatable').DataTable().ajax.reload();
-				okMessage();
-				$(".alert").text($('#addOkMensaje').val());
-			} else {
-				errorMessage();
-				$(".alert").text($('#addErrorMensaje').val());
-			}
+			$('#adminsDatatable').DataTable().ajax.reload();
+			okMessage();
+			$(".alert").text($('#addOkMensaje').val());
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($('#addErrorMensaje').val());
+		error: function(e) {
+			$('#modalAddAdmins').modal('show');
+			$("#formAddAdmins").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+
+			if (e.responseText == "usernameAdminUnique") {
+				mensajeError = $('#usernameAdminUnique').val();
+			}
+			if (e.responseText == "emailAdminUnique") {
+				mensajeError = $('#emailAdminUnique').val();
+			}
+			if (e.responseText == "pswConfirmNoCoincide") {
+				mensajeError = $('#pswConfirmNoCoincide').val();
+			}
+
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formAddAdmins").removeClass('was-validated');
+		$('#modalAddAdmins').modal('hide');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameAdmin").val('');
 		$("#emailAdmin").val('');
 		$("#usernameAdmin").val('');
 		$("#pwdAdmin").val('');
+		$("#pwdAdminAddConfirm").val('');
 
+	});
+}
+
+function actualizarDataAdmin() {
+
+	let form = new FormData();
+
+	form.append("nameAdmin", $("#nameAdminEdit").val());
+	form.append("emailAdmin", $("#emailAdminEdit").val());
+	form.append("usernameAdmin", $("#inputUser").val());
+
+	$.ajax({
+		url: '/management/updateDataAdmins',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+
+			$('#adminsDatatable').DataTable().ajax.reload();
+			okMessage();
+			$(".alert").text($('#updateOkMensaje').val());
+			$("#nameAdminInput").val(form.get("nameAdmin"));
+			$("#emailAdminInput").val(form.get("emailAdmin"));
+
+		},
+		error: function(e) {
+			$('#modalUpdateDataAdmins').modal('show');
+			$("#formUpdateDataAdmins").removeClass('was-validated');
+			$(".mensajeError").show();
+
+			var mensajeError ="";
+
+			if (e.responseText == "emailAdminUnique") {
+				mensajeError = $('#emailAdminUnique').val();
+			}
+			$(".mensajeError").text(mensajeError);
+
+		}
+	}).done(function() {
+		$("#formUpdateDataAdmins").removeClass('was-validated');
+		$('#modalUpdateDataAdmins').modal('hide');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
+
+
+
+}
+
+
+function cambiarPwdAdmin() {
+	debugger;
+	let form = new FormData();
+	form.append("pwdAdminActual", $("#pwdAdminActual").val());
+	form.append("pwdAdminNueva", $("#pwdAdminNueva").val());
+	form.append("pwdAdminConfirm", $("#pwdAdminConfirm").val());
+	form.append("usernameAdmin", $("#inputUser").val());
+
+	$.ajax({
+		url: '/management/changePwdAdmins',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+
+			$('#adminsDatatable').DataTable().ajax.reload();
+			okMessage();
+			$(".alert").text($('#updateOkMensaje').val());
+
+		},
+		error: function(e) {
+			$('#modalChangePwdAdmins').modal('show');
+			$("#formChangePwdAdmins").removeClass('was-validated');
+			$(".mensajeError").show();
+
+
+			var mensajeError;
+			if (e.responseText == "pswActualMal") {
+				mensajeError = $('#pswActualMal').val();
+			}
+			if (e.responseText == "pswNuevaViejaIgual") {
+				mensajeError = $('#pswNuevaViejaIgual').val();
+			}
+			if (e.responseText == "pswConfirmNoCoincide") {
+				mensajeError = $('#pswConfirmNoCoincide').val();
+			}
+			$(".mensajeError").text(mensajeError);
+
+		}
+	}).done(function() {
+		$("#formChangePwdAdmins").removeClass('was-validated');
+		$('#modalChangePwdAdmins').modal('hide');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+		$("#pwdAdminActual").val('');
+		$("#pwdAdminNueva").val('');
+		$("#pwdAdminConfirm").val('');
+
+	});
+}
+
+function eliminarAdmin() {
+
+	let form = new FormData();
+
+	form.append("usernameAdmin", $("#inputUser").val());
+
+	$.ajax({
+		url: '/management/deleteAdminsData',
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: form,
+		success: function(data) {
+			$("#inputUser").val('');
+//			if (data == '') {
+//				$('#techCatDatatable').DataTable().ajax.reload();
+//				okMessage();
+//				$(".alert").text($('#deleteOkMensaje').val());
+//			} else {
+//				errorMessage();
+//				$(".alert").text($('#deleteErrorMensaje').val());
+//			}
+		},
+		error: function(data) {
+//			errorMessage();
+//			$(".alert").text($('#deleteErrorMensaje').val());
+		}
 	});
 }

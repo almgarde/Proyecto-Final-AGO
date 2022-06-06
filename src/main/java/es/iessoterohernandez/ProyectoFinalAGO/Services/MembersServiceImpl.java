@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.AuthorsPublicationDaoI;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.MemberDaoI;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.ProfessionalCategoryDaoI;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.MembersDto;
@@ -120,6 +121,41 @@ public class MembersServiceImpl implements MembersServiceI {
 		try {
 
 			if (membersData != null && !membersData.isEmpty() && !StringUtils.isEmpty(imageMember)) {
+				
+				List<Member> listaMembers = memberDao.findAll();
+				
+				if (!membersData.get("dniMember").isEmpty() && membersData.get("dniMember").length() != 9) {
+					throw new Exception("dniMemberLength");
+				} 
+				for (Member m : listaMembers) {
+					
+					if (membersData.get("shortNameMember").equals(m.getShortNameMember())) {
+						throw new Exception("shortNameMemberUnique");
+					}
+					
+					if (!membersData.get("dniMember").isEmpty() && membersData.get("dniMember").equals(m.getDniMember())) {
+						throw new Exception("dniMemberUnique");
+					}					
+					
+					
+					if (membersData.get("emailMember").equals(m.getEmailMember())) {
+						throw new Exception("emailMemberUnique");
+					}
+					
+					if (!membersData.get("reseachIdMember").isEmpty() && membersData.get("reseachIdMember").equals(m.getReseachIdMember())) {
+						throw new Exception("reseachIdMemberUnique");
+					}
+					
+					if (!membersData.get("scopusIdMember").isEmpty() && membersData.get("scopusIdMember").equals(m.getScopusIdMember())) {
+						throw new Exception("scopusIdMemberUnique");
+					}
+					
+					if (!membersData.get("orcIdMember").isEmpty() && membersData.get("orcIdMember").equals(m.getOrcIdMember())) {
+						throw new Exception("orcIdMemberUnique");
+					}
+					
+				}
+				
 
 				Member m = new Member();
 
@@ -142,7 +178,7 @@ public class MembersServiceImpl implements MembersServiceI {
 				}
 
 				m.setPhotoMember(imageMember);
-				m.setUpdateAdmin("agadelao");
+				m.setUpdateAdmin(membersData.get("inputUser"));
 				m.setUpdateDate(new Date());
 
 				Member memberSaved = memberDao.save(m);
@@ -186,6 +222,62 @@ public class MembersServiceImpl implements MembersServiceI {
 				Member m = memberDao.findByIdMember(Long.parseLong(membersData.get("idMembers")));
 
 				if (m != null) {
+					
+					List<Member> listaMembers = memberDao.findAll();
+					
+					if (!membersData.get("dniMember").isEmpty() && membersData.get("dniMember").length() != 9) {
+						throw new Exception("dniMemberLength");
+					}
+					
+					
+					if (!membersData.get("shortNameMember").equals(m.getShortNameMember())) {						
+						for (Member member : listaMembers) {
+							if (membersData.get("shortNameMember").equals(member.getShortNameMember())) {
+								throw new Exception("shortNameMemberUnique");
+							}
+						}
+					}
+					
+					if (!membersData.get("dniMember").isEmpty() && !membersData.get("dniMember").equals(m.getDniMember())) {						
+						for (Member member : listaMembers) {
+							if (membersData.get("dniMember").equals(member.getDniMember())) {
+								throw new Exception("dniMemberUnique");
+							}
+						}
+					}
+					
+					
+					if (!membersData.get("emailMember").equals(m.getEmailMember())) {						
+						for (Member member : listaMembers) {
+							if (membersData.get("emailMember").equals(member.getEmailMember())) {
+								throw new Exception("emailMemberUnique");
+							}
+						}
+					}
+					
+					if (!membersData.get("reseachIdMember").isEmpty() &&  !membersData.get("reseachIdMember").equals(m.getReseachIdMember())) {						
+						for (Member member : listaMembers) {
+							if (membersData.get("reseachIdMember").equals(member.getReseachIdMember())) {
+								throw new Exception("reseachIdMemberUnique");
+							}
+						}
+					}
+					
+					if (!membersData.get("scopusIdMember").isEmpty() &&  !membersData.get("scopusIdMember").equals(m.getScopusIdMember())) {						
+						for (Member member : listaMembers) {
+							if (membersData.get("scopusIdMember").equals(member.getScopusIdMember())) {
+								throw new Exception("scopusIdMemberUnique");
+							}
+						}
+					}
+					
+					if (!membersData.get("orcIdMember").isEmpty() &&  !membersData.get("orcIdMember").equals(m.getOrcIdMember())) {						
+						for (Member member : listaMembers) {
+							if (membersData.get("orcIdMember").equals(member.getOrcIdMember())) {
+								throw new Exception("orcIdMemberUnique");
+							}
+						}
+					}
 
 					m.setNameMember(membersData.get("nameMember"));
 					m.setShortNameMember(membersData.get("shortNameMember"));
@@ -204,7 +296,7 @@ public class MembersServiceImpl implements MembersServiceI {
 						m.setActive(false);
 					}
 
-					m.setUpdateAdmin("agadelao");
+					m.setUpdateAdmin(membersData.get("inputUser"));
 					m.setUpdateDate(new Date());
 
 					memberUpdated = memberDao.save(m);
@@ -251,6 +343,7 @@ public class MembersServiceImpl implements MembersServiceI {
 				Member m = memberDao.findByIdMember(Long.parseLong(membersData.get("idMembers")));
 
 				if (m != null) {
+					m.setUpdateAdmin(membersData.get("inputUser"));
 					m.setPhotoMember(m.getIdMember() + photoMembers);
 					memberPhotoUpdated = memberDao.save(m);
 				} else {

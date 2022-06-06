@@ -185,7 +185,7 @@ function getDatatableProCat() {
 			e.stopPropagation();
 		} else {
 			anyadirNuevaProCat();
-			$('#modalAddProCat').modal('hide');
+			
 		}
 		form.addClass('was-validated')
 
@@ -193,14 +193,24 @@ function getDatatableProCat() {
 
 	$(document).on("click", "#btnCancelarAddProCat", function() {
 		$("#formAddProCat").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameProCat").val('');
 		$("#active").val('1');
 	});
 
 	$(document).on("click", "#btnCloseAddProCat", function() {
 		$("#formAddProCat").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameProCat").val('');
 		$("#active").val('1');
+	});
+	
+						$("#modalAddProCat").on('hide.bs.modal', function() {
+		$("#formAddProCat").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnAceptarUpdateProCat", function(e) {
@@ -213,7 +223,7 @@ function getDatatableProCat() {
 			e.stopPropagation();
 		} else {
 			editarProCat();
-			$('#modalUpdateProCat').modal('hide');
+			
 		}
 		form.addClass('was-validated')
 
@@ -221,10 +231,20 @@ function getDatatableProCat() {
 
 	$(document).on("click", "#btnCancelarUpdateProCat", function(e) {
 		$("#formUpdateProCat").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnCloseUpdateProCat", function(e) {
 		$("#formUpdateProCat").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
+	
+						$("#modalUpdateProCat").on('hide.bs.modal', function() {
+		$("#formUpdateProCat").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnAceptarDeleteProCat", function(e) {
@@ -239,10 +259,13 @@ function getDatatableProCat() {
 
 function mostrarModalAddProCat() {
 	$("#modalAddProCat").modal('toggle');
+			$(".mensajeError").hide();
+		$(".mensajeError").text('');
 }
 
 function mostrarModalUpdateProCat(idProCat, nameProCat, active) {
-
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	$('#nameProCatEdit').val(nameProCat);
 	$('#idProCatUpdate').val(idProCat);
 
@@ -270,6 +293,7 @@ function anyadirNuevaProCat() {
 
 	form.append("nameProCat", $("#nameProCat").val());
 	form.append("active", $("#active").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/addProCatData',
@@ -278,21 +302,31 @@ function anyadirNuevaProCat() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
+//			if (data == '') {
 				$('#proCatDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text($("#addOkMensaje").val());
-			} else {
-				errorMessage();
-				$(".alert").text($("#addErrorMensaje").val());
-			}
+//			} else {
+//				errorMessage();
+//				$(".alert").text($("#addErrorMensaje").val());
+//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($("#addErrorMensaje").val());
+		error: function(e) {
+			$('#modalAddProCat').modal('show');
+			$("#formAddProCat").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+
+			if (e.responseText == "nameProCatUnique") {
+				mensajeError = $('#nameProCatUnique').val();
+			}
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formAddProCat").removeClass('was-validated');
+		$('#modalAddProCat').modal('hide');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameProCat").val('');
 		$("#active").val('1');
 	});
@@ -305,6 +339,7 @@ function editarProCat() {
 	form.append("idProCat", $("#idProCatUpdate").val());
 	form.append("nameProCat", $("#nameProCatEdit").val());
 	form.append("active", $("#activeEdit").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updateProCatData',
@@ -313,21 +348,31 @@ function editarProCat() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
+//			if (data == '') {
 				$('#proCatDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text($("#updateOkMensaje").val());
-			} else {
-				errorMessage();
-				$(".alert").text($("#updateErrorMensaje").val());
-			}
+//			} else {
+//				errorMessage();
+//				$(".alert").text($("#updateErrorMensaje").val());
+//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($("#updateErrorMensaje").val());
+		error: function(e) {
+						$('#modalUpdateProCat').modal('show');
+			$("#formUpdateProCat").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+
+			if (e.responseText == "nameProCatUnique") {
+				mensajeError = $('#nameProCatUnique').val();
+			}
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formUpdateProCat").removeClass('was-validated');
+		$('#modalUpdateProCat').modal('hide');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		
 	});
 }

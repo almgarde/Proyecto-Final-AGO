@@ -31,7 +31,7 @@
 				data-num-cat="10"></a>
 		</div>
 
-		<div 
+		<div
 			class="container d-lg-flex flex-wrap align-items-center justify-content-center justify-content-lg-start --bs-bg-opacity: 1"
 			id="containerDataTables">
 
@@ -153,6 +153,13 @@
 	<input id="inputCatPublication" type="hidden"
 		th:value="${catPublication}">
 
+
+	<input id="lang" type="hidden" th:value="${lang}">
+
+	<input id="inputUser" type="hidden"
+		th:value="${#httpServletRequest.remoteUser}">
+
+
 	<!-- MODAL - IMAGEN -->
 
 	<div class="modal" tabindex="-1" id="modalImageCarousel">
@@ -177,7 +184,7 @@
 	<div class="footer">
 		<footer th:replace="views/common/footer :: footer"></footer>
 	</div>
-<input id="lang" type="hidden" th:value="${lang}">
+
 	<div th:replace="views/common/commonLabels :: commonLabels"></div>
 
 
@@ -193,6 +200,7 @@
 		src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
 
 	<script src="/js/sidebarAdmin.js"></script>
+	<script src="/js/header.js"></script>
 	<script src="/js/datatables/datatableNews.js"></script>
 	<script src="/js/datatables/datatableProCat.js"></script>
 	<script src="/js/datatables/datatableTechCat.js"></script>
@@ -203,7 +211,7 @@
 	<script src="/js/datatables/datatableFacilities.js"></script>
 	<script src="/js/datatables/datatablePublications.js"></script>
 	<script src="/js/datatables/datatableAdmins.js"></script>
-	<script src="/js/header.js"></script>
+
 
 </body>
 </html>

@@ -20,6 +20,8 @@ public class PublicationsFormDto {
 
 	private String active;
 
+	private String admin;
+
 	public String getIdPublication() {
 		return idPublication;
 	}
@@ -74,6 +76,14 @@ public class PublicationsFormDto {
 
 	public void setActive(String active) {
 		this.active = active;
+	}
+
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
 	}
 
 }

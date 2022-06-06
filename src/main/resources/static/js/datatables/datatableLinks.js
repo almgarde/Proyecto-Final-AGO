@@ -243,7 +243,7 @@ function getDatatableLinks() {
 			e.stopPropagation();
 		} else {
 			anyadirNuevoLinks();
-			$('#modalAddLinks').modal('hide');
+			
 		}
 		form.addClass('was-validated')
 
@@ -251,6 +251,8 @@ function getDatatableLinks() {
 
 	$(document).on("click", "#btnCancelarAddLinks", function() {
 		$("#formAddLinks").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#titleLinks").val('');
 		$("#imageLinks").val('');
 		$("#urlLinks").val('');
@@ -259,12 +261,21 @@ function getDatatableLinks() {
 
 	$(document).on("click", "#btnCloseAddLinks", function() {
 		$("#formAddLinks").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#titleLinks").val('');
 		$("#imageLinks").val('');
 		$("#urlLinks").val('');
 		$("#active").val('1');
 
 	});
+	
+			$("#modalAddLinks").on('hide.bs.modal', function() {
+		$("#formAddLinks").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
+	
 
 	$(document).on("click", "#btnAceptarUpdateLinks", function(e) {
 
@@ -276,7 +287,7 @@ function getDatatableLinks() {
 			e.stopPropagation();
 		} else {
 			editarLinks();
-			$('#modalUpdateLinks').modal('hide');
+			
 		}
 		form.addClass('was-validated');
 
@@ -284,10 +295,21 @@ function getDatatableLinks() {
 
 	$(document).on("click", "#btnCancelarUpdateLinks", function(e) {
 		$("#formUpdateLinks").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnCloseUpdateLinks", function(e) {
 		$("#formUpdateLinks").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
+	
+	
+			$("#modalUpdateLinks").on('hide.bs.modal', function() {
+		$("#formUpdateLinks").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 
@@ -316,6 +338,10 @@ function getDatatableLinks() {
 		$("#formUpdateImageLinks").removeClass('was-validated');
 		$("#imageLinksEdit").val('');
 	});
+	
+			$("#modalUpdateImageLinks").on('hide.bs.modal', function() {
+		$("#formUpdateImageLinks").removeClass('was-validated');
+	});
 
 	$(document).on("click", "#btnAceptarDeleteLinks", function(e) {
 		e.preventDefault();
@@ -329,6 +355,8 @@ function getDatatableLinks() {
 
 function mostrarModalAddLinks() {
 	$("#modalAddLinks").modal('toggle');
+			$(".mensajeError").hide();
+		$(".mensajeError").text('');
 }
 
 function mostrarModalImagenLink(titleLink, imagen) {
@@ -338,6 +366,8 @@ function mostrarModalImagenLink(titleLink, imagen) {
 }
 
 function mostrarModalUpdateLinks(idLink, titleLink, urlLink, active) {
+			$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	$('#titleLinksEdit').val(titleLink);
 	$('#urlLinksEdit').val(urlLink);
 	$('#idLinksUpdate').val(idLink);
@@ -372,6 +402,7 @@ function anyadirNuevoLinks() {
 	form.append("titleLinks", $("#titleLinks").val());
 	form.append("urlLinks", $("#urlLinks").val());
 	form.append("active", $("#active").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/addLinksData',
@@ -380,21 +411,32 @@ function anyadirNuevoLinks() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
+//			if (data == '') {
 				$('#linksDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text($("#addOkMensaje").val());
-			} else {
-				errorMessage();
-				$(".alert").text($("#addOkMensaje").val());
-			}
+//			} else {
+//				errorMessage();
+//				$(".alert").text($("#addOkMensaje").val());
+//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($("#addOkMensaje").val());
+		error: function(e) {
+			$('#modalAddLinks').modal('show');
+			$("#formAddLinks").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+
+			if (e.responseText == "titleLinkUnique") {
+				mensajeError = $('#titleLinkUnique').val();
+			}
+
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formAddLinks").removeClass('was-validated');
+		$('#modalAddLinks').modal('hide');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#titleLinks").val('');
 		$("#imageLinks").val('');
 		$("#urlLinks").val('');
@@ -411,6 +453,7 @@ function editarLinks() {
 	form.append("urlLink", $("#urlLinksEdit").val());
 	form.append("idLink", $("#idLinksUpdate").val());
 	form.append("active", $("#activeEdit").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updateLinksData',
@@ -419,21 +462,32 @@ function editarLinks() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
+//			if (data == '') {
 				$('#linksDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text($("#updateOkMensaje").val());
-			} else {
-				errorMessage();
-				$(".alert").text($("#updateErrorMensaje").val());
-			}
+//			} else {
+//				errorMessage();
+//				$(".alert").text($("#updateErrorMensaje").val());
+//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($("#updateErrorMensaje").val());
+		error: function(e) {
+			$('#modalUpdateLinks').modal('show');
+			$("#formUpdateLinks").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+
+			if (e.responseText == "titleLinkUnique") {
+				mensajeError = $('#titleLinkUnique').val();
+			}
+
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formUpdateLinks").removeClass('was-validated');
+		$('#modalUpdateLinks').modal('hide');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#titleLinksEdit").val('');
 		$("#idLinksUpdate").val('');
 		$("#activeEdit").val('1');
@@ -446,6 +500,7 @@ function editarImagenLinks() {
 
 	form.append("file", $('#imageLinksEdit')[0].files[0]);
 	form.append("idLink", $("#idLinksUpdateImage").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updateImageLinksData',

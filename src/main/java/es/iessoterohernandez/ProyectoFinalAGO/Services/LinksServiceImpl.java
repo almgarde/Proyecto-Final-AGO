@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.LinkDaoI;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Link;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.LinksDto;
@@ -99,6 +100,16 @@ public class LinksServiceImpl implements LinksServiceI {
 		try {
 			if (linksData != null && !linksData.isEmpty() && !StringUtils.isEmpty(imageLinks)) {
 
+				List<Link> listaLinks = linkDao.findAll();
+
+				for (Link link : listaLinks) {
+
+					if (linksData.get("titleLinks").equals(link.getTitleLink())) {
+						throw new Exception("titleLinkUnique");
+					}
+
+				}
+
 				Link l = new Link();
 
 				l.setTitleLink(linksData.get("titleLinks"));
@@ -110,7 +121,7 @@ public class LinksServiceImpl implements LinksServiceI {
 				}
 
 				l.setImageLink(imageLinks);
-				l.setUpdateAdmin("agadelao");
+				l.setUpdateAdmin(linksData.get("inputUser"));
 				l.setUpdateDate(new Date());
 
 				Link linksSaved = linkDao.save(l);
@@ -154,6 +165,15 @@ public class LinksServiceImpl implements LinksServiceI {
 				Link l = linkDao.findByIdLink(Long.parseLong(linksData.get("idLink")));
 
 				if (l != null) {
+					
+					if (!linksData.get("titleLink").equals(l.getTitleLink())) {
+						List<Link> listaLinks = linkDao.findAll();
+						for (Link link : listaLinks) {
+							if (linksData.get("titleLink").equals(link.getTitleLink())) {
+								throw new Exception("titleLinkUnique");
+							}
+						}
+					}
 
 					l.setTitleLink(linksData.get("titleLink"));
 					l.setUrlLink(linksData.get("urlLink"));
@@ -163,7 +183,7 @@ public class LinksServiceImpl implements LinksServiceI {
 						l.setActive(false);
 					}
 
-					l.setUpdateAdmin("agadelao");
+					l.setUpdateAdmin(linksData.get("inputUser"));
 					l.setUpdateDate(new Date());
 
 					linkUpdated = linkDao.save(l);
@@ -211,6 +231,7 @@ public class LinksServiceImpl implements LinksServiceI {
 				Link l = linkDao.findByIdLink(Long.parseLong(linksData.get("idLink")));
 
 				if (l != null) {
+					l.setUpdateAdmin(linksData.get("inputUser"));
 					l.setImageLink(l.getIdLink() + photoLinks);
 					linkPhotoUpdated = linkDao.save(l);
 				} else {

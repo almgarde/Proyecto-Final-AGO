@@ -30,6 +30,9 @@
 <input type="hidden"  id ="activoSi" th:value="#{datatable.table.activo.si}">
 <input type="hidden"  id ="activoNo" th:value="#{datatable.table.activo.no}">
 
+<!-- <input type="hidden"  id ="maxAbstractTextArea" th:value="#{datatable.modal.maximo.abstract}"> -->
+<!-- <input type="hidden"  id ="maxTextArea" th:value="#{datatable.modal.maximo}"> -->
+
 <input type="hidden"  id ="addOkMensaje" th:value="#{datatable.mensaje.add.confirmacion}">
 <input type="hidden"  id ="updateOkMensaje" th:value="#{datatable.mensaje.update.confirmacion}">
 <input type="hidden"  id ="deleteOkMensaje" th:value="#{datatable.mensaje.delete.confirmacion}">
@@ -81,6 +84,54 @@
 <input type="hidden"  id ="coverPageThesisLabel" th:value="#{datatable.thesis.portada}">
 <input type="hidden"  id ="directorsThesisLabel" th:value="#{datatable.thesis.directores}">
 <input type="hidden"  id ="urlThesisLabel" th:value="#{datatable.thesis.url}">
+
+
+<!-- MENSAJES ERROR - ADMINS  -->
+
+<input type="hidden"  id ="usernameAdminUnique" th:value="#{admins.form.username.unique}">
+<input type="hidden"  id ="emailAdminUnique" th:value="#{admins.form.email.unique}">
+<input type="hidden"  id ="pswActualMal" th:value="#{admins.form.email.password.noactual}">
+<input type="hidden"  id ="pswNuevaViejaIgual" th:value="#{admins.form.email.password.nocambiada}">
+<input type="hidden"  id ="pswConfirmNoCoincide" th:value="#{admins.form.email.password.nocoincideconfirm}">
+
+
+<!-- MENSAJES ERROR - LINKS  -->
+
+<input type="hidden"  id ="titleLinkUnique" th:value="#{links.form.title.unique}">
+
+
+<!-- MENSAJES ERROR - MEMBERS  -->
+
+<input type="hidden"  id ="shortNameMemberUnique" th:value="#{members.form.shortname.unique}">
+<input type="hidden"  id ="dniMemberUnique" th:value="#{members.form.dni.unique}">
+<input type="hidden"  id ="dniMemberLength" th:value="#{members.form.dni.length}">
+<input type="hidden"  id ="emailMemberUnique" th:value="#{members.form.email.unique}">
+<input type="hidden"  id ="reseachIdMemberUnique" th:value="#{members.form.researchid.unique}">
+<input type="hidden"  id ="scopusIdMemberUnique" th:value="#{members.form.scopusid.unique}">
+<input type="hidden"  id ="orcIdMemberUnique" th:value="#{members.form.orcid.unique}">
+
+
+
+<!-- MENSAJES ERROR - NEWS  -->
+
+<input type="hidden"  id ="titleNewsUnique" th:value="#{news.form.title.unique}">
+<input type="hidden"  id ="contentNewsLength" th:value="#{news.form.content.length}">
+
+
+<!-- MENSAJES ERROR - PROCAT  -->
+
+<input type="hidden"  id ="nameProCatUnique" th:value="#{procat.form.name.unique}">
+
+
+<!-- MENSAJES ERROR - TECHCAT  -->
+
+<input type="hidden"  id ="nameTechCatUnique" th:value="#{techcat.form.name.unique}">
+
+
+<!-- MENSAJES ERROR - PROJECT  -->
+
+<input type="hidden"  id ="titleProjectsUnique" th:value="#{project.form.title.unique}">
+
 
 
 

@@ -23,8 +23,7 @@
 				<th th:text="#{datatable.thesis.doctor}" class="atri" scope="col"></th>
 				<th th:text="#{datatable.thesis.titulo}" class="atri" scope="col"></th>
 				<th th:text="#{datatable.thesis.portada}" class="atri" scope="col"></th>
-				<th th:text="#{datatable.thesis.fecha}"
-					class="atri"
+				<th th:text="#{datatable.thesis.fecha}" class="atri"
 					style="word-break: break-word; white-space: pre-line;" scope="col"></th>
 				<th th:text="#{datatable.thesis.directores}" class="atri"
 					scope="col"></th>
@@ -44,8 +43,7 @@
 				<th th:text="#{datatable.thesis.doctor}" class="atri" scope="col"></th>
 				<th th:text="#{datatable.thesis.titulo}" class="atri" scope="col"></th>
 				<th th:text="#{datatable.thesis.portada}" class="atri" scope="col"></th>
-				<th th:text="#{datatable.thesis.fecha}"
-					class="atri"
+				<th th:text="#{datatable.thesis.fecha}" class="atri"
 					style="word-break: break-word; white-space: pre-line;" scope="col"></th>
 				<th th:text="#{datatable.thesis.directores}" class="atri"
 					scope="col"></th>
@@ -148,8 +146,9 @@
 
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.thesis.titulo}" for="titleThesis"></label>
-						<textarea class="form-control" id="titleThesis"
-							required></textarea>
+						<textarea class="form-control" id="titleThesis" maxlength="3500" required></textarea>
+						<small id="titleThesisMaxContador"></small>
+						<small id="titleThesisMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.thesis.modal.validacion.titulo}"
 							class="invalid-feedback"></div>
 					</div>
@@ -175,8 +174,8 @@
 								type="text" class="form-control" required>
 							<div th:text="#{datatable.thesis.modal.validacion.fecha}"
 								class="invalid-feedback"></div>
-
-							<span id ="calendarThesis" class="input-group-text bg-white d-block"><span
+							<span id="calendarThesis"
+								class="input-group-text bg-white d-block"><span
 								class="input-group-append"> <i class="bi bi-calendar3"></i></span>
 							</span>
 						</div>
@@ -264,8 +263,9 @@
 
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.thesis.titulo}" for="titleThesisEdit"></label>
-						<textarea class="form-control" id="titleThesisEdit"
-							required></textarea>
+						<textarea class="form-control" id="titleThesisEdit" maxlength="3500" required></textarea>
+						<small id="titleThesisMaxContadorEdit"></small>
+						<small id="titleThesisMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.thesis.modal.validacion.titulo}"
 							class="invalid-feedback"></div>
 					</div>
@@ -280,7 +280,8 @@
 								type="text" class="form-control" required>
 							<div th:text="#{datatable.thesis.modal.validacion.fecha}"
 								class="invalid-feedback"></div>
-							<span id ="calendarThesis" class="input-group-text bg-white d-block"><span
+							<span id="calendarThesis"
+								class="input-group-text bg-white d-block"><span
 								class="input-group-append"> <i class="bi bi-calendar3"></i></span>
 							</span>
 						</div>

@@ -118,7 +118,9 @@
 
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.projects.titulo}" for="titleProjects"></label>
-						<textarea class="form-control" id="titleProjects" required></textarea>
+						<textarea class="form-control" id="titleProjects" maxlength="3500" required></textarea>
+						<small id="titleProjectMaxContador"></small>
+						<small id="titleProjectMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.projects.modal.validacion.titulo}"
 							class="invalid-feedback"></div>
 					</div>
@@ -138,8 +140,9 @@
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.projects.descripcion}"
 							for="descProjects"></label>
-						<textarea class="form-control" id="descProjects" required></textarea>
-						<small th:text="#{datatable.modal.maximo}"></small>
+						<textarea class="form-control" id="descProjects" maxlength="3500" required></textarea>
+						<small id="descriptionProjectMaxContador"></small>
+						<small id="descriptionProjectMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.projects.modal.validacion.descripcion}"
 							class="invalid-feedback"></div>
 					</div>
@@ -156,6 +159,7 @@
 					</div>
 
 				</form>
+				<div class="alert-danger text-center mensajeError" id="addProjectsError"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" th:text="#{modal.btn.aceptar}"
@@ -190,7 +194,9 @@
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.projects.titulo}"
 							for="titleProjectsEdit"></label>
-						<textarea class="form-control" id="titleProjectsEdit" required></textarea>
+						<textarea class="form-control" id="titleProjectsEdit" maxlength="3500" required></textarea>
+						<small id="titleProjectMaxContadorEdit"></small>
+						<small id="titleProjectMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.projects.modal.validacion.titulo}"
 							class="invalid-feedback"></div>
 					</div>
@@ -200,8 +206,9 @@
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.projects.descripcion}"
 							for="descProjectsEdit"></label>
-						<textarea class="form-control" id="descProjectsEdit" required></textarea>
-						<small th:text="#{datatable.modal.maximo}"></small>
+						<textarea class="form-control" id="descProjectsEdit" maxlength="3500" required></textarea>
+						<small id="descriptionProjectMaxContadorEdit"></small>
+						<small id="descriptionProjectMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.projects.modal.validacion.descripcion}"
 							class="invalid-feedback"></div>
 					</div>
@@ -220,6 +227,7 @@
 					<input type="hidden" id="idProjectUpdate">
 
 				</form>
+				<div class="alert-danger text-center mensajeError" id="updateProjectsError"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" th:text="#{modal.btn.aceptar}"

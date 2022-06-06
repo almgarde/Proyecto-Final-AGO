@@ -117,7 +117,9 @@
 							<label th:text="#{datatable.publications.titulo}"
 								for="titlePublication"></label>
 							<textarea class="form-control" id="titlePublication"
-								th:field="*{titlePublication}" required></textarea>
+								th:field="*{titlePublication}" maxlength="3500" required></textarea>
+								<small id="titlePublicationMaxContador"></small>
+						<small id="titlePublicationMax" th:text="#{datatable.modal.maximo}"></small>
 							<div th:text="#{datatable.publications.modal.validacion.titulo}"
 								class="invalid-feedback"></div>
 						</div>
@@ -228,6 +230,11 @@
 							</select>
 						</div>
 
+						<!-- ADMIN -->
+
+						<input id="inputUserPublication" th:field="*{admin}" type="hidden"
+							th:value="${#httpServletRequest.remoteUser}">
+
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -267,7 +274,9 @@
 							<label th:text="#{datatable.publications.titulo}"
 								for="titlePublicationEdit"></label>
 							<textarea class="form-control" id="titlePublicationEdit"
-								th:field="*{titlePublication}" required></textarea>
+								th:field="*{titlePublication}" maxlength="3500" required></textarea>
+								<small id="titlePublicationMaxContadorEdit"></small>
+						<small id="titlePublicationMax" th:text="#{datatable.modal.maximo}"></small>
 							<div th:text="#{datatable.publications.modal.validacion.titulo}"
 								class="invalid-feedback"></div>
 						</div>
@@ -385,8 +394,11 @@
 							</select>
 						</div>
 
-						<input th:field="*{idPublication}" type="hidden"
-							id="idPublicationEdit">
+						<!-- ADMIN -->
+
+						<input id="inputUserPublicationEdit" th:field="*{admin}" type="hidden"
+							th:value="${#httpServletRequest.remoteUser}"> <input
+							th:field="*{idPublication}" type="hidden" id="idPublicationEdit">
 
 					</form>
 				</div>

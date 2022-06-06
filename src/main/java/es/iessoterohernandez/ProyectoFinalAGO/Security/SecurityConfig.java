@@ -40,20 +40,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.authorizeRequests()
 		.antMatchers(resources).permitAll()
-		.antMatchers("/","/home", "/facilities", "/links", "/members", "/news/**", "/projects", "/publications", "/thesis").permitAll()
+		.antMatchers("/","/home", "/facilities", "/links", "/members/**", "/news/**", "/projects", "/publications", "/thesis").permitAll()
 			.anyRequest().authenticated()
 			.and()
         .formLogin()
         .loginPage("/login")
         .permitAll()
 	        .defaultSuccessUrl("/management")
-	        .failureUrl("/home?error=true")
+	        .failureUrl("/login?error=true")
 	        .usernameParameter("username")
 	        .passwordParameter("password")
 	        .and()
         .logout()
 	        .permitAll()
-	        .logoutSuccessUrl("/home?logout")
+	        .logoutSuccessUrl("/home")
 	     .and()
 	     .csrf().disable();
 		

@@ -289,7 +289,7 @@ function getDatatableMembers() {
 			e.stopPropagation();
 		} else {
 			anyadirNuevoMiembro();
-			$('#modalAddMembers').modal('hide');
+			
 		}
 		form.addClass('was-validated');
 
@@ -297,12 +297,15 @@ function getDatatableMembers() {
 
 	$(document).on("click", "#btnCancelarAddMembers", function() {
 		$("#formAddMembers").removeClass('was-validated');
+		$('#trajectoryMembersMaxContador').html(max_chars_content);
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameMember").val('');
 		$("#shortNameMember").val('');
 		$("#dniMember").val('');
 		$("#emailMember").val('');
 		$("#phoneMember").val('');
-		$("#idProCat").val('');
+		$("#idProCatActiveSelect").val('');
 		$("#reseachIdMember").val('');
 		$("#shortNameMember").val('');
 		$("#scopusIdMember").val('');
@@ -314,12 +317,15 @@ function getDatatableMembers() {
 
 	$(document).on("click", "#btnCloseAddMembers", function() {
 		$("#formAddMembers").removeClass('was-validated');
+		$('#trajectoryMembersMaxContador').html(max_chars_content);
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameMember").val('');
 		$("#shortNameMember").val('');
 		$("#dniMember").val('');
 		$("#emailMember").val('');
 		$("#phoneMember").val('');
-		$("#idProCat").val('');
+		$("#idProCatActiveSelect").val('');
 		$("#reseachIdMember").val('');
 		$("#imageMembers").val('');
 		$("#scopusIdMember").val('');
@@ -327,6 +333,12 @@ function getDatatableMembers() {
 		$("#trajectoryMember").val('');
 		$("#active").val('1');
 		$('#imageMembers').val('');
+	});
+	
+				$("#modalAddMembers").on('hide.bs.modal', function() {
+		$("#formAddMembers").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 
@@ -340,7 +352,7 @@ function getDatatableMembers() {
 			e.stopPropagation();
 		} else {
 			editarMiembro();
-			$('#modalUpdateMembers').modal('hide');
+			
 		}
 		form.addClass('was-validated');
 
@@ -348,14 +360,24 @@ function getDatatableMembers() {
 
 	$(document).on("click", "#btnCancelarUpdateMembers", function() {
 		$("#formUpdateMembers").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 
 	});
 
 	$(document).on("click", "#btnCloseUpdateMembers", function() {
 		$("#formUpdateMembers").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 
 	});
 
+
+			$("#modalUpdateMembers").on('hide.bs.modal', function() {
+		$("#formUpdateMembers").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
 
 	$(document).on("click", "#btnAceptarUpdatePhotoMembers", function(e) {
 
@@ -382,10 +404,36 @@ function getDatatableMembers() {
 		$("#formUpdatePhotoMembers").removeClass('was-validated');
 		$("#imageMembersEdit").val('');
 	});
+	
+				$("#modalUpdatePhotoMembers").on('hide.bs.modal', function() {
+		$("#formUpdatePhotoMembers").removeClass('was-validated');
+
+	});
 
 	$(document).on("click", "#btnAceptarDeleteMembers", function(e) {
 		e.preventDefault();
 		eliminarMiembro();
+	});
+	
+	
+		var max_chars_content = 3500;
+
+
+$('#trajectoryMembersMaxContador').html(max_chars_content);
+
+	$('#trajectoryMember').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#trajectoryMembersMaxContador').html(diff);
+
+	});
+	
+
+	$('#trajectoryMemberEdit').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#trajectoryMembersMaxContadorEdit').html(diff);
+
 	});
 
 }
@@ -420,10 +468,13 @@ function mostrarModalMemberTrajectory(nameMember, trajectoryMember) {
 
 function mostrarModalAddMembers() {
 	$("#modalAddMembers").modal('toggle');
+			$(".mensajeError").hide();
+		$(".mensajeError").text('');
 }
 
 function mostrarModalUpdateMembers(idMember, nameMember, shortNameMember, dniMember, idProCat, activeProCat, emailMember, phoneMember, reseachIdMember, scopusIdMember, orcIdMember, trajectoryMember, active) {
-
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	$('#nameMemberEdit').val(nameMember);
 	$('#shortNameMemberEdit').val(shortNameMember);
 	$('#dniMemberEdit').val(dniMember);
@@ -447,6 +498,16 @@ function mostrarModalUpdateMembers(idMember, nameMember, shortNameMember, dniMem
 	} else {
 		$('#activeEdit').val('0');
 	}
+	
+	if (trajectoryMember != null) {
+	var charsInit = trajectoryMember.length;
+	var diffInit = 3500 - charsInit;
+	$('#trajectoryMembersMaxContadorEdit').html(diffInit);
+	} else {
+		$('#trajectoryMembersMaxContadorEdit').html(3500);
+	}
+	
+	
 	$("#modalUpdateMembers").modal('toggle');
 
 }
@@ -480,6 +541,7 @@ function anyadirNuevoMiembro() {
 	form.append("orcIdMember", $("#orcIdMember").val());
 	form.append("trajectoryMember", $("#trajectoryMember").val());
 	form.append("active", $("#active").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/addMembersData',
@@ -488,21 +550,50 @@ function anyadirNuevoMiembro() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
+//			if (data == '') {
 				$('#membersDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text($("#addOkMensaje").val());
-			} else {
-				errorMessage();
-				$(".alert").text($("#addErrorMensaje").val());
-			}
+//			} else {
+//				errorMessage();
+//				$(".alert").text($("#addErrorMensaje").val());
+//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($("#addErrorMensaje").val());
+		error: function(e) {
+			$('#modalAddMembers').modal('show');
+			$("#formAddMembers").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+debugger;
+			if (e.responseText == "shortNameMemberUnique") {
+				mensajeError = $('#shortNameMemberUnique').val();
+			}
+			if (e.responseText == "dniMemberUnique") {
+				mensajeError = $('#dniMemberUnique').val();
+			}
+			if (e.responseText == "dniMemberLength") {
+				mensajeError = $('#dniMemberLength').val();
+			}
+			if (e.responseText == "emailMemberUnique") {
+				mensajeError = $('#emailMemberUnique').val();
+			}
+			if (e.responseText == "reseachIdMemberUnique") {
+				mensajeError = $('#reseachIdMemberUnique').val();
+			}
+			if (e.responseText == "scopusIdMemberUnique") {
+				mensajeError = $('#scopusIdMemberUnique').val();
+			}
+			if (e.responseText == "orcIdMemberUnique") {
+				mensajeError = $('#orcIdMemberUnique').val();
+			}
+
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formAddMembers").removeClass('was-validated');
+		$('#modalAddMembers').modal('hide');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameMember").val('');
 		$("#shortNameMember").val('');
 		$("#dniMember").val('');
@@ -536,6 +627,7 @@ function editarMiembro() {
 	form.append("trajectoryMember", $("#trajectoryMemberEdit").val());
 	form.append("active", $("#activeEdit").val());
 	form.append("idMembers", $("#idMembersUpdate").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updateMembersData',
@@ -544,22 +636,52 @@ function editarMiembro() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
+//			if (data == '') {
 				$('#membersDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text($("#updateOkMensaje").val());
-			} else {
-				errorMessage();
-				$(".alert").text($("#updateErrorMensaje").val());
-			}
+//			} else {
+//				errorMessage();
+//				$(".alert").text($("#updateErrorMensaje").val());
+//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($("#updateErrorMensaje").val());
+		error: function(e) {
+			$('#modalUpdateMembers').modal('show');
+			$("#formUpdateMember").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+
+			if (e.responseText == "shortNameMemberUnique") {
+				mensajeError = $('#shortNameMemberUnique').val();
+			}
+			if (e.responseText == "dniMemberUnique") {
+				mensajeError = $('#dniMemberUnique').val();
+			}
+			if (e.responseText == "dniMemberLength") {
+				mensajeError = $('#dniMemberLength').val();
+			}
+			if (e.responseText == "emailMemberUnique") {
+				mensajeError = $('#emailMemberUnique').val();
+			}
+			if (e.responseText == "reseachIdMemberUnique") {
+				mensajeError = $('#reseachIdMemberUnique').val();
+			}
+			if (e.responseText == "scopusIdMemberUnique") {
+				mensajeError = $('#scopusIdMemberUnique').val();
+			}
+			if (e.responseText == "orcIdMemberUnique") {
+				mensajeError = $('#orcIdMemberUnique').val();
+			}
+
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
+		$("#formUpdateMember").removeClass('was-validated');
+		$('#modalUpdateMembers').modal('hide');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$('#imageMembersEdit').val('');
-		$("#formUpdateMembers").removeClass('was-validated');
+		
 	});
 }
 
@@ -569,6 +691,7 @@ function editarFotoMiembro() {
 
 	form.append("file", $('#imageMembersEdit')[0].files[0]);
 	form.append("idMembers", $("#idMembersPhotoUpdate").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updatePhotoMembersData',

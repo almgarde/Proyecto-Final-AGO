@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.FacilityDaoI;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.TechnicalCategoryDaoI;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.TechnicalCategory;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.TechCatDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.TechCatDatatableDto;
@@ -104,6 +105,15 @@ public class TechCatServiceImpl implements TechCatServiceI {
 
 			if (techCatData != null && !techCatData.isEmpty()) {
 
+				List<TechnicalCategory> listaTechCat = techCatDao.findAll();
+				for (TechnicalCategory techCat : listaTechCat) {
+
+					if (techCatData.get("nameTechCat").equals(techCat.getNameTechCat())) {
+						throw new Exception("nameTechCatUnique");
+					}
+
+				}
+
 				TechnicalCategory tc = new TechnicalCategory();
 
 				tc.setNameTechCat(techCatData.get("nameTechCat"));
@@ -114,7 +124,7 @@ public class TechCatServiceImpl implements TechCatServiceI {
 					tc.setActive(false);
 				}
 
-				tc.setUpdateAdmin("agadelao");
+				tc.setUpdateAdmin(techCatData.get("inputUser"));
 				tc.setUpdateDate(new Date());
 
 				techCatSaved = techCatDao.save(tc);
@@ -157,6 +167,15 @@ public class TechCatServiceImpl implements TechCatServiceI {
 				TechnicalCategory tc = techCatDao.findByIdTechCat(Long.parseLong(techCatData.get("idTechCat")));
 
 				if (tc != null) {
+					
+					if (!techCatData.get("nameTechCat").equals(tc.getNameTechCat())) {
+						List<TechnicalCategory> listaTechCat = techCatDao.findAll();
+						for (TechnicalCategory techCat : listaTechCat) {
+							if (techCatData.get("nameTechCat").equals(techCat.getNameTechCat())) {
+								throw new Exception("nameTechCatUnique");
+							}
+						}
+					}
 
 					tc.setNameTechCat(techCatData.get("nameTechCat"));
 
@@ -173,7 +192,7 @@ public class TechCatServiceImpl implements TechCatServiceI {
 						tc.setActive(false);
 					}
 
-					tc.setUpdateAdmin("agadelao");
+					tc.setUpdateAdmin(techCatData.get("inputUser"));
 					tc.setUpdateDate(new Date());
 
 					techCatUpdated = techCatDao.save(tc);

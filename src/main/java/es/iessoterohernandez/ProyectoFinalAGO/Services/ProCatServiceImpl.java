@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.MemberDaoI;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.ProfessionalCategoryDaoI;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.ProfessionalCategory;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ProCatDatatableDto;
@@ -103,6 +104,15 @@ public class ProCatServiceImpl implements ProCatServiceI {
 		try {
 
 			if (proCatData != null && !proCatData.isEmpty()) {
+				
+				List<ProfessionalCategory> listaProCat = proCatDao.findAll();
+				for (ProfessionalCategory proCat : listaProCat) {
+					
+					if (proCatData.get("nameProCat").equals(proCat.getNameProCat())) {
+						throw new Exception("nameProCatUnique");					}
+
+					
+				}
 
 				ProfessionalCategory pc = new ProfessionalCategory();
 
@@ -114,7 +124,7 @@ public class ProCatServiceImpl implements ProCatServiceI {
 					pc.setActive(false);
 				}
 
-				pc.setUpdateAdmin("agadelao");
+				pc.setUpdateAdmin(proCatData.get("inputUser"));
 				pc.setUpdateDate(new Date());
 
 				proCatSaved = proCatDao.save(pc);
@@ -157,6 +167,16 @@ public class ProCatServiceImpl implements ProCatServiceI {
 				ProfessionalCategory pc = proCatDao.findByIdProCat(Long.parseLong(proCatData.get("idProCat")));
 
 				if (pc != null) {
+					
+					if (!proCatData.get("nameProCat").equals(pc.getNameProCat())) {
+						List<ProfessionalCategory> listaProCat = proCatDao.findAll();
+						for (ProfessionalCategory proCat : listaProCat) {
+							if (proCatData.get("nameProCat").equals(proCat.getNameProCat())) {
+								throw new Exception("nameProCatUnique");
+							}
+						}
+					}
+					
 
 					pc.setNameProCat(proCatData.get("nameProCat"));
 					if (Integer.parseInt(proCatData.get("active")) == 1) {
@@ -171,7 +191,7 @@ public class ProCatServiceImpl implements ProCatServiceI {
 						}
 					}
 
-					pc.setUpdateAdmin("agadelao");
+					pc.setUpdateAdmin(proCatData.get("inputUser"));
 					pc.setUpdateDate(new Date());
 
 					proCatUpdated = proCatDao.save(pc);

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Services.MembersServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.ProCatServiceI;
@@ -24,6 +25,7 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatMembersDto;
  *
  */
 @Controller
+@RequestMapping("/members")
 public class MembersController {
 
 	final static Logger LOGGER = LoggerFactory.getLogger(MembersController.class);
@@ -34,7 +36,7 @@ public class MembersController {
 	@Autowired
 	ProCatServiceI proCatService;
 
-	@GetMapping("/members")
+	@GetMapping
 	public String getMembers(Model model) throws Exception {
 
 		LOGGER.info("MembersController getMembers .- Inicio");

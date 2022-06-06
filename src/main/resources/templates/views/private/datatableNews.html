@@ -142,7 +142,9 @@
 
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.news.titulo}" for="titleNews"></label>
-						<textarea class="form-control" id="titleNews" required></textarea>
+						<textarea class="form-control" id="titleNews" maxlength="3500" required></textarea>
+						<small id="titleNewsMaxContador"></small>
+						<small id="titleNewsMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.news.modal.validacion.titulo}"
 							class="invalid-feedback"></div>
 					</div>
@@ -151,16 +153,18 @@
 
 					<div class="form-group ">
 						<label th:text="#{datatable.news.abstract}" for="abstractNews"></label>
-						<textarea class="form-control" id="abstractNews"></textarea>
-						<small th:text="#{datatable.modal.maximo.abstract}"></small>
+						<textarea class="form-control" id="abstractNews" maxlength="500"></textarea>
+						<small id="abstractNewsMaxContador"></small>
+						<small id="abstractNewsMax" th:text="#{datatable.modal.maximo.abstract}"></small>
 					</div>
 
 					<!-- CONTENIDO -->
 
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.news.contenido}" for="contentNews"></label>
-						<textarea class="form-control" id="contentNews" required></textarea>
-						<small th:text="#{datatable.modal.maximo}"></small>
+						<textarea class="form-control" id="contentNews" maxlength="3500" required></textarea>
+						<small id="contentNewsMaxContador"></small>
+						<small id="contentNewsMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.news.modal.validacion.contenido}"
 							class="invalid-feedback"></div>
 
@@ -188,6 +192,7 @@
 					</div>
 
 				</form>
+				<div class="alert-danger text-center mensajeError" id="addNewsError"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" th:text="#{modal.btn.aceptar}"
@@ -220,7 +225,9 @@
 
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.news.titulo}" for="titleNewsEdit"></label>
-						<textarea class="form-control" id="titleNewsEdit" required></textarea>
+						<textarea class="form-control" id="titleNewsEdit" maxlength="3500" required></textarea>
+						<small id="titleNewsMaxContadorEdit"></small>
+						<small id="titleNewsMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.news.modal.validacion.titulo}"
 							class="invalid-feedback"></div>
 					</div>
@@ -229,16 +236,18 @@
 
 					<div class="form-group ">
 						<label th:text="#{datatable.news.abstract}" for="abstractNewsEdit"></label>
-						<textarea class="form-control" id="abstractNewsEdit"></textarea>
-						<small th:text="#{datatable.modal.maximo.abstract}"></small>
+						<textarea class="form-control" id="abstractNewsEdit" maxlength="500"></textarea>
+						<small id="abstractNewsMaxContadorEdit"></small>
+						<small id="abstractNewsMax" th:text="#{datatable.modal.maximo.abstract}"></small>
 					</div>
 
 					<!-- CONTENIDO -->
 
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.news.contenido}" for="contentNewsEdit"></label>
-						<textarea class="form-control" id="contentNewsEdit" required></textarea>
-						<small th:text="#{datatable.modal.maximo}"></small>
+						<textarea class="form-control" id="contentNewsEdit" maxlength="3500" required></textarea>
+						<small id="contentNewsMaxContadorEdit"></small>
+						<small id="contentNewsMax" th:text="#{datatable.modal.maximo}"></small>
 						<div th:text="#{datatable.news.modal.validacion.contenido}"
 							class="invalid-feedback"></div>
 					</div>
@@ -257,6 +266,7 @@
 					<input type="hidden" id="idNewsUpdate">
 
 				</form>
+				<div class="alert-danger text-center mensajeError" id="updateNewsError"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" th:text="#{modal.btn.aceptar}"

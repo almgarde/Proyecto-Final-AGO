@@ -270,7 +270,7 @@ function getDatatableFacilities() {
 			e.stopPropagation();
 		} else {
 			anyadirNuevoEquipo();
-			$('#modalAddFacilities').modal('hide');
+			$('#modalAddFacilities').modal('hide');			
 		}
 		form.addClass('was-validated');
 
@@ -278,6 +278,7 @@ function getDatatableFacilities() {
 
 	$(document).on("click", "#btnCancelarAddFacilities", function() {
 		$("#formAddFacilities").removeClass('was-validated');
+		$('#featuresFacilitiesMaxContador').html(max_chars_content);
 		$("#nameFacility").val('');
 		$("#photoFacility").val('');
 		$("#idTechCatActiveSelect").val('');
@@ -287,11 +288,19 @@ function getDatatableFacilities() {
 
 	$(document).on("click", "#btnCloseAddFacilities", function() {
 		$("#formAddFacilities").removeClass('was-validated');
+		$('#featuresFacilitiesMaxContador').html(max_chars_content);
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameFacility").val('');
 		$("#photoFacility").val('');
 		$("#idTechCatActiveSelect").val('');
 		$("#featuresFacility").val('');
 		$("#active").val('1');
+	});
+	
+	$("#modalAddFacilities").on('hide.bs.modal', function() {
+		$("#formAddFacilities").removeClass('was-validated');
+
 	});
 
 	$(document).on("click", "#btnAceptarUpdateFacilities", function(e) {
@@ -312,10 +321,17 @@ function getDatatableFacilities() {
 
 	$(document).on("click", "#btnCancelarUpdateFacilities", function(e) {
 		$("#formUpdateFacilities").removeClass('was-validated');
+
 	});
 
 	$(document).on("click", "#btnCloseUpdateFacilities", function(e) {
 		$("#formUpdateFacilities").removeClass('was-validated');
+
+	});
+	
+		$("#modalUpdateFacilities").on('hide.bs.modal', function() {
+		$("#formUpdateFacilities").removeClass('was-validated');
+
 	});
 
 	$(document).on("click", "#btnAceptarUpdatePhotoFacilities", function(e) {
@@ -343,10 +359,37 @@ function getDatatableFacilities() {
 		$("#formUpdatePhotoFacilities").removeClass('was-validated');
 		$("#photoFacilityEdit").val('');
 	});
+	
+		$("#modalUpdatePhotoFacilities").on('hide.bs.modal', function() {
+		$("#formUpdateFacilities").removeClass('was-validated');
+	});
 
 	$(document).on("click", "#btnAceptarDeleteFacilities", function(e) {
 		e.preventDefault();
 		eliminarEquipo();
+	});
+	
+	
+	// MÁXIMO CARACTERES TEXTAREA
+
+	var max_chars_content = 3500;
+	
+
+$('#featuresFacilitiesMaxContador').html(max_chars_content);
+
+	$('#featuresFacility').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#featuresFacilitiesMaxContador').html(diff);
+
+	});
+	
+
+	$('#featuresFacilityEdit').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#featuresFacilitiesMaxContadorEdit').html(diff);
+
 	});
 
 }
@@ -369,6 +412,7 @@ function mostrarModalFeaturesFacility(nameFacility, featuresFacility) {
 
 function mostrarModalAddFacilities() {
 	$("#modalAddFacilities").modal('toggle');
+
 }
 
 function mostrarModalUpdateFacilities(idFacility, nameFacility, idTechcat, activeTechCat, featuresFacility, active) {
@@ -390,6 +434,10 @@ function mostrarModalUpdateFacilities(idFacility, nameFacility, idTechcat, activ
 		$('#activeEdit').val('0');
 
 	}
+	
+	var charsInit = featuresFacility.length;
+	var diffInit = 3500 - charsInit;
+	$('#featuresFacilitiesMaxContadorEdit').html(diffInit);
 	$("#modalUpdateFacilities").modal('toggle');
 }
 
@@ -415,6 +463,7 @@ function anyadirNuevoEquipo() {
 	form.append("idTechCat", $("#idTechCatActiveSelect").val());
 	form.append("featuresFacility", $("#featuresFacility").val());
 	form.append("active", $("#active").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/addFacilitiesData',
@@ -455,6 +504,8 @@ function editarEquipo() {
 	form.append("featuresFacility", $("#featuresFacilityEdit").val());
 	form.append("idFacility", $("#idFacilityUpdate").val());
 	form.append("active", $("#activeEdit").val());
+	form.append("inputUser", $("#inputUser").val());
+	
 
 	$.ajax({
 		url: '/management/updateFacilitiesData',
@@ -466,18 +517,18 @@ function editarEquipo() {
 			if (data == '') {
 				$('#facilitiesDatatable').DataTable().ajax.reload();
 				okMessage();
-				$(".alert").text($("#activeEdit").val($("#updateOkMensaje").val()));
+				$(".alert").text($("#updateOkMensaje").val());
 			} else {
 				errorMessage();
-				$(".alert").text($("#activeEdit").val($("#updateErrorMensaje").val()));
+				$(".alert").text($("#updateErrorMensaje").val());
 			}
 		},
 		error: function(data) {
 			errorMessage();
-			$(".alert").text($("#activeEdit").val($("#updateErrorMensaje").val()));
+			$(".alert").text($("#updateErrorMensaje").val());
 		}
 	}).done(function() {
-		$("#formUpdateFacilities").removeClass('was-validated');
+		$("#formUpdateFacilities").removeClass('was-validated');		
 		$("#nameFacilityEdit").val('');
 		$("#idTechCatEdit").val('');
 		$("#featuresFacilityEdit").val('');
@@ -492,6 +543,7 @@ function editarFotoEquipo() {
 
 	form.append("file", $('#photoFacilityEdit')[0].files[0]);
 	form.append("idFacility", $("#idFacilityPhotoUpdate").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updatePhotoFacilitiesData',

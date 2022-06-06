@@ -22,7 +22,7 @@
 				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
 				<th th:text="#{datatable.members.nombre}" class="atri" scope="col"></th>
 				<th th:text="#{datatable.members.datos}"
-					style="word-break: break-word; white-space: pre-line;" class="atri"
+					style="word-break: normal; white-space: pre-line;" class="atri"
 					scope="col"></th>
 				<th th:text="#{datatable.members.categoria}" class="atri selectCat"
 					scope="col"></th>
@@ -42,7 +42,7 @@
 				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
 				<th th:text="#{datatable.members.nombre}" class="atri" scope="col"></th>
 				<th th:text="#{datatable.members.datos}"
-					style="word-break: break-word; white-space: pre-line;" class="atri"
+					style="word-break: normal; white-space: pre-line;" class="atri"
 					scope="col"></th>
 				<th th:text="#{datatable.members.categoria}" class="atri selectCat"
 					scope="col"></th>
@@ -313,8 +313,9 @@
 					<div class="form-group">
 						<label th:text="#{datatable.members.trayectoria}"
 							for="trajectoryMember"></label>
-						<textarea class="form-control" id="trajectoryMember"></textarea>
-						<small th:text="#{datatable.modal.maximo}"></small>
+						<textarea class="form-control" id="trajectoryMember" maxlength="3500"></textarea>
+						<small id="trajectoryMembersMaxContador"></small>
+						<small id="trajectoryMembersMax" th:text="#{datatable.modal.maximo}"></small>
 					</div>
 
 					<!-- ACTIVO -->
@@ -329,6 +330,7 @@
 					</div>
 
 				</form>
+				<div class="alert-danger text-center mensajeError" id="addMembersError"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" th:text="#{modal.btn.aceptar}"
@@ -457,8 +459,9 @@
 					<div class="form-group">
 						<label th:text="#{datatable.members.trayectoria}"
 							for="trajectoryMemberEdit"></label>
-						<textarea class="form-control" id="trajectoryMemberEdit"></textarea>
-						<small th:text="#{datatable.modal.maximo}"></small>
+						<textarea class="form-control" id="trajectoryMemberEdit" maxlength="3500"></textarea>
+						<small id="trajectoryMembersMaxContadorEdit"></small>
+						<small id="trajectoryMembersMax" th:text="#{datatable.modal.maximo}"></small>
 					</div>
 
 					<!-- ACTIVO -->
@@ -475,6 +478,7 @@
 					<input type="hidden" id="idMembersUpdate">
 
 				</form>
+				<div class="alert-danger text-center mensajeError" id="updateMembersError"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" th:text="#{modal.btn.aceptar}"

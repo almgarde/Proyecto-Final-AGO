@@ -126,7 +126,7 @@ public class ThesisServiceImpl implements ThesisServiceI {
 				}
 
 				t.setCoverPageThesis(imageThesis);
-				t.setUpdateAdmin("agadelao");
+				t.setUpdateAdmin(thesisData.get("inputUser"));
 				t.setUpdateDate(new Date());
 
 				Thesis thesisSaved = thesisDao.save(t);
@@ -185,7 +185,7 @@ public class ThesisServiceImpl implements ThesisServiceI {
 						t.setActive(false);
 					}
 
-					t.setUpdateAdmin("agadelao");
+					t.setUpdateAdmin(thesisData.get("inputUser"));
 					t.setUpdateDate(new Date());
 
 					thesisUpdated = thesisDao.save(t);
@@ -233,6 +233,7 @@ public class ThesisServiceImpl implements ThesisServiceI {
 				Thesis t = thesisDao.findByIdThesis(Long.parseLong(thesisData.get("idThesis")));
 
 				if (t != null) {
+					t.setUpdateAdmin(thesisData.get("inputUser"));
 					t.setCoverPageThesis(t.getIdThesis() + coverPageThesis);
 					thesisPhotoUpdated = thesisDao.save(t);
 				} else {

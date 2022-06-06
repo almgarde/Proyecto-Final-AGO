@@ -1,56 +1,76 @@
 
 <div class="response" id="response"></div>
 
-<input id="inputPrueba" type="hidden" th:value="${#httpServletRequest.remoteUser}">
-<h1 id="prueba"> </h1>
+
+
 
 <div id="buttonContainer">
 	<button type="button" id="formAddFacilitiesBtn" class="btn btn-light">
-		<a href="javascript: mostrarModalAddAdmins();">Nuevo admin</a>
+		<a th:text="#{datatable.admins.btn.nuevoadmin}"
+			href="javascript: mostrarModalAddAdmins();"></a>
 	</button>
 	<button type="button" class="btn btn-light">
-		<a>Editar datos</a>
+		<a th:text="#{datatable.admins.btn.editardatos}"
+			href="javascript: mostrarModalUpdateDataAdmins();"></a>
 	</button>
 	<button type="button" class="btn btn-light">
-		<a>Cambiar contraseña</a>
+		<a th:text="#{datatable.admins.btn.cambiarpsw}"
+			href="javascript: mostrarModalChangePwdAdmins();"></a>
 	</button>
+	<button type="button" class="btn btn-light">
+		<a th:text="#{datatable.btn.generarexcel}"
+			th:href="@{/management/generateExcel/admins}"></a>
+	</button>
+	<button th:text="#{datatable.admins.btn.baja}" form="formDeleteAdmin" type="submit" class="btn btn-light"></button>
+	<form id="formDeleteAdmin" th:action="@{/management/deleteAdminsData}"
+		th:object="${adminsFormDto}" method="POST">
+		<input id="inputDeleteAdmins" th:field="*{usernameAdmin}"
+			type="hidden">
+	</form>
 </div>
 
 
 <!-- DATATABLE -->
 
 <div class="container" id="datatableAdminsContainer">
-	<table id="adminsDatatable"
-		class="table datatableAdmin display nowrap">
+	<table id="adminsDatatable" class="table datatableAdmin display nowrap">
 		<thead>
 			<tr>
 				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
-				<th class="atri" scope="col">Nombre</th>
-				<th class="atri selectCat" scope="col">Email</th>
-				<th class="atri" scope="col">Nombre de usuario</th>
+				<th th:text="#{datatable.admins.nombre}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.admins.email}" class="atri selectCat"
+					scope="col"></th>
+				<th th:text="#{datatable.admins.nombreusuario}" class="atri"
+					scope="col"></th>
 			</tr>
 		</thead>
 		<tbody></tbody>
 		<tfoot>
 			<tr>
 				<th th:text="#{datatable.table.id}" class="atri" scope="col"></th>
-				<th class="atri" scope="col">Nombre</th>
-				<th class="atri selectCat" scope="col">Email</th>
-				<th class="atri" scope="col">Nombre de usuario</th>
+				<th th:text="#{datatable.admins.nombre}" class="atri" scope="col"></th>
+				<th th:text="#{datatable.admins.email}" class="atri selectCat"
+					scope="col"></th>
+				<th th:text="#{datatable.admins.nombreusuario}" class="atri"
+					scope="col"></th>
 
 			</tr>
 		</tfoot>
 	</table>
 </div>
 <input class="selectedCat" type="hidden" value="10">
+<input id="nameAdminInput" type="hidden"
+	th:value="${adminDto.nameAdmin}">
+<input id="emailAdminInput" type="hidden"
+	th:value="${adminDto.emailAdmin}">
 
-<!-- MODAL - AÑADIR CATEGORÍA PROFESIONAL -->
+<!-- MODAL - AÑADIR ADMINISTRADOR -->
 
 <div class="modal" tabindex="-1" id="modalAddAdmins">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header containerTitles">
-				<h5 th:text="#{datatable.modal.add.header}"
+				<h5 th:text="#{datatable.admins.nuevoadmin}"
 					id="headerModalAddAdmins" class="modal-title"></h5>
 				<button id="btnCloseAddAdmins" type="button" class="btn-close"
 					data-bs-dismiss="modal" aria-label="Close"></button>
@@ -62,44 +82,59 @@
 					<!-- NOMBRE -->
 
 					<div class="form-group has-validation">
-						<label for="nameAdmin"
-							class="form-label">Nombre</label> <input autocomplete="off" type="text"
+						<label th:text="#{datatable.admins.nombre}" for="nameAdmin"
+							class="form-label"></label> <input autocomplete="off" type="text"
 							class="form-control" id="nameAdmin" name="nameAdmin" required>
-						<div th:text="#{datatable.procat.modal.validacion.contenido}"
+						<div th:text="#{datatable.admins.validacion.nombre}"
 							class="invalid-feedback"></div>
 					</div>
 
 					<!-- EMAIL -->
 
 					<div class="form-group has-validation">
-						<label for="emailAdmin">Email</label>
+						<label th:text="#{datatable.admins.email}" for="emailAdmin"></label>
 						<input type="email" autocomplete="off" class="form-control"
 							id="emailAdmin" name="emailAdmin" required>
-						<div th:text="#{datatable.members.modal.validacion.email}"
+						<div th:text="#{datatable.admins.validacion.email}"
 							class="invalid-feedback"></div>
 					</div>
-					
+
 					<!-- USUARIO -->
 
 					<div class="form-group has-validation">
-						<label for="usernameAdmin"
-							class="form-label">Usuario</label> <input autocomplete="off" type="text"
-							class="form-control" id="usernameAdmin" name="usernameAdmin" required>
-						<div th:text="#{datatable.procat.modal.validacion.contenido}"
+						<label th:text="#{datatable.admins.nombreusuario}"
+							for="usernameAdmin" class="form-label"></label> <input
+							autocomplete="off" type="text" class="form-control"
+							id="usernameAdmin" name="usernameAdmin" required>
+						<div th:text="#{datatable.admins.validacion.nombreusuario}"
 							class="invalid-feedback"></div>
 					</div>
-					
+
 					<!-- CONTRASEÑA -->
 
 					<div class="form-group has-validation">
-						<label for="pwdAdmin"
-							class="form-label">Contraseña</label> <input autocomplete="off" type="text"
-							class="form-control" id="pwdAdmin" name="pwdAdmin" required>
-						<div th:text="#{datatable.procat.modal.validacion.contenido}"
+						<label th:text="#{datatable.admins.contrasenya}" for="pwdAdmin"
+							class="form-label"></label> <input autocomplete="off"
+							type="password" class="form-control" id="pwdAdmin"
+							name="pwdAdmin" required>
+						<div th:text="#{datatable.admins.validacion.contrasenya}"
 							class="invalid-feedback"></div>
 					</div>
 
+					<!-- CONTRASEÑA DE CONFIRMACIÓN-->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.admins.contrasenya.confirmacion}"
+							for="pwdAdminAddConfirm" class="form-label"></label> <input
+							autocomplete="off" type="password" class="form-control"
+							id="pwdAdminAddConfirm" name="pwdAdmin" required>
+						<div
+							th:text="#{datatable.admins.validacion.contrasenya.confirmacion}"
+							class="invalid-feedback"></div>
+					</div>
 				</form>
+				<div class="alert-danger text-center mensajeError"
+					id="addAdminsError"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="submit" th:text="#{modal.btn.aceptar}"
@@ -108,6 +143,127 @@
 				<button type="button" th:text="#{modal.btn.cancelar}"
 					class="btn btn-light" data-bs-dismiss="modal"
 					id="btnCancelarAddAdmins"></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- MODAL - EDITAR ADMINISTRADOR -->
+
+<div class="modal" tabindex="-1" id="modalUpdateDataAdmins">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.admins.editardatos}"
+					id="headerModalUpdateDataAdmins" class="modal-title"></h5>
+				<button id="btnCloseUpdateDataAdmins" type="button"
+					class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<form id="formUpdateDataAdmins" class="row g-3 needs-validation">
+
+					<!-- NOMBRE -->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.admins.nombre}" for="nameAdminEdit"
+							class="form-label"></label> <input autocomplete="off" type="text"
+							class="form-control" id="nameAdminEdit" name="nameAdmin" required>
+						<div th:text="#{datatable.admins.validacion.nombre}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- EMAIL -->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.admins.email}" for="emailAdminEdit"></label>
+						<input type="email" autocomplete="off" class="form-control"
+							id="emailAdminEdit" name="emailAdmin" required>
+						<div th:text="#{datatable.admins.validacion.email}"
+							class="invalid-feedback"></div>
+					</div>
+				</form>
+				<div class="alert-danger text-center mensajeError"
+					id="updateDataAdminsError"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarUpdateDataAdmins"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarUpdateDataAdmins"></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- MODAL - CAMBIAR CONTRASEÑA -->
+
+<div class="modal" tabindex="-1" id="modalChangePwdAdmins">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header containerTitles">
+				<h5 th:text="#{datatable.admins.cambiarpsw}"
+					id="headerModalChangePwdAdmins" class="modal-title"></h5>
+				<button id="btnCloseChangePwdAdmins" type="button" class="btn-close"
+					data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<form id="formChangePwdAdmins" class="row g-3 needs-validation">
+
+					<!-- CONTRASEÑA ACTUAL-->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.admins.contrasenya.actual}"
+							for="pwdAdminActual" class="form-label"> </label> <input
+							autocomplete="off" type="password" class="form-control"
+							id="pwdAdminActual" name="pwdAdmin" required>
+						<div th:text="#{datatable.admins.validacion.contrasenya.actual}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- CONTRASEÑA NUEVA -->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.admins.contrasenya.nueva}"
+							for="pwdAdminNueva" class="form-label"> </label> <input
+							autocomplete="off" type="password" class="form-control"
+							id="pwdAdminNueva" name="pwdAdmin" required>
+						<div th:text="#{datatable.admins.validacion.contrasenya.nueva}"
+							class="invalid-feedback"></div>
+					</div>
+
+					<!-- CONTRASEÑA DE CONFIRMACIÓN-->
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.admins.contrasenya.confirmacion}"
+							for="pwdAdminConfirm" class="form-label"> de confirmacion</label>
+						<input autocomplete="off" type="password" class="form-control"
+							id="pwdAdminConfirm" name="pwdAdmin" required>
+						<div
+							th:text="#{datatable.admins.validacion.contrasenya.confirmacion}"
+							class="invalid-feedback"></div>
+					</div>
+
+
+				</form>
+
+				<div class="alert-danger text-center mensajeError"
+					id="changePasswordError"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" th:text="#{modal.btn.aceptar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnAceptarPwdAdminActualAdmins"></button>
+				<button type="button" th:text="#{modal.btn.cancelar}"
+					class="btn btn-light" data-bs-dismiss="modal"
+					id="btnCancelarChangePwdAdmins"></button>
 			</div>
 		</div>
 	</div>

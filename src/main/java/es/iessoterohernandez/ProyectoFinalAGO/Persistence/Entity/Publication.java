@@ -53,7 +53,7 @@ public class Publication extends AbstractEntity implements Serializable {
 		this.idPublication = idPublication;
 	}
 
-	@Column(name = "TITLE_PUBLICATION", nullable = false, unique = true)
+	@Column(name = "TITLE_PUBLICATION", nullable = false)
 	public String getTitlePublication() {
 		return titlePublication;
 	}
@@ -80,7 +80,7 @@ public class Publication extends AbstractEntity implements Serializable {
 		this.journalPublication = journalPublication;
 	}
 
-	@Column(name = "DOI_PUBLICATION", nullable = false, length = 255, unique = true)
+	@Column(name = "DOI_PUBLICATION", nullable = false)
 	public String getDoiPublication() {
 		return doiPublication;
 	}

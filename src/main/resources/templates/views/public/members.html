@@ -26,7 +26,7 @@
 							class="accordion-body d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 							<div class="infoMembers"
 								th:each="memberDto:${proCatMemberDto.membersDto}">
-								<a th:href="@{/memberComplete/}+${memberDto.idMember}"> <img
+								<a th:href="@{/members/memberComplete/}+${memberDto.idMember}"> <img
 									th:src="@{/images/}+${memberDto.photoMember}" alt="..."
 									class="img-fluid rounded-circle" /></a>
 								<h5 th:text="${memberDto.nameMember}"></h5>
@@ -40,6 +40,8 @@
 
 	<footer th:replace="views/common/footer :: footer"></footer>
 	<input id="lang" type="hidden" th:value="${lang}">
+	<input id="inputUser" type="hidden"
+		th:value="${#httpServletRequest.remoteUser}">
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

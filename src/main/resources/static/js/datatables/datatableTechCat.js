@@ -184,7 +184,7 @@ function getDatatableTechCat() {
 			e.stopPropagation();
 		} else {
 			anyadirNuevaTechCat();
-			$('#modalAddTechCat').modal('hide');
+
 		}
 		form.addClass('was-validated');
 
@@ -192,10 +192,20 @@ function getDatatableTechCat() {
 
 	$(document).on("click", "#btnCancelarAddTechCat", function() {
 		$("#formAddTechCat").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnCloseAddTechCat", function() {
 		$("#formAddTechCat").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
+
+	$("#modalAddTechCat").on('hide.bs.modal', function() {
+		$("#formAddTechCat").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnAceptarUpdateTechCat", function(e) {
@@ -208,7 +218,7 @@ function getDatatableTechCat() {
 			e.stopPropagation();
 		} else {
 			editarTechCat();
-			$('#modalUpdateTechCat').modal('hide');
+
 		}
 		form.addClass('was-validated');
 
@@ -216,12 +226,21 @@ function getDatatableTechCat() {
 
 	$(document).on("click", "#btnCancelarUpdateTechCat", function(e) {
 		$("#formUpdateTechCat").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnCloseUpdateTechCat", function(e) {
 		$("#formUpdateTechCat").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
+	$("#modalUpdateTechCat").on('hide.bs.modal', function() {
+		$("#formUpdateTechCat").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
 	$(document).on("click", "#btnAceptarDeleteTechCat", function(e) {
 		e.preventDefault();
 		eliminarTechCat();
@@ -234,10 +253,13 @@ function getDatatableTechCat() {
 
 function mostrarModalAddTechCat() {
 	$("#modalAddTechCat").modal('toggle');
+	$(".mensajeError").hide();
+	$(".mensajeError").text('');
 }
 
 function mostrarModalUpdateTechCat(idTechCat, nameTechCat, active) {
-
+	$(".mensajeError").hide();
+	$(".mensajeError").text('');
 	$('#nameTechCatEdit').val(nameTechCat);
 	$('#idTechCatUpdate').val(idTechCat);
 
@@ -265,6 +287,7 @@ function anyadirNuevaTechCat() {
 
 	form.append("nameTechCat", $("#nameTechCat").val());
 	form.append("active", $("#active").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/addTechCatData',
@@ -273,21 +296,31 @@ function anyadirNuevaTechCat() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
-				$('#techCatDatatable').DataTable().ajax.reload();
-				okMessage();
-				$(".alert").text($('#addOkMensaje').val());
-			} else {
-				errorMessage();
-				$(".alert").text($('#addErrorMensaje').val());
-			}
+			//			if (data == '') {
+			$('#techCatDatatable').DataTable().ajax.reload();
+			okMessage();
+			$(".alert").text($('#addOkMensaje').val());
+			//			} else {
+			//				errorMessage();
+			//				$(".alert").text($('#addErrorMensaje').val());
+			//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($('#addErrorMensaje').val());
+		error: function(e) {
+			$('#modalAddTechCat').modal('show');
+			$("#formAddTechCat").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError = "";
+
+			if (e.responseText == "nameTechCatUnique") {
+				mensajeError = $('#nameTechCatUnique').val();
+			}
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formAddTechCat").removeClass('was-validated');
+		$('#modalAddTechCat').modal('hide');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#nameTechCat").val('');
 		$("#active").val('1');
 	});
@@ -301,6 +334,7 @@ function editarTechCat() {
 	form.append("idTechCat", $("#idTechCatUpdate").val());
 	form.append("nameTechCat", $("#nameTechCatEdit").val());
 	form.append("active", $("#activeEdit").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updateTechCatData',
@@ -309,21 +343,31 @@ function editarTechCat() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
-				$('#techCatDatatable').DataTable().ajax.reload();
-				okMessage();
-				$(".alert").text($('#updateOkMensaje').val());
-			} else {
-				errorMessage();
-				$(".alert").text($('#updateErrorMensaje').val());
-			}
+			//			if (data == '') {
+			$('#techCatDatatable').DataTable().ajax.reload();
+			okMessage();
+			$(".alert").text($('#updateOkMensaje').val());
+			//			} else {
+			//				errorMessage();
+			//				$(".alert").text($('#updateErrorMensaje').val());
+			//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($('#updateErrorMensaje').val());
+		error: function(e) {
+			$('#modalUpdateTechCat').modal('show');
+			$("#formUpdateTechCat").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError = "";
+
+			if (e.responseText == "nameTechCatUnique") {
+				mensajeError = $('#nameTechCatUnique').val();
+			}
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formUpdateTechCat").removeClass('was-validated');
+		$('#modalUpdateTechCat').modal('hide');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 }
 

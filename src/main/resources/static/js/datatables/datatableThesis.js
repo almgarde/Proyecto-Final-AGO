@@ -289,7 +289,8 @@ function getDatatableThesis() {
 	});
 
 	$(document).on("click", "#btnCancelarAddThesis", function() {
-		$("#formAddThesis").removeClass('was-validated');
+		$("#formAddThesis").removeClass('was-validated');	
+		$('#titleThesisMaxContador').html(max_chars_content);	
 		$("#doctorThesis").val('');
 		$("#titleThesis").val('');
 		$("#coverPageThesis").val('');
@@ -302,7 +303,8 @@ function getDatatableThesis() {
 
 	$(document).on("click", "#btnCloseAddThesis", function() {
 		$("#formAddThesis").removeClass('was-validated');
-		$("#doctorThesis").val('');
+		$('#titleThesisMaxContador').html(max_chars_content);
+				$("#doctorThesis").val('');
 		$("#titleThesis").val('');
 		$("#coverPageThesis").val('');
 		$("#dateDefenseThesis").val('');
@@ -311,6 +313,11 @@ function getDatatableThesis() {
 		$("#urlThesis").val('');
 		$("#active").val('1');
 	});
+	
+		$("#modalAddThesis").on('hide.bs.modal', function() {
+		$("#formAddThesis").removeClass('was-validated');
+
+});
 
 	$(document).on("click", "#btnAceptarUpdateThesis", function(e) {
 
@@ -322,7 +329,7 @@ function getDatatableThesis() {
 			e.stopPropagation();
 		} else {
 			editarTesis();
-			$('#modalUpdateThesis').modal('hide');
+						$('#modalUpdateThesis').modal('hide');
 		}
 		form.addClass('was-validated');
 
@@ -331,12 +338,18 @@ function getDatatableThesis() {
 
 	$(document).on("click", "#btnCancelarUpdateThesis", function(e) {
 		$("#formUpdateThesis").removeClass('was-validated');
+
 	});
 
 	$(document).on("click", "#btnCloseUpdateThesis", function(e) {
 		$("#formUpdateThesis").removeClass('was-validated');
+
 	});
 
+	$("#modalUpdateThesis").on('hide.bs.modal', function() {
+		$("#formUpdateThesis").removeClass('was-validated');
+
+});
 
 	$(document).on("click", "#btnAceptarUpdateCoverPageThesis", function(e) {
 
@@ -364,11 +377,39 @@ function getDatatableThesis() {
 		$("#coverPageThesisEdit").val('');
 	});
 
+
+	$("#modalUpdateCoverPageThesis").on('hide.bs.modal', function() {
+		$("#formUpdateCoverPageThesis").removeClass('was-validated');
+});
+
+
 	$(document).on("click", "#btnAceptarDeleteThesis", function(e) {
 		e.preventDefault();
 		eliminarTesis();
 	});
 
+
+// MÁXIMO CARACTERES TEXTAREA
+
+	var max_chars_content = 3500;
+	
+
+$('#titleThesisMaxContador').html(max_chars_content);
+
+	$('#titleThesis').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#titleThesisMaxContador').html(diff);
+
+	});
+	
+
+	$('#titleThesisEdit').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#titleThesisMaxContadorEdit').html(diff);
+
+	});
 }
 
 
@@ -384,6 +425,7 @@ function mostrarModalDirectoresData(titulo, director, coDirector) {
 
 function mostrarModalAddThesis() {
 	$("#modalAddThesis").modal('toggle');
+
 }
 
 function mostrarModalCoverPageThesis(titleThesis, portada) {
@@ -393,7 +435,7 @@ function mostrarModalCoverPageThesis(titleThesis, portada) {
 }
 
 function mostrarModalUpdateThesis(idThesis, doctorThesis, titleThesis, dateDefenseThesis, directorThesis, coDirectorThesis, urlThesis, active) {
-
+	
 	$('#idThesisUpdate').val(idThesis);
 	$('#doctorThesisEdit').val(doctorThesis);
 	$('#titleThesisEdit').val(titleThesis);
@@ -408,6 +450,10 @@ function mostrarModalUpdateThesis(idThesis, doctorThesis, titleThesis, dateDefen
 		$('#activeEdit').val('0');
 	}
 
+var charsInit = titleThesis.length;
+	var diffInit = 3500 - charsInit;
+	$('#titleThesisMaxContadorEdit').html(diffInit);
+	
 	$("#modalUpdateThesis").modal('toggle');
 }
 
@@ -436,6 +482,7 @@ function anyadirNuevaTesis() {
 	form.append("coDirectorThesis", $("#coDirectorThesis").val());
 	form.append("urlThesis", $("#urlThesis").val());
 	form.append("active", $("#active").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/addThesisData',
@@ -459,6 +506,8 @@ function anyadirNuevaTesis() {
 		}
 	}).done(function() {
 		$("#formAddThesis").removeClass('was-validated');
+	
+				
 		$("#doctorThesis").val('');
 		$("#titleThesis").val('');
 		$("#coverPageThesis").val('');
@@ -483,6 +532,7 @@ function editarTesis() {
 	form.append("coDirectorThesis", $("#coDirectorThesisEdit").val());
 	form.append("urlThesis", $("#urlThesisEdit").val());
 	form.append("active", $("#activeEdit").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updateThesisData',
@@ -506,6 +556,8 @@ function editarTesis() {
 		}
 	}).done(function() {
 		$("#formUpdateThesis").removeClass('was-validated');
+
+
 	});
 }
 
@@ -514,6 +566,7 @@ function editarPortadaTesis() {
 	let form = new FormData();
 
 	form.append("idThesis", $("#idThesisUpdateCoverPage").val());
+	form.append("inputUser", $("#inputUser").val());
 	form.append("file", $('#coverPageThesisEdit')[0].files[0]);
 
 	$.ajax({

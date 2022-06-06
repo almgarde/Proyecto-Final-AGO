@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.ProjectDaoI;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Project;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProjectsDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ProjectsDatatableDto;
@@ -101,6 +102,15 @@ public class ProjectsServiceImpl implements ProjectsServiceI {
 		try {
 
 			if (projectsData != null && !projectsData.isEmpty() && !StringUtils.isEmpty(imageProjects)) {
+				
+				List<Project> listaProject = projectDao.findAll();
+				for (Project project : listaProject) {
+					
+					if (projectsData.get("titleProjects").equals(project.getTitleProject())) {
+						throw new Exception("titleProjectsUnique");					}
+
+					
+				}
 
 				Project p = new Project();
 
@@ -114,7 +124,7 @@ public class ProjectsServiceImpl implements ProjectsServiceI {
 				}
 
 				p.setImageProject(imageProjects);
-				p.setUpdateAdmin("agadelao");
+				p.setUpdateAdmin(projectsData.get("inputUser"));
 				p.setUpdateDate(new Date());
 
 				Project projectsSaved = projectDao.save(p);
@@ -159,6 +169,15 @@ public class ProjectsServiceImpl implements ProjectsServiceI {
 				Project p = projectDao.findByIdProject(Long.parseLong(projectsData.get("idProject")));
 
 				if (p != null) {
+					
+					if (!projectsData.get("titleProject").equals(p.getTitleProject())) {
+						List<Project> listaProjects = projectDao.findAll();
+						for (Project project : listaProjects) {
+							if (projectsData.get("titleProject").equals(project.getTitleProject())) {
+								throw new Exception("titleProjectsUnique");
+							}
+						}
+					}
 
 					p.setTitleProject(projectsData.get("titleProject"));
 					p.setDescriptionProject(projectsData.get("descProject"));
@@ -169,7 +188,7 @@ public class ProjectsServiceImpl implements ProjectsServiceI {
 						p.setActive(false);
 					}
 
-					p.setUpdateAdmin("agadelao");
+					p.setUpdateAdmin(projectsData.get("inputUser"));
 					p.setUpdateDate(new Date());
 
 					projectUpdated = projectDao.save(p);
@@ -217,6 +236,7 @@ public class ProjectsServiceImpl implements ProjectsServiceI {
 				Project p = projectDao.findByIdProject(Long.parseLong(projectsData.get("idProject")));
 
 				if (p != null) {
+					p.setUpdateAdmin(projectsData.get("inputUser"));
 					p.setImageProject(p.getIdProject() + imageProjects);
 					projectImageUpdated = projectDao.save(p);
 				} else {

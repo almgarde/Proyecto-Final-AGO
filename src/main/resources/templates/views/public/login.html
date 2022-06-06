@@ -1,42 +1,115 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Mi primer Login</title>
-
-    <!--JQUERY-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
-    <!-- FRAMEWORK BOOTSTRAP para el estilo de la pagina-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head th:replace="views/common/head :: head"></head>
 <body>
-    <div class="modal-dialog text-center">
-        <div class="col-sm-8 main-section">
-            <div class="modal-content">
+	<header th:replace="views/common/header :: header"></header>
 
-                <form class="col-12" th:action="@{/login}" method="post">
-                    <div class="form-group" id="user-group">
-                        <input type="text" class="form-control" placeholder="Nombre de usuario" name="username"/>
-                    </div>
-                    <div class="form-group" id="contrasena-group">
-                        <input type="password" class="form-control" placeholder="Contrasena" name="password"/>
-                    </div>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Ingresar </button>
-                </form>
-                <div class="col-12 forgot">
-                    <a href="#">Recordar contrasena?</a>
-                </div>
-                <div th:if="${param.error}" class="alert alert-danger" role="alert">
-		            Invalid username and password.
-		        </div>
-		        <div th:if="${param.logout}" class="alert alert-success" role="alert">
-		            You have been logged out.
-		        </div>
-            </div>
-        </div>
-    </div>
+
+	<div class="container">
+
+		<div class="card" id="containerLogin">
+			<div class="card-title containerTitles">
+				<h5 th:text="#{login.header}" style="text-align: center;"></h5>
+			</div>
+			<div class="card-body ">
+				<form class="col-12 needs-validation" th:action="@{/login}"
+					method="post">
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.admins.nombreusuario}"
+							for="usernameAdmin"></label>
+						<div class="input-group">
+							<span class="input-group-text" id="basic-addon1"> <svg
+									xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+									fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+								<path
+									d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"></path>
+								</svg>
+							</span> <input autocomplete="off" type="text" class="form-control"
+								id="usernameAdmin" name="username" required>
+						</div>
+
+					</div>
+
+					<div class="form-group has-validation">
+						<label th:text="#{datatable.admins.contrasenya}"
+							for="passwordAdmin"></label>
+						<div class="input-group">
+							<span class="input-group-text" id="basic-addon1"> <svg
+									xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+									fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+								<path
+									d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+								</svg>
+							</span> <input autocomplete="off" type="password" class="form-control"
+								id="passwordAdmin" name="password" required>
+						</div>
+
+					</div>
+					<div id="btnLogin">
+						<button th:text="#{login.btn.ingresar}" type="submit"
+							class="btn btn-light">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+								fill="currentColor" class="bi bi-box-arrow-in-right"
+								viewBox="0 0 16 16"> <path fill-rule="evenodd"
+								d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"></path>
+							<path fill-rule="evenodd"
+								d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
+							</svg>
+
+						</button>
+					</div>
+				</form>
+				<div th:text="#{login.mensaje.error}" th:if="${param.error}"
+					class="alert alert-danger" role="alert"></div>
+			</div>
+		</div>
+
+
+		<!-- 		<div class="modal-dialog text-center"> -->
+		<!-- 			<div class="col-sm-8 main-section"> -->
+		<!-- 				<div class="modal-content"> -->
+
+		<!-- 					<form class="col-12" th:action="@{/login}" method="post"> -->
+		<!-- 						<div class="form-group" id="user-group"> -->
+		<!-- 							<input type="text" class="form-control" -->
+		<!-- 								placeholder="Nombre de usuario" name="username" /> -->
+		<!-- 						</div> -->
+		<!-- 						<div class="form-group" id="contrasena-group"> -->
+		<!-- 							<input type="password" class="form-control" -->
+		<!-- 								placeholder="Contrasena" name="password" /> -->
+		<!-- 						</div> -->
+		<!-- 						<button type="submit" class="btn btn-primary"> -->
+		<!-- 							<i class="fas fa-sign-in-alt"></i> Ingresar -->
+		<!-- 						</button> -->
+		<!-- 					</form> -->
+		<!-- 					<div class="col-12 forgot"> -->
+		<!-- 						<a href="#">Recordar contrasena?</a> -->
+		<!-- 					</div> -->
+		<!-- 					<div th:if="${param.error}" class="alert alert-danger" role="alert"> -->
+		<!-- 						Invalid username and password.</div> -->
+		<!-- 				</div> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
+
+
+
+
+
+	</div>
+
+	<div>
+		<footer th:replace="views/common/footer :: footer"></footer>
+	</div>
+	<input id="lang" type="hidden" th:value="${lang}">
+	<input id="inputUser" type="hidden"
+		th:value="${#httpServletRequest.remoteUser}">
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+	<script src="/js/header.js"></script>
+
 </body>
 </html>

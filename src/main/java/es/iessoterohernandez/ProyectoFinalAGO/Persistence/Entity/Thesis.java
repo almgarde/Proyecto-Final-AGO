@@ -61,7 +61,7 @@ public class Thesis extends AbstractEntity implements Serializable {
 		this.idThesis = idThesis;
 	}
 
-	@Column(name = "DOCTOR_THESIS", nullable = false, unique = true)
+	@Column(name = "DOCTOR_THESIS", nullable = false)
 	public String getDoctorThesis() {
 		return doctorThesis;
 	}

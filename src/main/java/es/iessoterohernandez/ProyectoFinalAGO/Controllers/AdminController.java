@@ -8,13 +8,12 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Facility;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Link;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Member;
@@ -42,6 +40,7 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.ProjectsServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.PublicationsServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.TechCatServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.ThesisServiceI;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.AdminDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.MembersDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.ProCatDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.TechCatDto;
@@ -55,6 +54,7 @@ import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ProjectsDa
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.PublicationsDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.TechCatDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.ThesisDatatableDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.AdminsFormDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Form.PublicationsFormDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Utils.GeneratorExcels;
 
@@ -96,7 +96,7 @@ public class AdminController {
 
 	@GetMapping
 	public String getManagementPanel(Model model) throws Exception {
-		
+
 //		String username = auth.getName();
 //		
 //		if (session.getAttribute("admin") == null) {
@@ -157,7 +157,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/getDatatableCategory")
-	public String getDatatableCategory(Model model, String numCat) throws Exception {
+	public String getDatatableCategory(Model model, String numCat, String inputUser) throws Exception {
 
 		LOGGER.info("AdminController getDatatableCategory .- Inicio");
 
@@ -237,6 +237,9 @@ public class AdminController {
 					break;
 
 				case "10":
+					AdminDto adminDto = adminService.getAdminDataByUsername(inputUser);
+					model.addAttribute("adminsFormDto", new AdminsFormDto());
+					model.addAttribute("adminDto", adminDto);
 					viewResult = "/views/private/datatableAdmins";
 					break;
 
@@ -288,7 +291,7 @@ public class AdminController {
 
 	@PostMapping("/addNewsData")
 	@ResponseBody
-	public void addNewsData(Model model, @RequestParam Map<String, String> params,
+	public ResponseEntity addNewsData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile imageNews) throws Exception {
 
 		LOGGER.info("AdminController addNewsData .- Inicio");
@@ -312,16 +315,17 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController addNewsData .- Error no controlado al dar de alta la noticia");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController addNewsData .- Fin");
+		return ResponseEntity.ok("success");
 
 	}
 
 	@PostMapping("/updateNewsData")
 	@ResponseBody
-	public void updateNewsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity updateNewsData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController updateNewsData .- Inicio");
 
@@ -335,10 +339,11 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController updateNewsData .- Error no controlado al actualizar la noticia");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController updateNewsData .- Fin");
+		return ResponseEntity.ok("success");
 	}
 
 	@PostMapping("/updateImageNewsData")
@@ -452,7 +457,7 @@ public class AdminController {
 
 	@PostMapping("/addProCatData")
 	@ResponseBody
-	public void addProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity addProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController addProCatData .- Inicio");
 
@@ -467,16 +472,17 @@ public class AdminController {
 		} catch (Exception e) {
 			LOGGER.error(
 					"AdminController addProCatData .- Error no controlado al dar de alta la categoría profesional");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController addProCatData .- Fin");
+		return ResponseEntity.ok("success");
 
 	}
 
 	@PostMapping("/updateProCatData")
 	@ResponseBody
-	public void updateProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity updateProCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController updateProCatData .- Inicio");
 
@@ -491,10 +497,11 @@ public class AdminController {
 		} catch (Exception e) {
 			LOGGER.error(
 					"AdminController updateProCatData .- Error no controlado al actualizar la categoría profesional");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController updateProCatData .- Fin");
+		return ResponseEntity.ok("success");
 	}
 
 	@PostMapping("/deleteProCatData")
@@ -577,7 +584,7 @@ public class AdminController {
 
 	@PostMapping("/addTechCatData")
 	@ResponseBody
-	public void addTechCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity addTechCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController addTechCatData .- Inicio");
 
@@ -591,16 +598,17 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController addTechCatData .- Error no controlado al dar de alta la categoría técnica");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController addTechCatData .- Fin");
+		return ResponseEntity.ok("success");
 
 	}
 
 	@PostMapping("/updateTechCatData")
 	@ResponseBody
-	public void updateTchCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity updateTchCatData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController updateTechCatData .- Inicio");
 
@@ -614,10 +622,11 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController updateTechCatData .- Error no controlado al actualizar la categoría técnica");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController updateTechCatData .- Fin");
+		return ResponseEntity.ok("success");
 	}
 
 	@PostMapping("/deleteTechCatData")
@@ -699,7 +708,7 @@ public class AdminController {
 
 	@PostMapping("/addMembersData")
 	@ResponseBody
-	public void addMembersData(Model model, @RequestParam Map<String, String> params,
+	public ResponseEntity addMembersData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile photoMember) throws Exception {
 
 		LOGGER.info("AdminController addMembersData .- Inicio");
@@ -724,16 +733,17 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController addMembersData .- Error no controlado al dar de alta el miembro");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController addMembersData .- Fin");
+		return ResponseEntity.ok("success");
 
 	}
 
 	@PostMapping("/updateMembersData")
 	@ResponseBody
-	public void updateMembersData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity updateMembersData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController updateMembersData .- Inicio");
 
@@ -747,10 +757,11 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController updateMembersData .- Error no controlado al actualizar el miembro");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController updateMembersData .- Fin");
+		return ResponseEntity.ok("success");
 	}
 
 	@PostMapping("/updatePhotoMembersData")
@@ -1155,7 +1166,7 @@ public class AdminController {
 
 	@PostMapping("/addProjectsData")
 	@ResponseBody
-	public void addProjectsData(Model model, @RequestParam Map<String, String> params,
+	public ResponseEntity addProjectsData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile imageProjects) throws Exception {
 
 		LOGGER.info("AdminController addProjectsData .- Inicio");
@@ -1179,16 +1190,16 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController addProjectsData .- Error no controlado al dar de alta el proyecto");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController addProjectsData .- Fin");
-
+		return ResponseEntity.ok("success");
 	}
 
 	@PostMapping("/updateProjectsData")
 	@ResponseBody
-	public void updateProjectsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity updateProjectsData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController updateProjectsData .- Inicio");
 
@@ -1202,10 +1213,11 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController updateProjectsData .- Error no controlado al actualizar el proyecto");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController updateProjectsData .- Fin");
+		return ResponseEntity.ok("success");
 	}
 
 	@PostMapping("/updateImageProjectsData")
@@ -1479,7 +1491,7 @@ public class AdminController {
 
 	@PostMapping("/addLinksData")
 	@ResponseBody
-	public void addLinksData(Model model, @RequestParam Map<String, String> params,
+	public ResponseEntity addLinksData(Model model, @RequestParam Map<String, String> params,
 			@RequestParam("file") MultipartFile imageLinks) throws Exception {
 
 		LOGGER.info("AdminController addLinksData .- Inicio");
@@ -1504,16 +1516,17 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController addLinksData .- Error no controlado al dar de alta el link");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController addLinksData .- Fin");
+		return ResponseEntity.ok("success");
 
 	}
 
 	@PostMapping("/updateLinksData")
 	@ResponseBody
-	public void updateLinksData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity updateLinksData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController updateLinksData .- Inicio");
 
@@ -1527,10 +1540,11 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController updateLinksData .- Error no controlado al actualizar el link");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController updateLinksData .- Fin");
+		return ResponseEntity.ok("success");
 	}
 
 	@PostMapping("/updateImageLinksData")
@@ -1643,7 +1657,7 @@ public class AdminController {
 
 	@PostMapping("/addAdminsData")
 	@ResponseBody
-	public void addAdminsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+	public ResponseEntity addAdminsData(Model model, @RequestParam Map<String, String> params) throws Exception {
 
 		LOGGER.info("AdminController addAdminsData .- Inicio");
 
@@ -1657,11 +1671,116 @@ public class AdminController {
 
 		} catch (Exception e) {
 			LOGGER.error("AdminController addAdminsData .- Error no controlado al dar de alta el administrador");
-			throw e;
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
 		LOGGER.info("AdminController addAdminsData .- Fin");
+		return ResponseEntity.ok("success");
 
+	}
+
+	@PostMapping("/updateDataAdmins")
+	@ResponseBody
+	public ResponseEntity updateDataAdmins(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController updateDataAdmins .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+				adminService.updateDataAdmin(params);
+			} else {
+				LOGGER.error("AdminController updateDataAdmins .- Error: Parámetros de entrada nulos");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController updateDataAdmins .- Error no controlado al actualizar los datos personales del administrador");
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+
+		LOGGER.info("AdminController updateDataAdmins .- Fin");
+
+		return ResponseEntity.ok("success");
+
+	}
+
+	@PostMapping("/changePwdAdmins")
+	@ResponseBody
+	public ResponseEntity changePwdAdmins(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController changePwdAdmins .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+				adminService.changePwdAdmins(params);
+			} else {
+				LOGGER.error("AdminController changePwdAdmins .- Error: Parámetros de entrada nulos");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController changePwdAdmins .- Error no controlado al actualizar la contraseña del administrador");
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+
+		}
+
+		LOGGER.info("AdminController changePwdAdmins .- Fin");
+		return ResponseEntity.ok("success");
+	}
+	
+	@PostMapping("/deleteAdminsData")
+	public String deleteAdminsData(Model model, @RequestParam Map<String, String> params) throws Exception {
+
+		LOGGER.info("AdminController deleteAdminsData .- Inicio");
+
+		try {
+
+			if (params != null && !params.isEmpty()) {
+				adminService.deleteAdmins(params);
+			} else {
+				LOGGER.error("AdminController deleteAdminsData .- Error: Parámetros de entrada nulos");
+			}
+
+		} catch (Exception e) {
+			LOGGER.error("AdminController deleteAdminsData .- Error no controlado al eliminar el link");
+			throw e;
+		}
+
+		LOGGER.info("AdminController deleteAdminsData .- Fin");
+		return "redirect:/logout";
+	}
+	
+	@GetMapping("/generateExcel/admins")
+	public void exportToExcelAdmins(HttpServletResponse response) throws Exception {
+
+		LOGGER.info("AdminController exportToExcelAdmins .- Inicio");
+
+		List<AdminsDatatableDto> listaAdmins = null;
+		try {
+			response.setHeader("Content-Disposition", "attachment; filename=\"dataAdmins.xlsx\"");
+
+			listaAdmins = adminService.getAllAdminsData();
+
+			if (listaAdmins != null && !listaAdmins.isEmpty()) {
+				GeneratorExcels generatorExcel = new GeneratorExcels();
+
+				generatorExcel.exportExcelAdmins(response, listaAdmins);
+			} else {
+				LOGGER.error("AdminController exportToExcelAdmins .- Error: No existen administradores registrados");
+
+			}
+
+		} catch (Exception e) {
+			LOGGER.error(
+					"AdminController exportToExcelAdmins .- Error no controlado al realizar la Exportación a Excel");
+			throw e;
+		}
+
+		LOGGER.info("AdminController exportToExcelAdmins .- Fin");
 	}
 
 }

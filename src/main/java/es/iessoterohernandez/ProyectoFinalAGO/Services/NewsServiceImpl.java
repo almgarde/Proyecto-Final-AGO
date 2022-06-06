@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Dao.NewsDaoI;
+import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.Admin;
 import es.iessoterohernandez.ProyectoFinalAGO.Persistence.Entity.News;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.NewsDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.NewsDatatableDto;
@@ -101,6 +102,20 @@ public class NewsServiceImpl implements NewsServiceI {
 		try {
 
 			if (newsData != null && !newsData.isEmpty() && !StringUtils.isEmpty(imageNews)) {
+				
+				if (newsData.get("contentNews").length() <350) {
+					throw new Exception("contentNewsLength");
+				} 				
+				List<News> listaNews = newsDao.findAll();
+				
+				for (News news : listaNews) {
+					
+					if (newsData.get("titleNews").equals(news.getTitleNews())) {
+						throw new Exception("titleNewsUnique");					}
+
+					
+				}
+
 
 				News n = new News();
 
@@ -114,7 +129,7 @@ public class NewsServiceImpl implements NewsServiceI {
 				}
 
 				n.setImageNews(imageNews);
-				n.setUpdateAdmin("agadelao");
+				n.setUpdateAdmin(newsData.get("inputUser"));
 				n.setUpdateDate(new Date());
 
 				News newsSaved = newsDao.save(n);
@@ -159,6 +174,19 @@ public class NewsServiceImpl implements NewsServiceI {
 				News n = newsDao.findByIdNews(Long.parseLong(newsData.get("idNews")));
 
 				if (n != null) {
+					
+					if (newsData.get("contentNews").length() <350) {
+						throw new Exception("contentNewsLength");
+					}
+					
+					if (!newsData.get("titleNews").equals(n.getTitleNews())) {
+						List<News> listaNews = newsDao.findAll();
+						for (News news : listaNews) {
+							if (newsData.get("titleNews").equals(news.getTitleNews())) {
+								throw new Exception("titleNewsUnique");
+							}
+						}
+					}
 
 					n.setTitleNews(newsData.get("titleNews"));
 					n.setAbstractNews(newsData.get("abstractNews"));
@@ -170,7 +198,7 @@ public class NewsServiceImpl implements NewsServiceI {
 						n.setActive(false);
 					}
 
-					n.setUpdateAdmin("agadelao");
+					n.setUpdateAdmin(newsData.get("inputUser"));
 					n.setUpdateDate(new Date());
 
 					newsUpdated = newsDao.save(n);
@@ -218,6 +246,7 @@ public class NewsServiceImpl implements NewsServiceI {
 				News n = newsDao.findByIdNews(Long.parseLong(newsData.get("idNews")));
 
 				if (n != null) {
+					n.setUpdateAdmin(newsData.get("inputUser"));
 					n.setImageNews(n.getIdNews() + imageNews);
 					newsImageUpdated = newsDao.save(n);
 				} else {

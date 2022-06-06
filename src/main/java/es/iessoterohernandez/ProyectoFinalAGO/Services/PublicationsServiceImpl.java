@@ -151,7 +151,7 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 					p.setActive(false);
 				}
 
-				p.setUpdateAdmin("agadelao");
+				p.setUpdateAdmin(publicationsFormDto.getAdmin());
 				p.setUpdateDate(new Date());
 
 				List<AuthorDto> listaAuthorsDto = publicationsFormDto.getAuthorsPublication();
@@ -227,7 +227,7 @@ public class PublicationsServiceImpl implements PublicationsServiceI {
 						p.setActive(false);
 					}
 
-					p.setUpdateAdmin("agadelao");
+					p.setUpdateAdmin(publicationsFormDto.getAdmin());
 					p.setUpdateDate(new Date());
 
 					List<AuthorsPublication> listaAutores = authorsPublicationDao.findByIdPublication(p);

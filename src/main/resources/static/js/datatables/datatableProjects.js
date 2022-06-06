@@ -243,7 +243,7 @@ function getDatatableProjects() {
 			e.stopPropagation();
 		} else {
 			anyadirNuevoProyecto();
-			$('#modalAddProjects').modal('hide');
+			
 		}
 		form.addClass('was-validated');
 
@@ -251,6 +251,10 @@ function getDatatableProjects() {
 
 	$(document).on("click", "#btnCancelarAddProjects", function() {
 		$("#formAddProjects").removeClass('was-validated');
+		$('#titleProjectMaxContador').html(max_chars_content);
+		$('#descriptionProjectMaxContador').html(max_chars_content);
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#titleProjects").val('');
 		$("#imageProjects").val('');
 		$("#descProjects").val('');
@@ -259,10 +263,20 @@ function getDatatableProjects() {
 
 	$(document).on("click", "#btnCloseAddProjects", function() {
 		$("#formAddProjects").removeClass('was-validated');
+				$('#titleProjectMaxContador').html(max_chars_content);
+		$('#descriptionProjectMaxContador').html(max_chars_content);
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#titleProjects").val('');
 		$("#imageProjects").val('');
 		$("#descProjects").val('');
 		$("#active").val('1');
+	});
+	
+			$("#modalAddProjects").on('hide.bs.modal', function() {
+		$("#formAddProjects").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnAceptarUpdateProjects", function(e) {
@@ -275,7 +289,7 @@ function getDatatableProjects() {
 			e.stopPropagation();
 		} else {
 			editarProyecto();
-			$('#modalUpdateProjects').modal('hide');
+			
 		}
 		form.addClass('was-validated');
 
@@ -283,10 +297,20 @@ function getDatatableProjects() {
 
 	$(document).on("click", "#btnCancelarUpdateProjects", function(e) {
 		$("#formUpdateProjects").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnCloseUpdateProjects", function(e) {
 		$("#formUpdateProjects").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
+	});
+	
+		$("#modalUpdateProjects").on('hide.bs.modal', function() {
+		$("#formUpdateProjects").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnAceptarUpdateImageProjects", function(e) {
@@ -312,10 +336,53 @@ function getDatatableProjects() {
 	$(document).on("click", "#btnCloseUpdateImageProjects", function(e) {
 		$("#formUpdateImageProjects").removeClass('was-validated');
 	});
+	
+							$("#modalUpdateImageProjects").on('hide.bs.modal', function() {
+		$("#formUpdateImageProjects").removeClass('was-validated');
+	});
 
 	$(document).on("click", "#btnAceptarDeleteProjects", function(e) {
 		e.preventDefault();
 		eliminarProyecto();
+	});
+	
+	
+	// MÁXIMO CARACTERES TEXTAREA
+
+	var max_chars_content = 3500;
+	
+
+$('#titleProjectMaxContador').html(max_chars_content);
+
+	$('#titleProjects').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#titleProjectMaxContador').html(diff);
+
+	});
+	
+	$('#descriptionProjectMaxContador').html(max_chars_content);
+
+	$('#descProjects').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#descriptionProjectMaxContador').html(diff);
+
+	});
+	
+
+	$('#titleProjectsEdit').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#titleProjectMaxContadorEdit').html(diff);
+
+	});
+	
+		$('#descProjectsEdit').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#descriptionProjectMaxContadorEdit').html(diff);
+
 	});
 
 }
@@ -338,10 +405,13 @@ function mostrarModalProjectsDescription(titleProject, descriptionProject) {
 
 function mostrarModalAddProjects() {
 	$("#modalAddProjects").modal('toggle');
+			$(".mensajeError").hide();
+		$(".mensajeError").text('');
 }
 
 function mostrarModalUpdateProjects(idProject, titleProject, descriptionProject, active) {
-
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	$('#titleProjectsEdit').val(titleProject);
 	$('#descProjectsEdit').val(descriptionProject);
 	$('#idProjectUpdate').val(idProject);
@@ -352,6 +422,14 @@ function mostrarModalUpdateProjects(idProject, titleProject, descriptionProject,
 		$('#activeEdit').val('0');
 	}
 
+var charsInit = titleProject.length;
+	var diffInit = 3500 - charsInit;
+	$('#titleProjectMaxContadorEdit').html(diffInit);
+
+var charsInit = descriptionProject.length;
+	var diffInit = 3500 - charsInit;
+	$('#descriptionProjectMaxContadorEdit').html(diffInit);
+	
 	$("#modalUpdateProjects").modal('toggle');
 }
 
@@ -376,6 +454,7 @@ function anyadirNuevoProyecto() {
 	form.append("titleProjects", $("#titleProjects").val());
 	form.append("descProjects", $("#descProjects").val());
 	form.append("active", $("#active").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/addProjectsData',
@@ -384,21 +463,31 @@ function anyadirNuevoProyecto() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
+//			if (data == '') {
 				$('#projectsDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text($("#addOkMensaje").val());
-			} else {
-				errorMessage();
-				$(".alert").text($("#addErrorMensaje").val());
-			}
+//			} else {
+//				errorMessage();
+//				$(".alert").text($("#addErrorMensaje").val());
+//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($("#addErrorMensaje").val());
+		error: function(e) {
+			$('#modalAddProjects').modal('show');
+			$("#formAddProjects").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+
+			if (e.responseText == "titleProjectsUnique") {
+				mensajeError = $('#titleProjectsUnique').val();
+			}
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formAddProjects").removeClass('was-validated');
+		$('#modalAddProjects').modal('hide');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$("#titleProjects").val('');
 		$("#imageProjects").val('');
 		$("#descProjects").val('');
@@ -414,6 +503,7 @@ function editarProyecto() {
 	form.append("titleProject", $("#titleProjectsEdit").val());
 	form.append("descProject", $("#descProjectsEdit").val());
 	form.append("active", $("#activeEdit").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updateProjectsData',
@@ -422,21 +512,31 @@ function editarProyecto() {
 		contentType: false,
 		data: form,
 		success: function(data) {
-			if (data == '') {
+//			if (data == '') {
 				$('#projectsDatatable').DataTable().ajax.reload();
 				okMessage();
 				$(".alert").text($("#updateOkMensaje").val());
-			} else {
-				errorMessage();
-				$(".alert").text($("#updateErrorMensaje").val());
-			}
+//			} else {
+//				errorMessage();
+//				$(".alert").text($("#updateErrorMensaje").val());
+//			}
 		},
-		error: function(data) {
-			errorMessage();
-			$(".alert").text($("#updateErrorMensaje").val());
+		error: function(e) {
+			$('#modalUpdateProjects').modal('show');
+			$("#formUpdateProjects").removeClass('was-validated');
+			$(".mensajeError").show();
+			var mensajeError ="";
+
+			if (e.responseText == "titleProjectsUnique") {
+				mensajeError = $('#titleProjectsUnique').val();
+			}
+			$(".mensajeError").text(mensajeError);
 		}
 	}).done(function() {
 		$("#formUpdateProjects").removeClass('was-validated');
+		$('#modalUpdateProjects').modal('hide');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 }
 
@@ -446,6 +546,7 @@ function editarImagenProyecto() {
 
 	form.append("file", $('#imageProjectsEdit')[0].files[0]);
 	form.append("idProject", $("#idProjectUpdateImage").val());
+	form.append("inputUser", $("#inputUser").val());
 
 	$.ajax({
 		url: '/management/updateImageProjectsData',

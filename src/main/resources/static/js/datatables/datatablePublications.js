@@ -268,6 +268,7 @@ function getDatatablePublications() {
 			e.preventDefault();
 			e.stopPropagation();
 		} else {
+			$('#inputUserPublication').val($('#inputUser').val());
 			form.submit();
 			$('#modalAddPublications').modal('hide');
 		}
@@ -276,6 +277,9 @@ function getDatatablePublications() {
 
 	$(document).on("click", "#btnCancelarAddPublication", function() {
 		$("#formAddPublication").removeClass('was-validated');
+		$('#titlePublicationMaxContador').html(max_chars_content);
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$('#inputNameAutor').val('');
 		$('#inputShortNameAutor').val('');
 		$('#titlePublication').val('');
@@ -286,6 +290,9 @@ function getDatatablePublications() {
 
 	$(document).on("click", "#btnCloseAddPublication", function() {
 		$("#formAddPublication").removeClass('was-validated');
+		$('#titlePublicationMaxContador').html(max_chars_content);
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$('#inputNameAutor').val('');
 		$('#inputShortNameAutor').val('');
 		$('#titlePublication').val('');
@@ -296,6 +303,8 @@ function getDatatablePublications() {
 
 	$("#modalAddPublications").on('hide.bs.modal', function() {
 		$("#formAddPublication").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 
@@ -342,7 +351,9 @@ function getDatatablePublications() {
 	});
 
 	$(document).on("click", "#btnCancelarUpdatePublication", function(e) {
-		$("#formUpdatePublication").removeClass('was-validated');
+		$("#formUpdatePublication").removeClass('was-validated');		
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$('#inputNameAutorEdit').val('');
 		$('#inputShortNameAutorEdit').val('');
 		$('.authorsList').remove();
@@ -350,6 +361,8 @@ function getDatatablePublications() {
 
 	$(document).on("click", "#btnCloseUpdatePublications", function(e) {
 		$("#formUpdatePublication").removeClass('was-validated');
+				$(".mensajeError").hide();
+		$(".mensajeError").text('');
 		$('#inputNameAutorEdit').val('');
 		$('#inputShortNameAutorEdit').val('');
 		$('.authorsList').remove();
@@ -357,6 +370,8 @@ function getDatatablePublications() {
 
 	$("#modalUpdatePublications").on('hide.bs.modal', function() {
 		$("#formUpdatePublication").removeClass('was-validated');
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	});
 
 	$(document).on("click", "#btnAceptarDeletePublication", function(e) {
@@ -564,6 +579,28 @@ function getDatatablePublications() {
 		$('#inputShortNameAutorEdit').hide();
 		$('#btnNuevoAutorEdit').show();
 	});
+	
+	// MÁXIMO CARACTERES TEXTAREA
+
+	var max_chars_content = 3500;
+	
+
+$('#titlePublicationMaxContador').html(max_chars_content);
+
+	$('#titlePublication').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#titlePublicationMaxContador').html(diff);
+
+	});
+	
+
+	$('#titlePublicationEdit').keyup(function() {
+		var chars = $(this).val().length;
+		var diff = max_chars_content - chars;
+		$('#titlePublicationMaxContadorEdit').html(diff);
+
+	});
 
 }
 
@@ -581,6 +618,8 @@ function mostrarModalAuthorsPublication(titulo, autores) {
 
 function mostrarModalAddPublications() {
 	$("#modalAddPublications").modal('toggle');
+			$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	$('#tdInputNameAutor').hide();
 	$('#tdInputShortNameAutor').hide();
 	$('#inputNameAutor').hide();
@@ -588,7 +627,8 @@ function mostrarModalAddPublications() {
 }
 
 function mostrarModalUpdatePublication(idPublication, titlePublication, authorsPublication, journalPublication, doiPublication, yearPublication, active) {
-
+		$(".mensajeError").hide();
+		$(".mensajeError").text('');
 	$('#titlePublicationEdit').val(titlePublication);
 	$('#journalPublicationEdit').val(journalPublication);
 	$('#doiPublicationEdit').val(doiPublication);
@@ -621,6 +661,11 @@ function mostrarModalUpdatePublication(idPublication, titlePublication, authorsP
 	$('#tdInputShortNameAutorEdit').hide();
 	$('#inputNameAutorEdit').hide();
 	$('#inputShortNameAutorEdit').hide();
+	
+	var charsInit = titlePublication.length;
+	var diffInit = 3500 - charsInit;
+	$('#titlePublicationMaxContadorEdit').html(diffInit);
+	
 	$("#modalUpdatePublications").modal('toggle');
 }
 

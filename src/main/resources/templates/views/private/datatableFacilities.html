@@ -172,8 +172,9 @@
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.facilities.caracteristicas}"
 							for="featuresFacility"></label>
-						<textarea class="form-control" id="featuresFacility" required></textarea>
-						<small th:text="#{datatable.modal.maximo}"></small>
+						<textarea class="form-control" id="featuresFacility" maxlength="3500" required></textarea>
+						<small id="featuresFacilitiesMaxContador"></small>
+						<small id="featuresFacilitiesMax" th:text="#{datatable.modal.maximo}"></small>
 						<div
 							th:text="#{datatable.facilities.modal.validacion.caracteristicas}"
 							class="invalid-feedback"></div>
@@ -254,8 +255,9 @@
 					<div class="form-group has-validation">
 						<label th:text="#{datatable.facilities.caracteristicas}"
 							for="featuresFacilityEdit"></label>
-						<textarea class="form-control" id="featuresFacilityEdit" required></textarea>
-						<small th:text="#{datatable.modal.maximo}"></small>
+						<textarea class="form-control" id="featuresFacilityEdit" maxlength="3500" required></textarea>
+						<small id="featuresFacilitiesMaxContadorEdit"></small>
+						<small id="featuresFacilitiesMax" th:text="#{datatable.modal.maximo}"></small>
 						<div
 							th:text="#{datatable.facilities.modal.validacion.caracteristicas}"
 							class="invalid-feedback"></div>

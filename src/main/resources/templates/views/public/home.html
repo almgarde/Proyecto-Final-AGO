@@ -82,6 +82,8 @@
 		<footer th:replace="views/common/footer :: footer"></footer>
 	</div>
 	<input id="lang" type="hidden" th:value="${lang}">
+	<input id="inputUser" type="hidden"
+		th:value="${#httpServletRequest.remoteUser}">
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

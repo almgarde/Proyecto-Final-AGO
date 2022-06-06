@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import es.iessoterohernandez.ProyectoFinalAGO.Services.ProCatServiceI;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.AuthorDto;
+import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.AdminsDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.FacilitiesDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.LinksDatatableDto;
 import es.iessoterohernandez.ProyectoFinalAGO.Services.Dto.Datatables.MembersDatatableDto;
@@ -461,6 +462,44 @@ public class GeneratorExcels {
 			} else {
 				filaData.createCell(8).setCellValue("No");
 			}
+
+			numFila++;
+		}
+
+		ServletOutputStream outputStream = response.getOutputStream();
+		workbook.write(outputStream);
+		workbook.close();
+
+		outputStream.close();
+	}
+
+	public void exportExcelAdmins(HttpServletResponse response, List<AdminsDatatableDto> listaAdmins) throws Exception {
+		hoja = workbook.createSheet("Admins");
+
+		Row filaTitulo = hoja.createRow(0);
+
+		Cell celda = filaTitulo.createCell(0);
+		celda.setCellValue("DATOS DE ADMINISTRADORES");
+
+		Row filaData = hoja.createRow(2);
+
+		String[] columnas = { "ID", "Nombre y apellidos", "Email", "Nombre de usuario" };
+
+		for (int i = 0; i < columnas.length; i++) {
+
+			celda = filaData.createCell(i);
+			celda.setCellValue(columnas[i]);
+			hoja.autoSizeColumn(i);
+		}
+
+		int numFila = 4;
+		for (AdminsDatatableDto admin : listaAdmins) {
+			filaData = hoja.createRow(numFila);
+
+			filaData.createCell(0).setCellValue(admin.getIdAdmin());
+			filaData.createCell(1).setCellValue(admin.getNameAdmin());
+			filaData.createCell(2).setCellValue(admin.getEmailAdmin());
+			filaData.createCell(3).setCellValue(admin.getUsernameAdmin());
 
 			numFila++;
 		}
